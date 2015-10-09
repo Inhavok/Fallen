@@ -1,15 +1,16 @@
 package com.inhavok.fallen.commands.state_commands;
 
-import com.inhavok.fallen.states.PlayState;
+import com.inhavok.fallen.commands.Command;
+import com.inhavok.fallen.states.State;
 
-public class HandleKeyPress extends StateCommand<PlayState> {
+public final class HandleKeyPress extends Command<State> {
 	private final int keycode;
-	protected HandleKeyPress(final int keycode) {
-		super(PlayState.class);
+	public HandleKeyPress(final int keycode) {
+		super(State.class);
 		this.keycode = keycode;
 	}
 	@Override
-	public void execute(PlayState state) {
+	public void execute(final State state) {
 		state.handleKeyPress(keycode);
 	}
 }

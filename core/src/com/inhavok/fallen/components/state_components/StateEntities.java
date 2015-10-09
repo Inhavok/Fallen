@@ -5,11 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.components.entity_components.EntityGraphics;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.entities.Entity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public final class StateEntities extends StateComponent {
 	private final ArrayList<Entity> previousState = new ArrayList<Entity>();

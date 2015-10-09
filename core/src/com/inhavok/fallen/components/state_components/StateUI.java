@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.inhavok.fallen.Assets;
+import com.inhavok.fallen.commands.CommandManager;
+import com.inhavok.fallen.commands.state_commands.HandleKeyPress;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public abstract class StateUI extends StateComponent {
 		stage.addListener(new InputListener() {
 			public boolean keyDown(InputEvent event, int keycode) {
 				keysDown.add(keycode);
+				CommandManager.add(new HandleKeyPress(keycode));
 				return false;
 			}
 			public boolean keyUp(InputEvent event, int keycode) {

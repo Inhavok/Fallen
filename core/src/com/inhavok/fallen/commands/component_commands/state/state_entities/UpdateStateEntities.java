@@ -1,17 +1,14 @@
 package com.inhavok.fallen.commands.component_commands.state.state_entities;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.components.state_components.StateEntities;
 
-public final class DrawEntities extends Command<StateEntities> {
-	private final SpriteBatch spriteBatch;
-	public DrawEntities(final SpriteBatch spriteBatch) {
+public final class UpdateStateEntities extends Command<StateEntities> {
+	public UpdateStateEntities() {
 		super(StateEntities.class);
-		this.spriteBatch = spriteBatch;
 	}
 	@Override
 	public void execute(StateEntities stateEntities) {
-		stateEntities.drawEntities(spriteBatch);
+		stateEntities.updateState();
 	}
 }

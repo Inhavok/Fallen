@@ -1,9 +1,11 @@
 package com.inhavok.fallen.states;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.components.state_components.PlayStateUI;
 import com.inhavok.fallen.components.state_components.StateComponent;
 import com.inhavok.fallen.components.state_components.StateUI;
@@ -19,8 +21,8 @@ public final class PlayState extends State {
 		return components;
 	}
 	@Override
-	public void handleKeyPress(int keycode) {
-		if (StateUI.getKeysDown().contains(Keys.ESCAPE)) {
+	public void handleKeyPress(final int keycode) {
+		if (keycode == Keys.ESCAPE) {
 			Gdx.app.exit();
 		} else if (StateUI.getKeysDown().contains(Keys.F) && StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
 			if (!fullScreen) {

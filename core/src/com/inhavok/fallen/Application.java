@@ -5,9 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.inhavok.fallen.Assets;
+import com.inhavok.fallen.commands.CommandManager;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.DrawEntities;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.UpdateState;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.state_components.StateEntities;
 import com.inhavok.fallen.components.state_components.StateUI;
@@ -30,7 +29,6 @@ public final class Application extends ApplicationAdapter {
 		Assets.initialise();
 		spriteBatch = new SpriteBatch();
 		StateUI.initialise(new ScreenViewport(), spriteBatch);
-		State.initialise(this);
 		states.add(new PlayState());
 		currentState = states.get(0);
 	}
@@ -43,20 +41,20 @@ public final class Application extends ApplicationAdapter {
 		accumulatedTime += Gdx.graphics.getDeltaTime();
 		while (accumulatedTime >= SECONDS_PER_FRAME) {
 			EntityPhysics.step(SECONDS_PER_FRAME, 8, 3);
-			currentState.execute(new UpdateState());
-			currentState.execute(new com.inhavok.fallen.commands.component_commands.state.state_ui.UpdateState());
 			currentState.update();
 			accumulatedTime -= SECONDS_PER_FRAME;
 		}
 		if (accumulatedTime > 0) {
-			currentState.execute(new Interpolate(accumulatedTime / SECONDS_PER_FRAME));
+			CommandManager.add(new Interpolate(accumulatedTime / SECONDS_PER_FRAME));
 		}
 		StateUI.act();
+		CommandManager.execute(currentState);
 	}
 	private static void drawGraphics() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		currentState.execute(new DrawEntities(spriteBatch));
+		CommandManager.add(new DrawEntities(spriteBatch));
+		CommandManager.execute(currentState);
 		StateUI.draw();
 	}
 	@Override
