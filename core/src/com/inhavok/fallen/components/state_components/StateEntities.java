@@ -5,6 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.inhavok.fallen.commands.CommandManager;
+import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetRotation;
+import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetX;
+import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetY;
+import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetRotation;
+import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetX;
+import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetY;
 import com.inhavok.fallen.components.entity_components.EntityGraphics;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.entities.Entity;
@@ -19,30 +26,26 @@ public final class StateEntities extends StateComponent {
 		previousState.clear();
 		previousState.addAll(currentState);
 		for (Entity entity : currentState) {
-			if (entity.hasComponent(EntityPhysics.class) && entity.hasComponent(EntityGraphics.class)) {
-				final EntityGraphics entityGraphics = entity.getComponent(EntityGraphics.class);
-				final EntityPhysics entityPhysics = entity.getComponent(EntityPhysics.class);
-				entityGraphics.setX(entityPhysics.getX());
-				entityGraphics.setY(entityPhysics.getY());
-				entityGraphics.setRotation(entityPhysics.getRotation() * MathUtils.radiansToDegrees);
-			}
+			CommandManager.add(new GraphicsSetX((Float) CommandManager.requestData(new PhysicsGetX())));
+			CommandManager.add(new GraphicsSetY((Float) CommandManager.requestData(new PhysicsGetY())));
+			CommandManager.add(new GraphicsSetRotation((Float) CommandManager.requestData(new PhysicsGetRotation())));
 			entity.update();
 		}
 	}
 	public void interpolate(final float alpha) {
-		int currentEntity = 0;
-		for (Entity entity : previousState) {
-			if (entity.hasComponent(EntityGraphics.class)) {
-				final EntityGraphics interpolatedEntityGraphics = entity.getComponent(EntityGraphics.class);
-				final EntityGraphics currentEntityGraphics = currentState.get(currentEntity).getComponent(EntityGraphics.class);
-				interpolatedEntityGraphics.setX(interpolatedEntityGraphics.getX() + (currentEntityGraphics.getX() - interpolatedEntityGraphics.getX()) * alpha);
-				interpolatedEntityGraphics.setY(interpolatedEntityGraphics.getY() + (currentEntityGraphics.getY() - interpolatedEntityGraphics.getY()) * alpha);
-				interpolatedEntityGraphics.setRotation(interpolatedEntityGraphics.getRotation() + (currentEntityGraphics.getRotation() - interpolatedEntityGraphics.getRotation()) * alpha);
-			}
-			currentEntity++;
+		int currentEntityID = 0;
+		for (Entity interpolatedEntity : previousState) {
+			final Entity currentEntity = currentState.get(currentEntityID);
+
+
+
+			interpolatedEntityGraphics.setX(interpolatedEntityGraphics.getX() + (currentEntityGraphics.getX() - interpolatedEntityGraphics.getX()) * alpha);
+			interpolatedEntityGraphics.setY(interpolatedEntityGraphics.getY() + (currentEntityGraphics.getY() - interpolatedEntityGraphics.getY()) * alpha);
+			interpolatedEntityGraphics.setRotation(interpolatedEntityGraphics.getRotation() + (currentEntityGraphics.getRotation() - interpolatedEntityGraphics.getRotation()) * alpha);
+			currentEntityID++;
 		}
 	}
-	public void drawEntities(final SpriteBatch spriteBatch) {
+	public void draw(final SpriteBatch spriteBatch) {
 		CAMERA.update();
 		spriteBatch.setProjectionMatrix(CAMERA.combined);
 		spriteBatch.begin();
@@ -63,8 +66,5 @@ public final class StateEntities extends StateComponent {
 		CAMERA.viewportWidth = width;
 		CAMERA.viewportHeight = height;
 		CAMERA.update();
-	}
-	public ArrayList<Entity> getEntities() {
-		return currentState;
 	}
 }

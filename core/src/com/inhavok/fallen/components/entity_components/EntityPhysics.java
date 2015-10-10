@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public final class EntityPhysics implements EntityComponent {
+public final class EntityPhysics extends EntityComponent {
 	private static final World world = new World(new Vector2(0, 0), true);
 	private final Body body;
 	public EntityPhysics(final float width, final float height, final BodyType bodyType, final float linearDamping, final float angularDamping) {

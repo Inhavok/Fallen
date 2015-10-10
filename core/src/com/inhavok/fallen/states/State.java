@@ -3,8 +3,8 @@ package com.inhavok.fallen.states;
 import com.inhavok.fallen.commands.CommandFilter;
 import com.inhavok.fallen.commands.CommandListener;
 import com.inhavok.fallen.commands.CommandManager;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.UpdateStateEntities;
-import com.inhavok.fallen.commands.component_commands.state.state_ui.UpdateStateUI;
+import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesUpdateState;
+import com.inhavok.fallen.commands.component_commands.state.state_ui.UIUpdateState;
 import com.inhavok.fallen.components.state_components.StateComponent;
 
 import java.util.ArrayList;
@@ -22,8 +22,8 @@ public abstract class State implements CommandListener {
 		}
 	}
 	public final void update() {
-		CommandManager.add(new UpdateStateEntities());
-		CommandManager.add(new UpdateStateUI());
+		CommandManager.add(new EntitiesUpdateState());
+		CommandManager.add(new UIUpdateState());
 	}
 	public abstract void handleKeyPress(int keycode);
 	@Override

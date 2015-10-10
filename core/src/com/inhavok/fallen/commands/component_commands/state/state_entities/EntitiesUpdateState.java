@@ -4,14 +4,12 @@ import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.CommandFilter;
 import com.inhavok.fallen.components.state_components.StateEntities;
 
-public final class Interpolate extends Command<StateEntities> {
-	private final float alpha;
-	public Interpolate(final float alpha) {
+public final class EntitiesUpdateState extends Command<StateEntities> {
+	public EntitiesUpdateState() {
 		super(StateEntities.class, CommandFilter.STATE);
-		this.alpha = alpha;
 	}
 	@Override
 	public void execute(StateEntities listener) {
-		listener.interpolate(alpha);
+		listener.updateState();
 	}
 }

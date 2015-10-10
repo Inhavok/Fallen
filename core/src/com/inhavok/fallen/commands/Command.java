@@ -15,6 +15,9 @@ public abstract class Command<T extends CommandListener> {
         return false;
     }
     protected abstract void execute(final T listener);
+    protected <U> U getData() {
+        return null;
+    }
     public CommandFilter getType() {
         return commandType;
     }
