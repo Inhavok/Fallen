@@ -10,7 +10,7 @@ import com.inhavok.fallen.Application;
 
 import java.util.ArrayList;
 
-public final class EntityGraphics implements EntityComponent {
+public final class EntityGraphics extends EntityComponent {
 	private final Sprite sprite;
 	private final ArrayList<Animation> animations = new ArrayList<Animation>();
 	private float stateTime;

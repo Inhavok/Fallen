@@ -16,26 +16,32 @@ public final class CommandManager {
         executeEntityCommands();
     }
     private static void executeStateCommands() {
-        final Iterator<Command> stateCommandsIterator = stateCommandQueue.iterator();
-        while (stateCommandsIterator.hasNext()) {
-            final Command command = stateCommandsIterator.next();
+        final Iterator<Command> stateCommandIterator = stateCommandQueue.iterator();
+        while (stateCommandIterator.hasNext()) {
+            final Command command = stateCommandIterator.next();
             for (CommandListener stateCommandListener : stateCommandListeners) {
                 if (command.run(stateCommandListener)) {
-                    stateCommandsIterator.remove();
+                    stateCommandIterator.remove();
                     break;
                 }
+            }
+            if (stateCommandQueue.contains(command)) {
+                stateCommandIterator.remove();
             }
         }
     }
     private static void executeEntityCommands() {
-        final Iterator<Command> entityCommandsIterator = entityCommandQueue.iterator();
-        while (entityCommandsIterator.hasNext()) {
-            final Command command = entityCommandsIterator.next();
+        final Iterator<Command> entityCommandIterator = entityCommandQueue.iterator();
+        while (entityCommandIterator.hasNext()) {
+            final Command command = entityCommandIterator.next();
             for (CommandListener entityCommandListener : entityCommandListeners) {
                 if (command.run(entityCommandListener)) {
-                    entityCommandsIterator.remove();
+                    entityCommandIterator.remove();
                     break;
                 }
+            }
+            if (entityCommandQueue.contains(command)) {
+                entityCommandIterator.remove();
             }
         }
     }
@@ -58,6 +64,24 @@ public final class CommandManager {
                 entityCommandListeners.add(commandListener);
                 break;
         }
+    }
+    public static <T> T requestData(final Command command) {
+        switch (command.getType()) {
+            case STATE:
+                for (CommandListener stateCommandListener : stateCommandListeners) {
+                    if (command.run(stateCommandListener)) {
+                        break;
+                    }
+                }
+                break;
+            case ENTITY:
+                for (CommandListener entityCommandListener : entityCommandListeners) {
+                    if (command.run(entityCommandListener)) {
+                        break;
+                    }
+                }
+        }
+        return (T) command.getData();
     }
     public static void reset() {
         stateCommandQueue.clear();
