@@ -1,5 +1,6 @@
 package com.inhavok.fallen.states;
 
+import com.inhavok.fallen.commands.CommandFilter;
 import com.inhavok.fallen.commands.CommandListener;
 import com.inhavok.fallen.commands.CommandManager;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.UpdateStateEntities;
@@ -14,11 +15,21 @@ public abstract class State implements CommandListener {
 		components.addAll(addComponents());
 	}
 	abstract ArrayList<StateComponent> addComponents();
+	public void activate() {
+		CommandManager.add(this);
+		for (StateComponent component : components) {
+			CommandManager.add(component);
+		}
+	}
 	public final void update() {
 		CommandManager.add(new UpdateStateEntities());
 		CommandManager.add(new UpdateStateUI());
 	}
 	public abstract void handleKeyPress(int keycode);
+	@Override
+	public CommandFilter getType() {
+		return CommandFilter.STATE;
+	}
 	public ArrayList<StateComponent> getComponents() {
 		return components;
 	}

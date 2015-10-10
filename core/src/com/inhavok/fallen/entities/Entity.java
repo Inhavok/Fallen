@@ -12,7 +12,7 @@ public abstract class Entity {
 	Entity(final float x, final float y) {
 		this(x, y, 0);
 	}
-	Entity(final float x, final float y, final float angle) {
+	private Entity(final float x, final float y, final float angle) {
 		components.addAll(addComponents());
 		if (hasComponent(EntityGraphics.class)) {
 			final EntityGraphics entityGraphics = getComponent(EntityGraphics.class);

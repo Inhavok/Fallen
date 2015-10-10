@@ -31,6 +31,7 @@ public final class Application extends ApplicationAdapter {
 		StateUI.initialise(new ScreenViewport(), spriteBatch);
 		states.add(new PlayState());
 		currentState = states.get(0);
+		currentState.activate();
 	}
 	@Override
 	public void render() {
@@ -48,14 +49,17 @@ public final class Application extends ApplicationAdapter {
 			CommandManager.add(new Interpolate(accumulatedTime / SECONDS_PER_FRAME));
 		}
 		StateUI.act();
-		CommandManager.execute(currentState);
+		CommandManager.execute();
 	}
 	private static void drawGraphics() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		CommandManager.add(new DrawEntities(spriteBatch));
-		CommandManager.execute(currentState);
+		CommandManager.execute();
 		StateUI.draw();
+	}
+	public static void toggleFullscreen() {
+		Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, !Gdx.graphics.isFullscreen());
 	}
 	@Override
 	public void resize(int width, int height) {

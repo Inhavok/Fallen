@@ -2,8 +2,10 @@ package com.inhavok.fallen.commands;
 
 public abstract class Command<T extends CommandListener> {
     private final Class<T> listeningClass;
-    public Command(final Class<T> listeningClass) {
+    private final CommandFilter commandType;
+    protected Command(final Class<T> listeningClass, CommandFilter commandType) {
         this.listeningClass = listeningClass;
+        this.commandType = commandType;
     }
     public final boolean run(final T listener) {
         if (listeningClass.isInstance(listener)) {
@@ -12,5 +14,8 @@ public abstract class Command<T extends CommandListener> {
         }
         return false;
     }
-    public abstract void execute(final T listener);
+    protected abstract void execute(final T listener);
+    public CommandFilter getType() {
+        return commandType;
+    }
 }

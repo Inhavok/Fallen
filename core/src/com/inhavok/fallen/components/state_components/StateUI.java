@@ -21,7 +21,7 @@ public abstract class StateUI extends StateComponent {
 		table.setFillParent(true);
 		stage.addActor(table);
 	}
-	public static final void initialise(final Viewport viewport, final SpriteBatch spriteBatch) {
+	public static void initialise(final Viewport viewport, final SpriteBatch spriteBatch) {
 		stage = new Stage(viewport, spriteBatch);
 		stage.addListener(new InputListener() {
 			public boolean keyDown(InputEvent event, int keycode) {
@@ -38,16 +38,16 @@ public abstract class StateUI extends StateComponent {
 	}
 	public void updateState() {
 	}
-	public static final void act() {
+	public static void act() {
 		stage.act();
 	}
-	public static final void draw() {
+	public static void draw() {
 		stage.draw();
 	}
-	public static final void resize(final int width, final int height) {
+	public static void resize(final int width, final int height) {
 		stage.getViewport().update(width, height);
 	}
-	public static final void dispose() {
+	public static void dispose() {
 		stage.dispose();
 	}
 	public static ArrayList<Integer> getKeysDown() {
