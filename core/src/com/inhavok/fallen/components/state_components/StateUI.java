@@ -7,9 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.inhavok.fallen.Application;
 import com.inhavok.fallen.Assets;
-import com.inhavok.fallen.commands.CommandManager;
+import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.state_commands.HandleKeyPress;
+import com.inhavok.fallen.states.State;
 
 import java.util.ArrayList;
 
@@ -17,7 +19,8 @@ public abstract class StateUI extends StateComponent {
 	private static Stage stage;
 	private static final ArrayList<Integer> keysDown = new ArrayList<Integer>();
 	private final Table table = new Table(Assets.getSkin());
-	public StateUI() {
+	public StateUI(final State state) {
+		super(state);
 		table.setFillParent(true);
 		stage.addActor(table);
 	}
@@ -26,7 +29,7 @@ public abstract class StateUI extends StateComponent {
 		stage.addListener(new InputListener() {
 			public boolean keyDown(InputEvent event, int keycode) {
 				keysDown.add(keycode);
-				CommandManager.add(new HandleKeyPress(keycode));
+				Application.stateCommand(new HandleKeyPress(keycode));
 				return false;
 			}
 			public boolean keyUp(InputEvent event, int keycode) {
@@ -36,7 +39,13 @@ public abstract class StateUI extends StateComponent {
 		});
 		Gdx.input.setInputProcessor(stage);
 	}
-	public void updateState() {
+	@Override
+	public void handleCommand(Command command) {
+		if (command.getMessage() == Message.UPDATE_STATE) {
+			updateState();
+		}
+	}
+	void updateState() {
 	}
 	public static void act() {
 		stage.act();
@@ -55,5 +64,8 @@ public abstract class StateUI extends StateComponent {
 	}
 	final Table getTable() {
 		return table;
+	}
+	public enum Message {
+		UPDATE_STATE
 	}
 }

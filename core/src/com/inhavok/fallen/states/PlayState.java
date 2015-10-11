@@ -14,8 +14,8 @@ public final class PlayState extends State {
 	@Override
 	ArrayList<StateComponent> addComponents() {
 		final ArrayList<StateComponent> components = new ArrayList<StateComponent>();
-		components.add(new PlayStateUI());
-		components.add(new StateEntities());
+		components.add(new PlayStateUI(this));
+		components.add(new StateEntities(this));
 		return components;
 	}
 	@Override

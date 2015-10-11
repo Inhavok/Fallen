@@ -5,8 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.inhavok.fallen.commands.CommandManager;
+import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesDraw;
+import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesUpdateState;
+import com.inhavok.fallen.commands.component_commands.state.state_ui.UIUpdateState;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.state_components.StateEntities;
 import com.inhavok.fallen.components.state_components.StateUI;
@@ -31,7 +33,6 @@ public final class Application extends ApplicationAdapter {
 		StateUI.initialise(new ScreenViewport(), spriteBatch);
 		states.add(new PlayState());
 		currentState = states.get(0);
-		currentState.activate();
 	}
 	@Override
 	public void render() {
@@ -42,21 +43,23 @@ public final class Application extends ApplicationAdapter {
 		accumulatedTime += Gdx.graphics.getDeltaTime();
 		while (accumulatedTime >= SECONDS_PER_FRAME) {
 			EntityPhysics.step(SECONDS_PER_FRAME, 8, 3);
-			currentState.update();
+			currentState.execute(new EntitiesUpdateState());
+			currentState.execute(new UIUpdateState());
 			accumulatedTime -= SECONDS_PER_FRAME;
 		}
 		if (accumulatedTime > 0) {
-			CommandManager.add(new EntitiesInterpolate(accumulatedTime / SECONDS_PER_FRAME));
+			currentState.execute(new EntitiesInterpolate(accumulatedTime / SECONDS_PER_FRAME));
 		}
 		StateUI.act();
-		CommandManager.execute();
 	}
 	private static void drawGraphics() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		CommandManager.add(new EntitiesDraw(spriteBatch));
-		CommandManager.execute();
+		currentState.execute(new EntitiesDraw(spriteBatch));
 		StateUI.draw();
+	}
+	public static void stateCommand(final Command command) {
+		currentState.handleCommand(command);
 	}
 	public static void toggleFullscreen() {
 		Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, !Gdx.graphics.isFullscreen());

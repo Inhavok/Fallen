@@ -1,20 +1,23 @@
 package com.inhavok.fallen.commands.component_commands.entity.entity_physics;
 
-import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.CommandFilter;
+import com.inhavok.fallen.commands.DataRequest;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 
-public class PhysicsGetY extends Command<EntityPhysics> {
+public final class PhysicsGetY extends DataRequest<EntityPhysics> {
 	private float y;
 	public PhysicsGetY() {
-		super(EntityPhysics.class, CommandFilter.ENTITY);
+		super(EntityPhysics.class);
 	}
 	@Override
-	protected void execute(EntityPhysics listener) {
-		y = listener.getY();
+	public Enum getMessage() {
+		return EntityPhysics.Message.GET_Y;
 	}
 	@Override
-	protected Float getData() {
-		return y;
+	public <S> S getData(Class<S> dataClass) {
+		return dataClass.cast(y);
+	}
+	@Override
+	public <S> void setData(S data) {
+		y = (Float) data;
 	}
 }
