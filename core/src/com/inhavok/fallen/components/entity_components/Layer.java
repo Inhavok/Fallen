@@ -27,10 +27,17 @@ class Layer {
 	}
 	
 	public Sprite getSprite() {
-		Sprite sprite;
-		return sprite.setRegion((new ArrayList<Animation>(animations)).get(0).getKeyFrame(stateTime));
-		
-		
+		Sprite sprite = new Sprite();
+		sprite.setRegion((new ArrayList<Animation>(animations.values())).get(0).getKeyFrame(stateTime));
+		return sprite;
+	}
+
+	public Animation getAnimation() {
+		return (new ArrayList<Animation>(animations.values())).get(0);
+	}
+
+	public void playAnimation(String name) {
+
 	}
 	
 	
