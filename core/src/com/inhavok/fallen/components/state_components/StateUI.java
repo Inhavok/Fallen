@@ -45,7 +45,7 @@ public abstract class StateUI extends StateComponent {
 			updateState();
 		}
 	}
-	void updateState() {
+	private void updateState() {
 	}
 	public static void act() {
 		stage.act();

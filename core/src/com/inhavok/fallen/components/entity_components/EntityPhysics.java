@@ -55,6 +55,9 @@ public final class EntityPhysics extends EntityComponent {
 	public static void dispose() {
 		world.dispose();
 	}
+	public static World getWorld() {
+		return world;
+	}
 	private float getX() {
 		return body.getPosition().x;
 	}

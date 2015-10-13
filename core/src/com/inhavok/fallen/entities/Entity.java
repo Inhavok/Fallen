@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public abstract class Entity {
 	private final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
-	private Entity(final float x, final float y, final float angle) {
+	Entity(final float x, final float y, final float angle) {
 		components.addAll(addComponents());
 		execute(new GraphicsSetX(x));
 		execute(new GraphicsSetY(y));
@@ -46,7 +46,7 @@ public abstract class Entity {
 		}
 		return null;
 	}
-	private <T extends EntityComponent> boolean hasComponent(Class<T> componentClass) {
+	public <T extends EntityComponent> boolean hasComponent(Class<T> componentClass) {
 		return getComponent(componentClass) != null;
 	}
 	private <T extends EntityComponent> T getComponent(Class<T> componentClass) {

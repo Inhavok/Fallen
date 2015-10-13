@@ -5,12 +5,19 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.inhavok.fallen.Application;
+import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
 import com.inhavok.fallen.components.state_components.PlayStateUI;
 import com.inhavok.fallen.components.state_components.StateComponent;
 import com.inhavok.fallen.components.state_components.StateUI;
 import com.inhavok.fallen.components.state_components.StateEntities;
+import com.inhavok.fallen.entities.Player;
 
 public final class PlayState extends State {
+	private final Player player;
+	public PlayState() {
+		player = new Player(0, 0, 0);
+		execute(new EntitiesAdd(player));
+	}
 	@Override
 	ArrayList<StateComponent> addComponents() {
 		final ArrayList<StateComponent> components = new ArrayList<StateComponent>();

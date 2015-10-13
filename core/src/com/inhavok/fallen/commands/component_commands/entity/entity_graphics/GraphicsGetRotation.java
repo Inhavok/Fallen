@@ -1,7 +1,7 @@
 package com.inhavok.fallen.commands.component_commands.entity.entity_graphics;
 
 import com.inhavok.fallen.commands.DataRequest;
-import com.inhavok.fallen.components.entity_components.EntityGraphics;
+import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 
 public class GraphicsGetRotation extends DataRequest<EntityGraphics> {
 	private float angle;

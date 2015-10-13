@@ -13,6 +13,6 @@ final class CreateAssets {
 		settings.maxWidth = Integer.MAX_VALUE;
 		settings.maxHeight = Integer.MAX_VALUE;
 		settings.filterMin = TextureFilter.Linear;
-		TexturePacker.process(settings, "C:\\Users\\Ben\\Desktop\\Developer\\Projects\\Prototype\\core\\assets\\graphics\\entities", "C:\\Users\\Ben\\Desktop\\Developer\\Projects\\Prototype\\core\\assets\\graphics\\entities", "entities");
+		TexturePacker.process(settings, "C:\\Users\\Ben\\Desktop\\Developer\\Projects\\Fallen\\core\\assets\\graphics\\entities", "C:\\Users\\Ben\\Desktop\\Developer\\Projects\\Fallen\\core\\assets\\graphics\\entities", "entities");
 	}
 }
