@@ -22,6 +22,8 @@ public abstract class State implements CommandListener {
 			}
 		}
 	}
+	public void updateState() {
+	}
 	@Override
 	public void handleCommand(Command command) {
 		if (command.getMessage() == Message.HANDLE_KEY_PRESS) {

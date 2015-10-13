@@ -14,20 +14,23 @@ import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.graphics.layers.Layer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class EntityGraphics extends EntityComponent {
-	private final ArrayList<Layer> layers = new ArrayList<Layer>();
+	private final HashMap<Enum, Layer> layers;
 	private final float width;
 	private final float height;
 	private float x;
 	private float y;
 	private float angle;
 	public EntityGraphics() {
-		this.layers.addAll(addLayers());
+		this.layers = addLayers();
+		final ArrayList<Layer> layers = new ArrayList<Layer>();
+		layers.addAll(this.layers.values());
 		width = layers.get(0).getSprite().getWidth() / Application.PIXELS_PER_METER;
 		height = layers.get(0).getSprite().getHeight() / Application.PIXELS_PER_METER;
 	}
-	abstract ArrayList<Layer> addLayers();
+	abstract HashMap<Enum, Layer> addLayers();
 	@Override
 	public void handleCommand(Command command) {
 		if (command.getMessage() == Message.DRAW) {
@@ -46,10 +49,13 @@ public abstract class EntityGraphics extends EntityComponent {
 			setY(((GraphicsSetY) command).getY());
 		} else if (command.getMessage() == Message.SET_ROTATION) {
 			setAngle(((GraphicsSetRotation) command).getAngle());
+		} else if (command.getMessage() == Message.SET_ANIMATION) {
+			final GraphicsSetAnimation graphicsSetAnimation = (GraphicsSetAnimation) command;
+			layers.get(graphicsSetAnimation.getLayer()).setAnimation(graphicsSetAnimation.getAnimation());
 		}
 	}
 	private void animate(final float delta) {
-		for (Layer layer : layers) {
+		for (Layer layer : layers.values()) {
 			layer.animate(delta);
 		}
 	}
@@ -64,7 +70,7 @@ public abstract class EntityGraphics extends EntityComponent {
 		return new Animation(1, textureRegions, PlayMode.LOOP);
 	}
 	private void draw(final SpriteBatch spriteBatch) {
-		for (Layer layer : layers) {
+		for (Layer layer : layers.values()) {
 			final Sprite sprite = layer.getSprite();
 			spriteBatch.draw(new TextureRegion(sprite.getTexture(), sprite.getRegionX(), sprite.getRegionY(), sprite.getRegionWidth(), sprite.getRegionHeight()), x, y, sprite.getOriginX(), sprite.getOriginY(), width, height, sprite.getScaleX(), sprite.getScaleY(), angle);
 		}
@@ -94,6 +100,6 @@ public abstract class EntityGraphics extends EntityComponent {
 		this.angle = angle;
 	}
 	public enum Message {
-		ANIMATE, DRAW, GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION
+		ANIMATE, DRAW, GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION
 	}
 }

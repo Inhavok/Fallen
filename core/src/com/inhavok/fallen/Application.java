@@ -46,6 +46,7 @@ public final class Application extends ApplicationAdapter {
 		accumulatedTime += Gdx.graphics.getDeltaTime();
 		while (accumulatedTime >= SECONDS_PER_FRAME) {
 			EntityPhysics.step(SECONDS_PER_FRAME, 8, 3);
+			currentState.updateState();
 			currentState.execute(new EntitiesUpdateState());
 			currentState.execute(new UIUpdateState());
 			accumulatedTime -= SECONDS_PER_FRAME;

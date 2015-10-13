@@ -4,14 +4,17 @@ import com.inhavok.fallen.components.entity_components.graphics.layers.Layer;
 import com.inhavok.fallen.components.entity_components.graphics.layers.PlayerLegsLayer;
 import com.inhavok.fallen.components.entity_components.graphics.layers.PlayerTorsoLayer;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlayerGraphics extends EntityGraphics {
 	@Override
-	ArrayList<Layer> addLayers() {
-		final ArrayList<Layer> layers = new ArrayList<Layer>();
-		layers.add(new PlayerLegsLayer());
-		layers.add(new PlayerTorsoLayer());
+	HashMap<Enum, Layer> addLayers() {
+		final HashMap<Enum, Layer> layers = new HashMap<Enum, Layer>();
+		layers.put(Layers.LEGS, new PlayerLegsLayer());
+		layers.put(Layers.TORSO, new PlayerTorsoLayer());
 		return layers;
+	}
+	public enum Layers {
+		LEGS, TORSO
 	}
 }
