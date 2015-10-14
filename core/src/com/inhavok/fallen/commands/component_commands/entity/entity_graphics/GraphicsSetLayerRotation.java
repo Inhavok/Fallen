@@ -2,7 +2,6 @@ package com.inhavok.fallen.commands.component_commands.entity.entity_graphics;
 
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
-import com.inhavok.fallen.components.entity_components.graphics.layers.Layer;
 
 public class GraphicsSetLayerRotation extends Command<EntityGraphics> {
 	private final Enum layer;

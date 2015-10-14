@@ -4,7 +4,6 @@ import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.CommandListener;
 import com.inhavok.fallen.commands.state_commands.HandleKeyPress;
 import com.inhavok.fallen.commands.state_commands.HandleKeyRelease;
-import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 import com.inhavok.fallen.components.state_components.StateComponent;
 
 import java.util.ArrayList;

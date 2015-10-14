@@ -48,7 +48,7 @@ public final class EntityPhysics extends EntityComponent {
 		body.createFixture(fixtureDef);
 		polygonShape.dispose();
 	}
-	public void applyLinearImpulse(final Vector2 impulse) {
+	private void applyLinearImpulse(final Vector2 impulse) {
 		body.applyLinearImpulse(impulse, body.getPosition(), true);
 	}
 	public void applyAngularImpulse(final float impulse) {

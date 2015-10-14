@@ -9,8 +9,6 @@ import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.Gra
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetAnimation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetLayerRotation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsApplyLinearImpulse;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetX;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetY;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;

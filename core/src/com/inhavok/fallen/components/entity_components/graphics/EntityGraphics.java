@@ -14,10 +14,10 @@ import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.graphics.layers.Layer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public abstract class EntityGraphics extends EntityComponent {
-	private final HashMap<Enum, Layer> layers;
+	private final LinkedHashMap<Enum, Layer> layers;
 	private final float width;
 	private final float height;
 	private float x;
@@ -30,7 +30,7 @@ public abstract class EntityGraphics extends EntityComponent {
 		width = layers.get(0).getSprite().getWidth() / Application.PIXELS_PER_METER;
 		height = layers.get(0).getSprite().getHeight() / Application.PIXELS_PER_METER;
 	}
-	abstract HashMap<Enum, Layer> addLayers();
+	abstract LinkedHashMap<Enum, Layer> addLayers();
 	@Override
 	public void handleCommand(Command command) {
 		if (command.getMessage() == Message.DRAW) {
