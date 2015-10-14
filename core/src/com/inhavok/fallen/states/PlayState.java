@@ -30,10 +30,18 @@ public final class PlayState extends State {
 	}
 	@Override
 	public void updateState() {
+		player.face(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 		if (StateUI.getKeysDown().contains(Keys.W)) {
-			player.execute(new GraphicsSetAnimation(PlayerGraphics.Layers.LEGS, PlayerLegsLayer.Animation.WALKING));
-		} else {
-			player.execute(new GraphicsSetAnimation(PlayerGraphics.Layers.LEGS, PlayerLegsLayer.Animation.IDLE));
+			player.walk(Player.Direction.UP);
+		}
+		if (StateUI.getKeysDown().contains(Keys.S)) {
+			player.walk(Player.Direction.DOWN);
+		}
+		if (StateUI.getKeysDown().contains(Keys.A)) {
+			player.walk(Player.Direction.LEFT);
+		}
+		if (StateUI.getKeysDown().contains(Keys.D)) {
+			player.walk(Player.Direction.RIGHT);
 		}
 	}
 	@Override
@@ -42,6 +50,12 @@ public final class PlayState extends State {
 			Gdx.app.exit();
 		} else if (StateUI.getKeysDown().contains(Keys.F) && StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
 			Application.toggleFullscreen();
+		}
+	}
+	@Override
+	protected void handleKeyRelease(int keycode) {
+		if (!(StateUI.getKeysDown().contains(Keys.W) && StateUI.getKeysDown().contains(Keys.S) && StateUI.getKeysDown().contains(Keys.A) && StateUI.getKeysDown().contains(Keys.D))) {
+			player.stopWalking();
 		}
 	}
 }

@@ -3,6 +3,8 @@ package com.inhavok.fallen.states;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.CommandListener;
 import com.inhavok.fallen.commands.state_commands.HandleKeyPress;
+import com.inhavok.fallen.commands.state_commands.HandleKeyRelease;
+import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 import com.inhavok.fallen.components.state_components.StateComponent;
 
 import java.util.ArrayList;
@@ -28,9 +30,12 @@ public abstract class State implements CommandListener {
 	public void handleCommand(Command command) {
 		if (command.getMessage() == Message.HANDLE_KEY_PRESS) {
 			handleKeyPress(((HandleKeyPress) command).getKeycode());
+		} else if (command.getMessage() == Message.HANDLE_KEY_RELEASE) {
+			handleKeyRelease(((HandleKeyRelease) command).getKeycode());
 		}
 	}
 	protected abstract void handleKeyPress(int keycode);
+	protected abstract void handleKeyRelease(int keycode);
 	private <T extends StateComponent> boolean hasComponent(Class<T> componentClass) {
 		return getComponent(componentClass) != null;
 	}
@@ -46,6 +51,6 @@ public abstract class State implements CommandListener {
 		return components;
 	}
 	public enum Message {
-		HANDLE_KEY_PRESS
+		HANDLE_KEY_PRESS, HANDLE_KEY_RELEASE
 	}
 }

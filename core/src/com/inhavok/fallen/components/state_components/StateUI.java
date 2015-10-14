@@ -11,6 +11,7 @@ import com.inhavok.fallen.Application;
 import com.inhavok.fallen.Assets;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.state_commands.HandleKeyPress;
+import com.inhavok.fallen.commands.state_commands.HandleKeyRelease;
 import com.inhavok.fallen.states.State;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public abstract class StateUI extends StateComponent {
 			}
 			public boolean keyUp(InputEvent event, int keycode) {
 				keysDown.remove(Integer.valueOf(keycode));
+				Application.stateCommand(new HandleKeyRelease(keycode));
 				return false;
 			}
 		});
@@ -55,6 +57,7 @@ public abstract class StateUI extends StateComponent {
 	}
 	public static void resize(final int width, final int height) {
 		stage.getViewport().update(width, height);
+		keysDown.clear();
 	}
 	public static void dispose() {
 		stage.dispose();

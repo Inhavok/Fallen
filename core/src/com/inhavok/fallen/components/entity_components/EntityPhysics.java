@@ -34,6 +34,8 @@ public final class EntityPhysics extends EntityComponent {
 			setY(((PhysicsSetY) command).getY());
 		} else if (command.getMessage() == Message.SET_ROTATION) {
 			setRotation(((PhysicsSetRotation) command).getAngle());
+		} else if (command.getMessage() == Message.APPLY_LINEAR_IMPULSE) {
+			applyLinearImpulse(((PhysicsApplyLinearImpulse) command).getImpulse());
 		}
 	}
 	private void addRectangularFixture(final float width, final float height) {
@@ -46,8 +48,8 @@ public final class EntityPhysics extends EntityComponent {
 		body.createFixture(fixtureDef);
 		polygonShape.dispose();
 	}
-	public void applyLinearImpulse(final float horizontalImpulse, final float verticalImpulse) {
-		body.applyLinearImpulse(horizontalImpulse, verticalImpulse, body.getPosition().x, body.getPosition().y, true);
+	public void applyLinearImpulse(final Vector2 impulse) {
+		body.applyLinearImpulse(impulse, body.getPosition(), true);
 	}
 	public void applyAngularImpulse(final float impulse) {
 		body.applyAngularImpulse(impulse, true);
@@ -86,6 +88,6 @@ public final class EntityPhysics extends EntityComponent {
 		body.setTransform(body.getPosition().x, body.getPosition().y, angle);
 	}
 	public enum Message {
-		GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION
+		GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION, APPLY_LINEAR_IMPULSE
 	}
 }

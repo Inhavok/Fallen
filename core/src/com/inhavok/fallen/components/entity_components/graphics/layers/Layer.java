@@ -8,6 +8,7 @@ import java.util.HashMap;
 public abstract class Layer {
 	private final HashMap<Enum, Animation> animations;
 	private float stateTime;
+	private float angle;
 	Layer() {
 		this.animations = addAnimations();
 	}
@@ -22,5 +23,11 @@ public abstract class Layer {
 	public final Sprite getSprite() {
 		return new Sprite(getAnimation().getKeyFrame(stateTime));
 	}
+	public float getRotation() {
+		return angle;
+	}
 	public abstract void setAnimation(final Enum animation);
+	public void setRotation(final float angle) {
+		this.angle = angle;
+	}
 }

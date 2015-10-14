@@ -45,7 +45,7 @@ public final class StateEntities extends StateComponent {
 				entity.execute(new GraphicsSetY(entity.requestData(new PhysicsGetY(), Float.class)));
 				entity.execute(new GraphicsSetRotation(entity.requestData(new PhysicsGetRotation(), Float.class)));
 			}
-			entity.update();
+			entity.updateState();
 		}
 	}
 	private void interpolate(final float alpha) {

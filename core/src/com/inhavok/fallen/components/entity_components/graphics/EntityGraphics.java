@@ -52,6 +52,9 @@ public abstract class EntityGraphics extends EntityComponent {
 		} else if (command.getMessage() == Message.SET_ANIMATION) {
 			final GraphicsSetAnimation graphicsSetAnimation = (GraphicsSetAnimation) command;
 			layers.get(graphicsSetAnimation.getLayer()).setAnimation(graphicsSetAnimation.getAnimation());
+		} else if (command.getMessage() == Message.SET_LAYER_ROTATION) {
+			final GraphicsSetLayerRotation graphicsSetLayerRotation = (GraphicsSetLayerRotation) command;
+			layers.get(graphicsSetLayerRotation.getLayer()).setRotation(graphicsSetLayerRotation.getRotation());
 		}
 	}
 	private void animate(final float delta) {
@@ -72,7 +75,7 @@ public abstract class EntityGraphics extends EntityComponent {
 	private void draw(final SpriteBatch spriteBatch) {
 		for (Layer layer : layers.values()) {
 			final Sprite sprite = layer.getSprite();
-			spriteBatch.draw(new TextureRegion(sprite.getTexture(), sprite.getRegionX(), sprite.getRegionY(), sprite.getRegionWidth(), sprite.getRegionHeight()), x, y, sprite.getOriginX(), sprite.getOriginY(), width, height, sprite.getScaleX(), sprite.getScaleY(), angle);
+			spriteBatch.draw(new TextureRegion(sprite.getTexture(), sprite.getRegionX(), sprite.getRegionY(), sprite.getRegionWidth(), sprite.getRegionHeight()), x, y, width / 2, height / 2, width, height, sprite.getScaleX(), sprite.getScaleY(), layer.getRotation());
 		}
 	}
 	public final float getWidth() {
@@ -100,6 +103,6 @@ public abstract class EntityGraphics extends EntityComponent {
 		this.angle = angle;
 	}
 	public enum Message {
-		ANIMATE, DRAW, GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION
+		ANIMATE, DRAW, GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION, SET_LAYER_ROTATION
 	}
 }
