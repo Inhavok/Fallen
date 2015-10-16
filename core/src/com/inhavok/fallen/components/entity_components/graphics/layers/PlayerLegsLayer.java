@@ -5,7 +5,7 @@ import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 
 import java.util.HashMap;
 
-public class PlayerLegsLayer extends Layer {
+public class PlayerLegsLayer extends AnimatedLayer {
 	private Animation currentAnimation = Animation.IDLE;
 	@Override
 	HashMap<Enum, com.badlogic.gdx.graphics.g2d.Animation> addAnimations() {

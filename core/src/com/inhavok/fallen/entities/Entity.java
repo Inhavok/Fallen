@@ -2,15 +2,13 @@ package com.inhavok.fallen.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsAnimate;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetRotation;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetX;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetY;
+import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetRotation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetX;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetY;
 import com.inhavok.fallen.commands.DataRequest;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
+import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 
 import java.util.ArrayList;
 
@@ -59,5 +57,11 @@ public abstract class Entity {
 	}
 	public void updateState() {
 		execute(new GraphicsAnimate(Gdx.graphics.getDeltaTime()));
+	}
+	public float getX() {
+		return requestData(new GraphicsGetX(), Float.class);
+	}
+	public float getY() {
+		return requestData(new GraphicsGetY(), Float.class);
 	}
 }

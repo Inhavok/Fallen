@@ -11,6 +11,7 @@ import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
+import com.inhavok.fallen.components.entity_components.graphics.layers.AnimatedLayer;
 import com.inhavok.fallen.components.entity_components.graphics.layers.Layer;
 
 import java.util.ArrayList;
@@ -24,11 +25,14 @@ public abstract class EntityGraphics extends EntityComponent {
 	private float y;
 	private float angle;
 	public EntityGraphics() {
+		this(1);
+	}
+	public EntityGraphics(final float scale) {
 		this.layers = addLayers();
 		final ArrayList<Layer> layers = new ArrayList<Layer>();
 		layers.addAll(this.layers.values());
-		width = layers.get(0).getSprite().getWidth() / Application.PIXELS_PER_METER;
-		height = layers.get(0).getSprite().getHeight() / Application.PIXELS_PER_METER;
+		width = (layers.get(0).getSprite().getWidth() * scale) / Application.PIXELS_PER_METER;
+		height = (layers.get(0).getSprite().getHeight() * scale) / Application.PIXELS_PER_METER;
 	}
 	abstract LinkedHashMap<Enum, Layer> addLayers();
 	@Override
@@ -51,7 +55,9 @@ public abstract class EntityGraphics extends EntityComponent {
 			setAngle(((GraphicsSetRotation) command).getAngle());
 		} else if (command.getMessage() == Message.SET_ANIMATION) {
 			final GraphicsSetAnimation graphicsSetAnimation = (GraphicsSetAnimation) command;
-			layers.get(graphicsSetAnimation.getLayer()).setAnimation(graphicsSetAnimation.getAnimation());
+			if (layers.get(graphicsSetAnimation.getLayer()) instanceof AnimatedLayer) {
+				((AnimatedLayer) layers.get(graphicsSetAnimation.getLayer())).setAnimation(graphicsSetAnimation.getAnimation());
+			}
 		} else if (command.getMessage() == Message.SET_LAYER_ROTATION) {
 			final GraphicsSetLayerRotation graphicsSetLayerRotation = (GraphicsSetLayerRotation) command;
 			layers.get(graphicsSetLayerRotation.getLayer()).setRotation(graphicsSetLayerRotation.getRotation());
@@ -59,7 +65,9 @@ public abstract class EntityGraphics extends EntityComponent {
 	}
 	private void animate(final float delta) {
 		for (Layer layer : layers.values()) {
-			layer.animate(delta);
+			if (layer instanceof AnimatedLayer) {
+				((AnimatedLayer) layer).animate(delta);
+			}
 		}
 	}
 	public static Animation createAnimation(final float frameDuration, final Array<AtlasRegion> atlasRegions, PlayMode playMode) {

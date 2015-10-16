@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public final class Assets {
 	private static final Skin skin = new Skin(new TextureAtlas(Gdx.files.internal("graphics\\skin\\skin.atlas")));
 	private static final TextureAtlas entities = new TextureAtlas(Gdx.files.internal("graphics\\entities\\entities.atlas"));
+	private static final TextureAtlas environment = new TextureAtlas(Gdx.files.internal("graphics\\environment\\environment.atlas"));
 	private Assets() {
 	}
 	static void initialise() {
@@ -31,6 +32,9 @@ public final class Assets {
 	}
 	public static TextureAtlas getEntities() {
 		return entities;
+	}
+	public static TextureAtlas getEnvironment() {
+		return environment;
 	}
 	static void dispose() {
 		skin.dispose();

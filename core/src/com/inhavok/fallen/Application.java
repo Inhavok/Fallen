@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public final class Application extends ApplicationAdapter {
 	public static final float SECONDS_PER_FRAME = 1/60f;
-	public static final int PIXELS_PER_METER = 32;
+	public static final int PIXELS_PER_METER = 16;
 	private static SpriteBatch spriteBatch;
 	private static final ArrayList<State> states = new ArrayList<State>();
 	private static State currentState;
@@ -33,7 +33,8 @@ public final class Application extends ApplicationAdapter {
 		Assets.initialise();
 		spriteBatch = new SpriteBatch();
 		StateUI.initialise(new ScreenViewport(), spriteBatch);
-		states.add(new PlayState());
+		final PlayState playState = new PlayState();
+		states.add(playState);
 		currentState = states.get(0);
 		debugRenderer = new Box2DDebugRenderer();
 	}
@@ -72,7 +73,7 @@ public final class Application extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		StateUI.resize(width, height);
-		final float zoomFactor = 1;
+		final float zoomFactor = 4;
 		StateEntities.resize(width / (PIXELS_PER_METER * zoomFactor), height / (PIXELS_PER_METER * zoomFactor));
 	}
 	@Override

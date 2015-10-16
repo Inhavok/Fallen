@@ -25,37 +25,38 @@ public final class Player extends Entity {
 	ArrayList<EntityComponent> addComponents() {
 		final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
 		final EntityGraphics graphics = new PlayerGraphics();
-		final EntityPhysics physics = new EntityPhysics(graphics.getWidth(), graphics.getHeight(), BodyDef.BodyType.DynamicBody, 50, 0);
+		final EntityPhysics physics = new EntityPhysics(graphics.getWidth(), graphics.getHeight(), BodyDef.BodyType.DynamicBody, 70, 0);
 		components.add(graphics);
 		components.add(physics);
 		return components;
 	}
-	public void face(final float x, final float y) {
-		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layers.TORSO, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER - requestData(new GraphicsGetY(), Float.class), (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER - requestData(new GraphicsGetX(), Float.class)) * MathUtils.radiansToDegrees - 90));
+	public void faceCursor() {
+		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.TORSO, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER - requestData(new GraphicsGetY(), Float.class), (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER - requestData(new GraphicsGetX(), Float.class)) * MathUtils.radiansToDegrees - 90));
 	}
 	public void walk(final Direction direction) {
+		int impulse = 7;
 		switch (direction) {
 			case UP:
-				execute(new PhysicsApplyLinearImpulse(0, 45));
-				execute(new GraphicsSetLayerRotation(PlayerGraphics.Layers.LEGS, 0));
+				execute(new PhysicsApplyLinearImpulse(0, impulse));
+				execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, 0));
 				break;
 			case DOWN:
-				execute(new PhysicsApplyLinearImpulse(0, -45));
-				execute(new GraphicsSetLayerRotation(PlayerGraphics.Layers.LEGS, 180));
+				execute(new PhysicsApplyLinearImpulse(0, -impulse));
+				execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, 180));
 				break;
 			case LEFT:
-				execute(new PhysicsApplyLinearImpulse(-45, 0));
-				execute(new GraphicsSetLayerRotation(PlayerGraphics.Layers.LEGS, 90));
+				execute(new PhysicsApplyLinearImpulse(-impulse, 0));
+				execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, 90));
 				break;
 			case RIGHT:
-				execute(new PhysicsApplyLinearImpulse(45, 0));
-				execute(new GraphicsSetLayerRotation(PlayerGraphics.Layers.LEGS, 270));
+				execute(new PhysicsApplyLinearImpulse(impulse, 0));
+				execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, 270));
 				break;
 		}
-		execute(new GraphicsSetAnimation(PlayerGraphics.Layers.LEGS, PlayerLegsLayer.Animation.WALKING));
+		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.WALKING));
 	}
 	public void stopWalking() {
-		execute(new GraphicsSetAnimation(PlayerGraphics.Layers.LEGS, PlayerLegsLayer.Animation.IDLE));
+		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
 	}
 	public enum Direction {
 		UP, DOWN, LEFT, RIGHT

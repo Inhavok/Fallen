@@ -4,17 +4,33 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
+import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesLookAt;
+import com.inhavok.fallen.components.entity_components.graphics.TileGraphics;
 import com.inhavok.fallen.components.state_components.PlayStateUI;
 import com.inhavok.fallen.components.state_components.StateComponent;
 import com.inhavok.fallen.components.state_components.StateUI;
 import com.inhavok.fallen.components.state_components.StateEntities;
 import com.inhavok.fallen.entities.Player;
+import com.inhavok.fallen.entities.Tile;
 
 public final class PlayState extends State {
 	private final Player player;
 	public PlayState() {
+		final JsonValue testLevel = (new JsonReader()).parse(Gdx.files.internal("levels/TestLevel.json")).get("layers");
+		final JsonValue baseLayer = testLevel.get(1);
+		int currentValue = 0;
+		for (int i = baseLayer.get("height").asInt(); i > 0; i--) {
+			for (int j = 0; j < baseLayer.get("width").asInt(); j++) {
+				if (baseLayer.get("data").get(currentValue).asInt() == 14) {
+					execute(new EntitiesAdd(new Tile(j, i)));
+				}
+				currentValue++;
+			}
+		}
 		player = new Player(0, 0, 0);
 		execute(new EntitiesAdd(player));
 	}
@@ -27,7 +43,7 @@ public final class PlayState extends State {
 	}
 	@Override
 	public void updateState() {
-		player.face(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+		player.faceCursor();
 		if (StateUI.getKeysDown().contains(Keys.W)) {
 			player.walk(Player.Direction.UP);
 		}
@@ -40,6 +56,7 @@ public final class PlayState extends State {
 		if (StateUI.getKeysDown().contains(Keys.D)) {
 			player.walk(Player.Direction.RIGHT);
 		}
+		execute(new EntitiesLookAt(player.getX(), player.getY()));
 	}
 	@Override
 	public void handleKeyPress(final int keycode) {

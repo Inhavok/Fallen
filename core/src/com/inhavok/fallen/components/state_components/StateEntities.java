@@ -2,6 +2,7 @@ package com.inhavok.fallen.components.state_components;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetRotation;
@@ -10,6 +11,7 @@ import com.inhavok.fallen.commands.component_commands.entity.entity_physics.Phys
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesDraw;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesInterpolate;
+import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesLookAt;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.entities.Entity;
@@ -34,6 +36,8 @@ public final class StateEntities extends StateComponent {
 			draw(((EntitiesDraw) command).getSpriteBatch());
 		} else if (command.getMessage() == Message.ADD) {
 			currentState.add(((EntitiesAdd) command).getEntity());
+		} else if (command.getMessage() == Message.LOOK_AT) {
+			lookAt(((EntitiesLookAt) command).getPoint());
 		}
 	}
 	private void updateState() {
@@ -69,9 +73,9 @@ public final class StateEntities extends StateComponent {
 		}
 		spriteBatch.end();
 	}
-	public static void lookAt(final float x, final float y) {
-		camera.position.x = x;
-		camera.position.y = y;
+	public static void lookAt(final Vector2 point) {
+		camera.position.x = point.x;
+		camera.position.y = point.y;
 		camera.update();
 	}
 	public static void resize(final float width, final float height) {
@@ -83,6 +87,6 @@ public final class StateEntities extends StateComponent {
 		return camera;
 	}
 	public enum Message {
-		UPDATE_STATE, INTERPOLATE, DRAW, ADD
+		UPDATE_STATE, INTERPOLATE, DRAW, ADD, LOOK_AT
 	}
 }
