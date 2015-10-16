@@ -9,30 +9,35 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesLookAt;
-import com.inhavok.fallen.components.entity_components.graphics.TileGraphics;
 import com.inhavok.fallen.components.state_components.PlayStateUI;
 import com.inhavok.fallen.components.state_components.StateComponent;
 import com.inhavok.fallen.components.state_components.StateUI;
 import com.inhavok.fallen.components.state_components.StateEntities;
+import com.inhavok.fallen.entities.IceTile;
 import com.inhavok.fallen.entities.Player;
-import com.inhavok.fallen.entities.Tile;
+import com.inhavok.fallen.entities.FloorTile;
 
 public final class PlayState extends State {
 	private final Player player;
 	public PlayState() {
 		final JsonValue testLevel = (new JsonReader()).parse(Gdx.files.internal("levels/TestLevel.json")).get("layers");
-		final JsonValue baseLayer = testLevel.get(1);
+		generateMapLayer(testLevel.get(0));
+		generateMapLayer(testLevel.get(1));
+		player = new Player(testLevel.get(2).get("objects").get(0).get("x").asInt() / Application.PIXELS_PER_METER, 20 - testLevel.get(2).get("objects").get(0).get("y").asInt() / Application.PIXELS_PER_METER, 0);
+		execute(new EntitiesAdd(player));
+	}
+	private void generateMapLayer(final JsonValue mapLayer) {
 		int currentValue = 0;
-		for (int i = baseLayer.get("height").asInt(); i > 0; i--) {
-			for (int j = 0; j < baseLayer.get("width").asInt(); j++) {
-				if (baseLayer.get("data").get(currentValue).asInt() == 14) {
-					execute(new EntitiesAdd(new Tile(j, i)));
+		for (int i = mapLayer.get("height").asInt(); i > 0; i--) {
+			for (int j = 0; j < mapLayer.get("width").asInt(); j++) {
+				if (mapLayer.get("data").get(currentValue).asInt() == 1) {
+					execute(new EntitiesAdd(new FloorTile(j, i)));
+				} else if (mapLayer.get("data").get(currentValue).asInt() == 14) {
+					execute(new EntitiesAdd(new IceTile(j, i)));
 				}
 				currentValue++;
 			}
 		}
-		player = new Player(0, 0, 0);
-		execute(new EntitiesAdd(player));
 	}
 	@Override
 	ArrayList<StateComponent> addComponents() {

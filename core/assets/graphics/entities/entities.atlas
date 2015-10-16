@@ -2,7 +2,7 @@
 entities.png
 size: 134,200
 format: RGBA8888
-filter: Linear,Nearest
+filter: Nearest,Nearest
 repeat: none
 player/legs_walk
   rotate: false

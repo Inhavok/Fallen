@@ -11,7 +11,7 @@ public class PlayerLegsLayer extends AnimatedLayer {
 	HashMap<Enum, com.badlogic.gdx.graphics.g2d.Animation> addAnimations() {
 		final HashMap<Enum, com.badlogic.gdx.graphics.g2d.Animation> animations = new HashMap<Enum, com.badlogic.gdx.graphics.g2d.Animation>();
 		animations.put(Animation.IDLE, EntityGraphics.createAnimation(Assets.getEntities().findRegion("player/legs_walk", 2)));
-		animations.put(Animation.WALKING, EntityGraphics.createAnimation(0.15f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
+		animations.put(Animation.WALKING, EntityGraphics.createAnimation(0.2f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
 		return animations;
 	}
 	@Override

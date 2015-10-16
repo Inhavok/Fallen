@@ -2,7 +2,7 @@
 environment.png
 size: 20,38
 format: RGBA8888
-filter: Linear,Nearest
+filter: Nearest,Nearest
 repeat: none
 floor
   rotate: false

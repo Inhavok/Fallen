@@ -25,16 +25,16 @@ public final class Player extends Entity {
 	ArrayList<EntityComponent> addComponents() {
 		final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
 		final EntityGraphics graphics = new PlayerGraphics();
-		final EntityPhysics physics = new EntityPhysics(graphics.getWidth(), graphics.getHeight(), BodyDef.BodyType.DynamicBody, 70, 0);
+		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.2f, graphics.getHeight() - 0.2f, BodyDef.BodyType.DynamicBody, 50, 0);
 		components.add(graphics);
 		components.add(physics);
 		return components;
 	}
 	public void faceCursor() {
-		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.TORSO, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER - requestData(new GraphicsGetY(), Float.class), (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER - requestData(new GraphicsGetX(), Float.class)) * MathUtils.radiansToDegrees - 90));
+		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.TORSO, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER, (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER) * MathUtils.radiansToDegrees - 90));
 	}
 	public void walk(final Direction direction) {
-		int impulse = 7;
+		int impulse = 3;
 		switch (direction) {
 			case UP:
 				execute(new PhysicsApplyLinearImpulse(0, impulse));

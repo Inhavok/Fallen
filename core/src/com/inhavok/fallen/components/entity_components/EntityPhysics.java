@@ -12,6 +12,7 @@ public final class EntityPhysics extends EntityComponent {
 	public EntityPhysics(final float width, final float height, final BodyType bodyType, final float linearDamping, final float angularDamping) {
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = bodyType;
+		bodyDef.fixedRotation = true;
 		body = world.createBody(bodyDef);
 		body.setLinearDamping(linearDamping);
 		body.setAngularDamping(angularDamping);

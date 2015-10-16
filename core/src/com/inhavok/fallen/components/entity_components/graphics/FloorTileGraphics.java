@@ -5,7 +5,7 @@ import com.inhavok.fallen.Assets;
 
 import java.util.LinkedHashMap;
 
-public class TileGraphics extends EntityGraphics {
+public class FloorTileGraphics extends EntityGraphics {
 	@Override
 	LinkedHashMap<Enum, com.inhavok.fallen.components.entity_components.graphics.layers.Layer> addLayers() {
 		final LinkedHashMap<Enum, com.inhavok.fallen.components.entity_components.graphics.layers.Layer> layers = new LinkedHashMap<Enum, com.inhavok.fallen.components.entity_components.graphics.layers.Layer>();
