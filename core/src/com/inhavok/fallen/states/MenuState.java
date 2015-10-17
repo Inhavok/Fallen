@@ -7,7 +7,7 @@ import com.inhavok.fallen.components.state_components.StateComponent;
 
 import java.util.ArrayList;
 
-public class MenuState extends State {
+public final class MenuState extends State {
     @Override
     ArrayList<StateComponent> addComponents() {
         final ArrayList<StateComponent> components = new ArrayList<StateComponent>();
@@ -16,11 +16,8 @@ public class MenuState extends State {
     }
     @Override
     protected void handleKeyPress(int keycode) {
-        if(keycode == Input.Keys.ESCAPE) {
+        if (keycode == Input.Keys.ESCAPE) {
             Gdx.app.exit();
         }
-    }
-    @Override
-    protected void handleKeyRelease(int keycode) {
     }
 }

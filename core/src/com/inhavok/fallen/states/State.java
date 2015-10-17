@@ -37,8 +37,10 @@ public abstract class State implements CommandListener {
 			handleKeyRelease(((HandleKeyRelease) command).getKeycode());
 		}
 	}
-	protected abstract void handleKeyPress(int keycode);
-	protected abstract void handleKeyRelease(int keycode);
+	protected void handleKeyPress(int keycode) {
+	}
+	protected void handleKeyRelease(int keycode) {
+	}
 	private <T extends StateComponent> boolean hasComponent(Class<T> componentClass) {
 		return getComponent(componentClass) != null;
 	}
