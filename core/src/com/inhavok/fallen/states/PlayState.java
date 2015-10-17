@@ -50,16 +50,44 @@ public final class PlayState extends State {
 	public void updateState() {
 		player.faceCursor();
 		if (StateUI.getKeysDown().contains(Keys.W)) {
-			player.walk(Player.Direction.UP);
+			if(StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
+				player.move(Player.Direction.UP, 5);
+			}
+			else if(StateUI.getKeysDown().contains(Keys.CONTROL_LEFT)) {
+				player.move(Player.Direction.UP, 1);
+			} else {
+				player.move(Player.Direction.UP, 3);
+			}
 		}
 		if (StateUI.getKeysDown().contains(Keys.S)) {
-			player.walk(Player.Direction.DOWN);
+			if(StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
+				player.move(Player.Direction.DOWN, 5);
+			}
+			else if(StateUI.getKeysDown().contains(Keys.CONTROL_LEFT)) {
+				player.move(Player.Direction.DOWN, 1);
+			} else {
+				player.move(Player.Direction.DOWN, 3);
+			}
 		}
 		if (StateUI.getKeysDown().contains(Keys.A)) {
-			player.walk(Player.Direction.LEFT);
+			if(StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
+				player.move(Player.Direction.LEFT, 5);
+			}
+			else if(StateUI.getKeysDown().contains(Keys.CONTROL_LEFT)) {
+				player.move(Player.Direction.LEFT, 1);
+			} else {
+				player.move(Player.Direction.LEFT, 3);
+			}
 		}
 		if (StateUI.getKeysDown().contains(Keys.D)) {
-			player.walk(Player.Direction.RIGHT);
+			if(StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
+				player.move(Player.Direction.RIGHT, 5);
+			}
+			else if(StateUI.getKeysDown().contains(Keys.CONTROL_LEFT)) {
+				player.move(Player.Direction.RIGHT, 1);
+			} else {
+				player.move(Player.Direction.RIGHT, 3);
+			}
 		}
 		execute(new EntitiesLookAt(player.getX(), player.getY()));
 	}

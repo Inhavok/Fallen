@@ -34,8 +34,8 @@ public final class Player extends Entity {
 		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.TORSO, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER, (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER) * MathUtils.radiansToDegrees - 90));
 		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER, (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER) * MathUtils.radiansToDegrees - 90));
 	}
-	public void walk(Direction direction) {
-		int impulse = 3;
+	public void move(Direction direction, int impulse) {
+
 		switch (direction) {
 			case UP:
 				execute(new PhysicsApplyLinearImpulse(0, impulse));
