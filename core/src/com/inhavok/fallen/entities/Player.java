@@ -60,4 +60,5 @@ public final class Player extends Entity {
 	public enum Direction {
 		UP, DOWN, LEFT, RIGHT
 	}
+
 }
