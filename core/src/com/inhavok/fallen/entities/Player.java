@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.Application;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsGetX;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsGetY;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetAnimation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetLayerRotation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsApplyLinearImpulse;
@@ -34,8 +32,7 @@ public final class Player extends Entity {
 		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.TORSO, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER, (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER) * MathUtils.radiansToDegrees - 90));
 		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER, (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER) * MathUtils.radiansToDegrees - 90));
 	}
-	public void move(Direction direction, int impulse) {
-
+	public void move(final Direction direction, final float impulse) {
 		switch (direction) {
 			case UP:
 				execute(new PhysicsApplyLinearImpulse(0, impulse));
@@ -57,8 +54,6 @@ public final class Player extends Entity {
 		}
 		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.WALKING));
 	}
-
-
 	public void stopWalking() {
 		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
 	}

@@ -16,7 +16,7 @@ public final class EntityPhysics extends EntityComponent {
 		body = world.createBody(bodyDef);
 		body.setLinearDamping(linearDamping);
 		body.setAngularDamping(angularDamping);
-		addRectangularFixture(width, height);
+		addRectangularFixture(width, height, bodyType);
 	}
 	public static void step(final float timeStep, final int velocityIterations, final int positionIterations) {
 		world.step(timeStep, velocityIterations, positionIterations);
@@ -39,15 +39,31 @@ public final class EntityPhysics extends EntityComponent {
 			applyLinearImpulse(((PhysicsApplyLinearImpulse) command).getImpulse());
 		}
 	}
-	private void addRectangularFixture(final float width, final float height) {
+	private void addRectangularFixture(final float width, final float height, BodyType bodyType) {
 		final FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.density = 1;
 		fixtureDef.friction = 0;
-		final PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(width / 2, height / 2);
-		fixtureDef.shape = polygonShape;
-		body.createFixture(fixtureDef);
-		polygonShape.dispose();
+		if (bodyType == BodyType.StaticBody) {
+			final EdgeShape edgeShape = new EdgeShape();
+			fixtureDef.shape = edgeShape;
+			edgeShape.set(-width / 2, -height / 2, width / 2, -height / 2);
+			body.createFixture(fixtureDef);
+			edgeShape.set(width / 2, -height / 2, width / 2, height / 2);
+			body.createFixture(fixtureDef);
+			edgeShape.set(width / 2, height / 2, -width / 2, height / 2);
+			body.createFixture(fixtureDef);
+			edgeShape.set(-width / 2, height / 2, -width / 2, -height / 2);
+			body.createFixture(fixtureDef);
+			edgeShape.dispose();
+		} else {
+			final PolygonShape polygonShape = new PolygonShape();
+			final CircleShape circleShape = new CircleShape();
+			circleShape.setRadius(width / 2);
+			polygonShape.setAsBox(width / 2, height / 2);
+			fixtureDef.shape = circleShape;
+			body.createFixture(fixtureDef);
+			polygonShape.dispose();
+		}
 	}
 	private void applyLinearImpulse(final Vector2 impulse) {
 		body.applyLinearImpulse(impulse, body.getPosition(), true);

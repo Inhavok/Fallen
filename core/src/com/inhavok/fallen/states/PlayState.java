@@ -49,45 +49,24 @@ public final class PlayState extends State {
 	@Override
 	public void updateState() {
 		player.faceCursor();
+		float playerImpulse = 2;
+		if (StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
+			playerImpulse += 1.5f;
+		}
+		if (StateUI.getKeysDown().contains(Keys.CONTROL_LEFT)) {
+			playerImpulse -= 1.5f;
+		}
 		if (StateUI.getKeysDown().contains(Keys.W)) {
-			if(StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
-				player.move(Player.Direction.UP, 5);
-			}
-			else if(StateUI.getKeysDown().contains(Keys.CONTROL_LEFT)) {
-				player.move(Player.Direction.UP, 1);
-			} else {
-				player.move(Player.Direction.UP, 3);
-			}
+			player.move(Player.Direction.UP, playerImpulse);
 		}
 		if (StateUI.getKeysDown().contains(Keys.S)) {
-			if(StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
-				player.move(Player.Direction.DOWN, 5);
-			}
-			else if(StateUI.getKeysDown().contains(Keys.CONTROL_LEFT)) {
-				player.move(Player.Direction.DOWN, 1);
-			} else {
-				player.move(Player.Direction.DOWN, 3);
-			}
+			player.move(Player.Direction.DOWN, playerImpulse);
 		}
 		if (StateUI.getKeysDown().contains(Keys.A)) {
-			if(StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
-				player.move(Player.Direction.LEFT, 5);
-			}
-			else if(StateUI.getKeysDown().contains(Keys.CONTROL_LEFT)) {
-				player.move(Player.Direction.LEFT, 1);
-			} else {
-				player.move(Player.Direction.LEFT, 3);
-			}
+			player.move(Player.Direction.LEFT, playerImpulse);
 		}
 		if (StateUI.getKeysDown().contains(Keys.D)) {
-			if(StateUI.getKeysDown().contains(Keys.SHIFT_LEFT)) {
-				player.move(Player.Direction.RIGHT, 5);
-			}
-			else if(StateUI.getKeysDown().contains(Keys.CONTROL_LEFT)) {
-				player.move(Player.Direction.RIGHT, 1);
-			} else {
-				player.move(Player.Direction.RIGHT, 3);
-			}
+			player.move(Player.Direction.RIGHT, playerImpulse);
 		}
 		execute(new EntitiesLookAt(player.getX(), player.getY()));
 	}

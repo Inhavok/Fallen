@@ -73,9 +73,9 @@ public final class StateEntities extends StateComponent {
 		}
 		spriteBatch.end();
 	}
-	public static void lookAt(final Vector2 point) {
-		camera.position.x += point.x - camera.position.x;
-		camera.position.y += point.y - camera.position.y;
+	private static void lookAt(final Vector2 point) {
+		camera.position.x = point.x;
+		camera.position.y = point.y;
 		camera.update();
 	}
 	public static void resize(final float width, final float height) {

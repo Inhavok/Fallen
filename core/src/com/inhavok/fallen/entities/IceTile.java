@@ -4,7 +4,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
-import com.inhavok.fallen.components.entity_components.graphics.FloorTileGraphics;
 import com.inhavok.fallen.components.entity_components.graphics.IceTileGraphics;
 
 import java.util.ArrayList;
