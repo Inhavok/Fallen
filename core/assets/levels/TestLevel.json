@@ -26,7 +26,7 @@
          "color":"#00ff7f",
          "draworder":"topdown",
          "height":0,
-         "name":"Interaction",
+         "name":"Interactions",
          "objects":[
                 {
                  "height":16,
@@ -68,7 +68,7 @@
         {
          "color":"#ff00ff",
          "draworder":"topdown",
-         "height":20,
+         "height":0,
          "name":"AI",
          "objects":[
                 {
@@ -149,7 +149,7 @@
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":20,
+         "width":0,
          "x":0,
          "y":0
         }],
