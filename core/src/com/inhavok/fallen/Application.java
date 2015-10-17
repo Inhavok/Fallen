@@ -12,6 +12,7 @@ import com.inhavok.fallen.commands.component_commands.state.state_ui.UIUpdateSta
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.state_components.StateEntities;
 import com.inhavok.fallen.components.state_components.StateUI;
+import com.inhavok.fallen.states.MenuState;
 import com.inhavok.fallen.states.PlayState;
 import com.inhavok.fallen.states.State;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesInterpolate;
@@ -32,8 +33,10 @@ public final class Application extends ApplicationAdapter {
 		Assets.initialise();
 		spriteBatch = new SpriteBatch();
 		StateUI.initialise(new ScreenViewport(), spriteBatch);
+		final MenuState menuState = new MenuState();
 		final PlayState playState = new PlayState();
-		states.add(playState);
+		states.add(menuState);
+		//states.add(playState);
 		currentState = states.get(0);
 		//debugRenderer = new Box2DDebugRenderer();
 	}
