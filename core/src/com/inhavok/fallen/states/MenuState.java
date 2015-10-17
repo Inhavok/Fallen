@@ -7,9 +7,6 @@ import com.inhavok.fallen.components.state_components.StateComponent;
 
 import java.util.ArrayList;
 
-/**
- * Created by Pizazzle on 10/17/2015.
- */
 public class MenuState extends State {
     @Override
     ArrayList<StateComponent> addComponents() {
@@ -17,16 +14,13 @@ public class MenuState extends State {
         components.add(new MenuStateUI(this));
         return components;
     }
-
     @Override
     protected void handleKeyPress(int keycode) {
         if(keycode == Input.Keys.ESCAPE) {
             Gdx.app.exit();
         }
     }
-
     @Override
     protected void handleKeyRelease(int keycode) {
-
     }
 }

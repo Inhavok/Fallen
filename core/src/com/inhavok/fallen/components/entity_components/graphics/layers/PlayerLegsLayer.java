@@ -1,6 +1,5 @@
 package com.inhavok.fallen.components.entity_components.graphics.layers;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.inhavok.fallen.Assets;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 
@@ -13,8 +12,8 @@ public class PlayerLegsLayer extends AnimatedLayer {
 		final HashMap<Enum, com.badlogic.gdx.graphics.g2d.Animation> animations = new HashMap<Enum, com.badlogic.gdx.graphics.g2d.Animation>();
 		animations.put(Animation.IDLE, EntityGraphics.createAnimation(Assets.getEntities().findRegion("player/legs_walk", 2)));
 		animations.put(Animation.WALKING, EntityGraphics.createAnimation(0.2f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
-		animations.put(Animation.RUNNING, EntityGraphics.createAnimation(0.1f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
-		animations.put(Animation.CROUCHING, EntityGraphics.createAnimation(0.3f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
+		animations.put(Animation.RUNNING, EntityGraphics.createAnimation(0.125f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
+		animations.put(Animation.CROUCHING, EntityGraphics.createAnimation(0.275f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
 		return animations;
 	}
 	@Override
@@ -27,6 +26,10 @@ public class PlayerLegsLayer extends AnimatedLayer {
 			currentAnimation = Animation.IDLE;
 		} else if (animation == Animation.WALKING) {
 			currentAnimation = Animation.WALKING;
+		} else if (animation == Animation.RUNNING) {
+			currentAnimation = Animation.RUNNING;
+		} else if (animation == Animation.CROUCHING) {
+			currentAnimation = Animation.CROUCHING;
 		}
 	}
 	public enum Animation {

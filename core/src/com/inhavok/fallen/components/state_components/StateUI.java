@@ -23,6 +23,7 @@ public abstract class StateUI extends StateComponent {
 	public StateUI(final State state) {
 		super(state);
 		table.setFillParent(true);
+		table.setVisible(false);
 		stage.addActor(table);
 	}
 	public static void initialise(final Viewport viewport, final SpriteBatch spriteBatch) {
@@ -43,7 +44,9 @@ public abstract class StateUI extends StateComponent {
 	}
 	@Override
 	public void handleCommand(Command command) {
-		if (command.getMessage() == Message.UPDATE_STATE) {
+		if (command.getMessage() == Message.SHOW) {
+			table.setVisible(true);
+		} else if (command.getMessage() == Message.UPDATE_STATE) {
 			updateState();
 		}
 	}
@@ -69,6 +72,6 @@ public abstract class StateUI extends StateComponent {
 		return table;
 	}
 	public enum Message {
-		UPDATE_STATE
+		SHOW, UPDATE_STATE
 	}
 }

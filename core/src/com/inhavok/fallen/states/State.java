@@ -2,6 +2,7 @@ package com.inhavok.fallen.states;
 
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.CommandListener;
+import com.inhavok.fallen.commands.component_commands.state.state_ui.UIShow;
 import com.inhavok.fallen.commands.state_commands.HandleKeyPress;
 import com.inhavok.fallen.commands.state_commands.HandleKeyRelease;
 import com.inhavok.fallen.components.state_components.StateComponent;
@@ -14,6 +15,9 @@ public abstract class State implements CommandListener {
 		components.addAll(addComponents());
 	}
 	abstract ArrayList<StateComponent> addComponents();
+	public final void activate() {
+		execute(new UIShow());
+	}
 	public <T extends StateComponent> void execute(Command<T> command) {
 		if (hasComponent(command.getListeningClass())) {
 			for (StateComponent component : components) {

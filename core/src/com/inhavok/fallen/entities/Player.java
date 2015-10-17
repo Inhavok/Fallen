@@ -23,41 +23,36 @@ public final class Player extends Entity {
 	ArrayList<EntityComponent> addComponents() {
 		final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
 		final EntityGraphics graphics = new PlayerGraphics();
-		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.2f, graphics.getHeight() - 0.2f, BodyDef.BodyType.DynamicBody, 50, 0);
+		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.25f, graphics.getHeight() - 0.25f, BodyDef.BodyType.DynamicBody, 50, 0);
 		components.add(graphics);
 		components.add(physics);
 		return components;
 	}
 	public void faceCursor() {
 		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.TORSO, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER, (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER) * MathUtils.radiansToDegrees - 90));
-		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER, (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER) * MathUtils.radiansToDegrees - 90));
 	}
 	public void move(final Direction direction, final float impulse) {
 		switch (direction) {
 			case UP:
 				execute(new PhysicsApplyLinearImpulse(0, impulse));
-				//execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, 0));
 				break;
 			case DOWN:
 				execute(new PhysicsApplyLinearImpulse(0, -impulse));
-				//execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, 180));
 				break;
 			case LEFT:
 				execute(new PhysicsApplyLinearImpulse(-impulse, 0));
-				//execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, 90));
 				break;
 			case RIGHT:
 				execute(new PhysicsApplyLinearImpulse(impulse, 0));
-				//execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, 270));
 				break;
-
 		}
-		if(impulse == 2)
+		if (impulse == 2) {
 			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.WALKING));
-		if(impulse == .5)
-			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.CROUCHING));
-		if(impulse == 3.5)
+		} else if (impulse == 3.5) {
 			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.RUNNING));
+		} else if (impulse == .5) {
+			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.CROUCHING));
+		}
 	}
 	public void stopWalking() {
 		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
@@ -65,5 +60,4 @@ public final class Player extends Entity {
 	public enum Direction {
 		UP, DOWN, LEFT, RIGHT
 	}
-
 }

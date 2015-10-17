@@ -9,7 +9,7 @@ import com.inhavok.fallen.commands.component_commands.entity.entity_physics.*;
 public final class EntityPhysics extends EntityComponent {
 	private static final World world = new World(new Vector2(0, 0), true);
 	private final Body body;
-	public boolean colliding;
+	private boolean colliding;
 	public EntityPhysics(final float width, final float height, final BodyType bodyType, final float linearDamping, final float angularDamping) {
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = bodyType;
@@ -18,29 +18,28 @@ public final class EntityPhysics extends EntityComponent {
 		body.setLinearDamping(linearDamping);
 		body.setAngularDamping(angularDamping);
 		addRectangularFixture(width, height, bodyType);
-
-		world.setContactListener(new ContactListener() {
-			@Override
-			public void beginContact(Contact contact) {
-				if(contact.getFixtureA().getBody() == body) {
-					colliding = true;
+		if (bodyType == BodyType.DynamicBody) {
+			world.setContactListener(new ContactListener() {
+				@Override
+				public void beginContact(final Contact contact) {
+					if (contact.getFixtureA().getBody() == body) {
+						colliding = true;
+					}
 				}
-			}
-
-			@Override
-			public void endContact(Contact contact) {
-				if(contact.getFixtureA().getBody() == body) {
-					colliding = false;
+				@Override
+				public void endContact(final Contact contact) {
+					if (contact.getFixtureA().getBody() == body) {
+						colliding = false;
+					}
 				}
-			}
-
-			@Override
-			public void preSolve(Contact contact, Manifold oldManifold) {}
-
-			@Override
-			public void postSolve(Contact contact, ContactImpulse impulse) {}
-		});
-
+				@Override
+				public void preSolve(final Contact contact, final Manifold oldManifold) {
+				}
+				@Override
+				public void postSolve(final Contact contact, final ContactImpulse impulse) {
+				}
+			});
+		}
 	}
 	public static void step(final float timeStep, final int velocityIterations, final int positionIterations) {
 		world.step(timeStep, velocityIterations, positionIterations);
@@ -119,6 +118,9 @@ public final class EntityPhysics extends EntityComponent {
 	public float getMass() {
 		return body.getMass();
 	}
+	public boolean isColliding() {
+		return colliding;
+	}
 	private void setX(final float x) {
 		body.setTransform(x, body.getPosition().y, body.getAngle());
 	}
@@ -130,9 +132,5 @@ public final class EntityPhysics extends EntityComponent {
 	}
 	public enum Message {
 		GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION, APPLY_LINEAR_IMPULSE
-	}
-
-	public boolean isColliding() {
-		return colliding;
 	}
 }

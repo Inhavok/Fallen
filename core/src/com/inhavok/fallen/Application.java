@@ -26,19 +26,16 @@ public final class Application extends ApplicationAdapter {
 	private static final ArrayList<State> states = new ArrayList<State>();
 	private static State currentState;
 	private static float accumulatedTime;
-	//private static Box2DDebugRenderer debugRenderer;
 	@Override
 	public void create() {
 		Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, true);
 		Assets.initialise();
 		spriteBatch = new SpriteBatch();
 		StateUI.initialise(new ScreenViewport(), spriteBatch);
-		final MenuState menuState = new MenuState();
-		final PlayState playState = new PlayState();
-		//states.add(menuState);
-		states.add(playState);
+		states.add(new PlayState());
+		states.add(new MenuState());
 		currentState = states.get(0);
-		//debugRenderer = new Box2DDebugRenderer();
+		currentState.activate();
 	}
 	@Override
 	public void render() {
@@ -63,7 +60,6 @@ public final class Application extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		currentState.execute(new EntitiesDraw(spriteBatch));
-		//debugRenderer.render(EntityPhysics.getWorld(), StateEntities.getCamera().combined);
 		StateUI.draw();
 	}
 	public static void stateCommand(final Command command) {
