@@ -52,7 +52,12 @@ public final class Player extends Entity {
 				break;
 
 		}
-		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.WALKING));
+		if(impulse == 2)
+			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.WALKING));
+		if(impulse == .5)
+			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.CROUCHING));
+		if(impulse == 3.5)
+			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.RUNNING));
 	}
 	public void stopWalking() {
 		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));

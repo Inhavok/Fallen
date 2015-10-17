@@ -35,8 +35,8 @@ public final class Application extends ApplicationAdapter {
 		StateUI.initialise(new ScreenViewport(), spriteBatch);
 		final MenuState menuState = new MenuState();
 		final PlayState playState = new PlayState();
-		states.add(menuState);
-		//states.add(playState);
+		//states.add(menuState);
+		states.add(playState);
 		currentState = states.get(0);
 		//debugRenderer = new Box2DDebugRenderer();
 	}
