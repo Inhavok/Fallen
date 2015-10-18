@@ -23,7 +23,6 @@ public abstract class EntityGraphics extends EntityComponent {
 	private final float height;
 	private float x;
 	private float y;
-	private float angle;
 	public EntityGraphics() {
 		this(1);
 	}
@@ -45,14 +44,12 @@ public abstract class EntityGraphics extends EntityComponent {
 			((GraphicsGetX) command).setData(getX());
 		} else if (command.getMessage() == Message.GET_Y) {
 			((GraphicsGetY) command).setData(getY());
-		} else if (command.getMessage() == Message.GET_ROTATION) {
-			((GraphicsGetRotation) command).setData(getRotation());
 		} else if (command.getMessage() == Message.SET_X) {
 			setX(((GraphicsSetX) command).getX());
 		} else if (command.getMessage() == Message.SET_Y) {
 			setY(((GraphicsSetY) command).getY());
 		} else if (command.getMessage() == Message.SET_ROTATION) {
-			setAngle(((GraphicsSetRotation) command).getAngle());
+			setRotation(((GraphicsSetRotation) command).getAngle());
 		} else if (command.getMessage() == Message.SET_ANIMATION) {
 			final GraphicsSetAnimation graphicsSetAnimation = (GraphicsSetAnimation) command;
 			if (layers.get(graphicsSetAnimation.getLayer()) instanceof AnimatedLayer) {
@@ -98,19 +95,18 @@ public abstract class EntityGraphics extends EntityComponent {
 	private float getY() {
 		return y + height / 2;
 	}
-	private float getRotation() {
-		return angle;
-	}
 	private void setX(final float x) {
 		this.x = x - width / 2;
 	}
 	private void setY(final float y) {
 		this.y = y - height / 2;
 	}
-	private void setAngle(final float angle) {
-		this.angle = angle;
+	private void setRotation(final float angle) {
+		for (Layer layer : layers.values()) {
+			layer.setRotation(angle);
+		}
 	}
 	public enum Message {
-		ANIMATE, DRAW, GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION, SET_LAYER_ROTATION
+		ANIMATE, DRAW, GET_X, GET_Y, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION, SET_LAYER_ROTATION
 	}
 }

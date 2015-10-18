@@ -25,7 +25,7 @@ public final class Player extends Entity {
 	ArrayList<EntityComponent> addComponents() {
 		final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
 		final EntityGraphics graphics = new PlayerGraphics();
-		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.25f, graphics.getHeight() - 0.25f, BodyDef.BodyType.DynamicBody, 50, 0);
+		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.3f, graphics.getHeight() - 0.3f, BodyDef.BodyType.DynamicBody, 50, 0);
 		components.add(graphics);
 		components.add(physics);
 		components.add(new PlayerController(this));

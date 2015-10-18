@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetRotation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetX;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetY;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
@@ -47,7 +46,6 @@ public final class StateEntities extends StateComponent {
 			if (entity.hasComponent(EntityPhysics.class) && entity.hasComponent(EntityGraphics.class)) {
 				entity.execute(new GraphicsSetX(entity.requestData(new PhysicsGetX(), Float.class)));
 				entity.execute(new GraphicsSetY(entity.requestData(new PhysicsGetY(), Float.class)));
-				entity.execute(new GraphicsSetRotation(entity.requestData(new PhysicsGetRotation(), Float.class)));
 			}
 			entity.updateState();
 		}
@@ -59,7 +57,6 @@ public final class StateEntities extends StateComponent {
 			if (interpolatedEntity.hasComponent(EntityGraphics.class) && currentEntity.hasComponent(EntityGraphics.class)) {
 				interpolatedEntity.execute(new GraphicsSetX(interpolatedEntity.requestData(new GraphicsGetX(), Float.class) + (currentEntity.requestData(new GraphicsGetX(), Float.class) - interpolatedEntity.requestData(new GraphicsGetX(), Float.class)) * alpha));
 				interpolatedEntity.execute(new GraphicsSetY(interpolatedEntity.requestData(new GraphicsGetY(), Float.class) + (currentEntity.requestData(new GraphicsGetY(), Float.class) - interpolatedEntity.requestData(new GraphicsGetY(), Float.class)) * alpha));
-				interpolatedEntity.execute(new GraphicsSetRotation(interpolatedEntity.requestData(new GraphicsGetRotation(), Float.class) + (currentEntity.requestData(new GraphicsGetRotation(), Float.class) - interpolatedEntity.requestData(new GraphicsGetRotation(), Float.class)) * alpha));
 			}
 			currentEntityID++;
 		}

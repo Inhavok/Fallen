@@ -3,7 +3,6 @@ package com.inhavok.fallen.entities;
 import com.badlogic.gdx.Gdx;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetRotation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetX;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetY;
 import com.inhavok.fallen.commands.DataRequest;
@@ -20,7 +19,6 @@ public abstract class Entity {
 		execute(new GraphicsSetRotation(angle));
 		execute(new PhysicsSetX(x));
 		execute(new PhysicsSetY(y));
-		execute(new PhysicsSetRotation(angle));
 	}
 	abstract ArrayList<EntityComponent> addComponents();
 	public final <T extends EntityComponent> void execute(Command<T> command) {
