@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsApplyLinearImpulse;
+import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetX;
+import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetY;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
@@ -13,19 +15,23 @@ import com.inhavok.fallen.components.entity_components.graphics.layers.PlayerLeg
 import com.inhavok.fallen.states.Level;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public final class Enemy extends Entity {
-	private int nextPatrolPoint;
+	private int nextPatrolPoint = 1;
 	private float waitStopwatch = 0;
 	private final int waitDelay = 5;
 	private boolean waiting;
-	//private Stack<Vector2> path = new Stack<Vector2>();
+	private final LinkedList<Vector2> path = new LinkedList<Vector2>();
+	private Vector2 currentTarget = null;
 	private final ArrayList<Level.PatrolPoint> patrolPoints = new ArrayList<Level.PatrolPoint>();
 	public Enemy(final ArrayList<Level.PatrolPoint> patrolPoints) {
 		super(patrolPoints.get(0).getPoint().x, patrolPoints.get(0).getPoint().y, 0);
 		this.patrolPoints.addAll(patrolPoints);
 	}
 	public void update() {
+		/*
 		final Vector2 currentTarget = patrolPoints.get(nextPatrolPoint).getPoint();
 		waitStopwatch += Application.SECONDS_PER_FRAME;
 		if (!waiting && Vector2.dst(currentTarget.x, currentTarget.y, requestData(new GraphicsGetX(), Float.class), requestData(new GraphicsGetY(), Float.class)) < 0.1f) {
@@ -54,23 +60,38 @@ public final class Enemy extends Entity {
 			}
 			move(impulse);
 		}
-		/*
-		if (currentTarget == null) {
-			if (path.empty()) {
-				path = AI.getPath(requestData(new GraphicsGetX(), Float.class), requestData(new GraphicsGetY(), Float.class), patrolPoints.get(nextPatrolPoint).getPoint());
-			} else {
-				currentTarget.set(path.pop());
-			}
-		} else if (currentTarget.sub(requestData(new GraphicsGetX(), Float.class), requestData(new GraphicsGetY(), Float.class)).len() < 0.1) {
-			currentTarget = null;
-			nextPatrolPoint++;
-			if (nextPatrolPoint > patrolPoints.size() - 1) {
-				nextPatrolPoint = 0;
-			}
-		} else {
-			move(new Vector2(currentTarget.x - requestData(new GraphicsGetX(), Float.class), currentTarget.y - requestData(new GraphicsGetY(), Float.class)));
-		}
 		*/
+		if (patrolPoints.size() > 1) {
+			if (currentTarget == null) {
+				if (path.isEmpty()) {
+					path.addAll(AI.getPath(requestData(new PhysicsGetX(), Float.class), requestData(new PhysicsGetY(), Float.class), patrolPoints.get(nextPatrolPoint).getPoint()));
+				}
+				currentTarget = path.pollFirst();
+			} else if (Vector2.dst(currentTarget.x, currentTarget.y, requestData(new PhysicsGetX(), Float.class), requestData(new PhysicsGetY(), Float.class)) < 0.1f) {
+				currentTarget = null;
+				if (path.isEmpty()) {
+					nextPatrolPoint++;
+					if (nextPatrolPoint > patrolPoints.size() - 1) {
+						nextPatrolPoint = 0;
+					}
+				}
+			} else {
+				final Vector2 impulse = new Vector2();
+				if (requestData(new PhysicsGetX(), Float.class) < currentTarget.x - 0.1f) {
+					impulse.add(0.5f, 0);
+				}
+				if (requestData(new PhysicsGetX(), Float.class) > currentTarget.x + 0.1f) {
+					impulse.sub(0.5f, 0);
+				}
+				if (requestData(new PhysicsGetY(), Float.class) < currentTarget.y - 0.1f) {
+					impulse.add(0, 0.5f);
+				}
+				if (requestData(new PhysicsGetY(), Float.class) > currentTarget.y + 0.1f) {
+					impulse.sub(0, 0.5f);
+				}
+				move(impulse);
+			}
+		}
 	}
 	private void move(final Vector2 impulse) {
 		if (impulse.len() > 0) {
