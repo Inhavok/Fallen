@@ -6,8 +6,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetAnimation;
+import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetAnimationFrameDuration;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetLayerRotation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsApplyLinearImpulse;
+import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetLinearVelocity;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.PlayerController;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
@@ -37,13 +39,8 @@ public final class Player extends Entity {
 	public void move(final Vector2 impulse) {
 		if (impulse.len() > 0) {
 			execute(new PhysicsApplyLinearImpulse(impulse.x, impulse.y));
-			if (impulse.len() == 2) {
-				execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.WALKING));
-			} else if (impulse.len() == 3.5f) {
-				execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.RUNNING));
-			} else if (impulse.len() == 0.5f) {
-				execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.CROUCHING));
-			}
+			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING));
+			execute(new GraphicsSetAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, 0.35f / impulse.len()));
 			execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, impulse.angle() - 90));
 		} else {
 			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));

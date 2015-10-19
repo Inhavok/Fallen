@@ -55,6 +55,11 @@ public abstract class EntityGraphics extends EntityComponent {
 			if (layers.get(graphicsSetAnimation.getLayer()) instanceof AnimatedLayer) {
 				((AnimatedLayer) layers.get(graphicsSetAnimation.getLayer())).setAnimation(graphicsSetAnimation.getAnimation());
 			}
+		} else if (command.getMessage() == Message.SET_ANIMATION_FRAME_DURATION) {
+			final GraphicsSetAnimationFrameDuration graphicsSetAnimationFrameDuration = (GraphicsSetAnimationFrameDuration) command;
+			if (layers.get(graphicsSetAnimationFrameDuration.getLayer()) instanceof AnimatedLayer) {
+				((AnimatedLayer) layers.get(graphicsSetAnimationFrameDuration.getLayer())).setAnimationFrameDuration(graphicsSetAnimationFrameDuration.getAnimation(), graphicsSetAnimationFrameDuration.getFrameDuration());
+			}
 		} else if (command.getMessage() == Message.SET_LAYER_ROTATION) {
 			final GraphicsSetLayerRotation graphicsSetLayerRotation = (GraphicsSetLayerRotation) command;
 			layers.get(graphicsSetLayerRotation.getLayer()).setRotation(graphicsSetLayerRotation.getRotation());
@@ -107,6 +112,6 @@ public abstract class EntityGraphics extends EntityComponent {
 		}
 	}
 	public enum Message {
-		ANIMATE, DRAW, GET_X, GET_Y, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION, SET_LAYER_ROTATION
+		ANIMATE, DRAW, GET_X, GET_Y, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION, SET_ANIMATION_FRAME_DURATION, SET_LAYER_ROTATION
 	}
 }

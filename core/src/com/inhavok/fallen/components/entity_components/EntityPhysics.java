@@ -46,20 +46,22 @@ public final class EntityPhysics extends EntityComponent {
 	}
 	@Override
 	public void handleCommand(Command command) {
-		if (command.getMessage() == Message.GET_X) {
+		if (command.getMessage() == Message.APPLY_LINEAR_IMPULSE) {
+			applyLinearImpulse(((PhysicsApplyLinearImpulse) command).getImpulse());
+		} else if (command.getMessage() == Message.GET_X) {
 			((PhysicsGetX) command).setData(getX());
 		} else if (command.getMessage() == Message.GET_Y) {
 			((PhysicsGetY) command).setData(getY());
 		} else if (command.getMessage() == Message.GET_ROTATION) {
 			((PhysicsGetRotation) command).setData(getRotation());
+		} else if (command.getMessage() == Message.GET_LINEAR_VELOCITY) {
+			((PhysicsGetLinearVelocity) command).setData(getLinearVelocity());
 		} else if (command.getMessage() == Message.SET_X) {
 			setX(((PhysicsSetX) command).getX());
 		} else if (command.getMessage() == Message.SET_Y) {
 			setY(((PhysicsSetY) command).getY());
 		} else if (command.getMessage() == Message.SET_ROTATION) {
 			setRotation(((PhysicsSetRotation) command).getAngle());
-		} else if (command.getMessage() == Message.APPLY_LINEAR_IMPULSE) {
-			applyLinearImpulse(((PhysicsApplyLinearImpulse) command).getImpulse());
 		}
 	}
 	private void addRectangularFixture(final float width, final float height, BodyType bodyType) {
@@ -109,11 +111,8 @@ public final class EntityPhysics extends EntityComponent {
 	private float getRotation() {
 		return body.getAngle();
 	}
-	public float getHorizontalVelocity() {
-		return body.getLinearVelocity().x;
-	}
-	public float getVerticalVelocity() {
-		return body.getLinearVelocity().y;
+	public Vector2 getLinearVelocity() {
+		return body.getLinearVelocity();
 	}
 	public float getMass() {
 		return body.getMass();
@@ -131,6 +130,6 @@ public final class EntityPhysics extends EntityComponent {
 		body.setTransform(body.getPosition().x, body.getPosition().y, angle);
 	}
 	public enum Message {
-		GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION, APPLY_LINEAR_IMPULSE
+		APPLY_LINEAR_IMPULSE, GET_X, GET_Y, GET_ROTATION, GET_LINEAR_VELOCITY, SET_X, SET_Y, SET_ROTATION
 	}
 }

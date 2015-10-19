@@ -11,9 +11,7 @@ public class PlayerLegsLayer extends AnimatedLayer {
 	HashMap<Enum, com.badlogic.gdx.graphics.g2d.Animation> addAnimations() {
 		final HashMap<Enum, com.badlogic.gdx.graphics.g2d.Animation> animations = new HashMap<Enum, com.badlogic.gdx.graphics.g2d.Animation>();
 		animations.put(Animation.IDLE, EntityGraphics.createAnimation(Assets.getEntities().findRegion("player/legs_walk", 2)));
-		animations.put(Animation.WALKING, EntityGraphics.createAnimation(0.2f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
-		animations.put(Animation.RUNNING, EntityGraphics.createAnimation(0.125f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
-		animations.put(Animation.CROUCHING, EntityGraphics.createAnimation(0.275f, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
+		animations.put(Animation.MOVING, EntityGraphics.createAnimation(1, Assets.getEntities().findRegions("player/legs_walk"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP));
 		return animations;
 	}
 	@Override
@@ -24,15 +22,17 @@ public class PlayerLegsLayer extends AnimatedLayer {
 	public void setAnimation(final Enum animation) {
 		if (animation == Animation.IDLE) {
 			currentAnimation = Animation.IDLE;
-		} else if (animation == Animation.WALKING) {
-			currentAnimation = Animation.WALKING;
-		} else if (animation == Animation.RUNNING) {
-			currentAnimation = Animation.RUNNING;
-		} else if (animation == Animation.CROUCHING) {
-			currentAnimation = Animation.CROUCHING;
+		} else if (animation == Animation.MOVING) {
+			currentAnimation = Animation.MOVING;
+		}
+	}
+	@Override
+	public void setAnimationFrameDuration(final Enum animation, final float frameDuration) {
+		if (animation == Animation.MOVING) {
+			getAnimations().get(Animation.MOVING).setFrameDuration(frameDuration);
 		}
 	}
 	public enum Animation {
-		IDLE, WALKING, RUNNING, CROUCHING
+		IDLE, MOVING
 	}
 }
