@@ -22,13 +22,14 @@ public final class Enemy extends Entity {
 	//private Stack<Vector2> path = new Stack<Vector2>();
 	private final ArrayList<Level.PatrolPoint> patrolPoints = new ArrayList<Level.PatrolPoint>();
 	public Enemy(final ArrayList<Level.PatrolPoint> patrolPoints) {
-		super(patrolPoints.get(0).getPoint().x, patrolPoints.get(0).getPoint().y, patrolPoints.get(0).getRotation());
+		super(patrolPoints.get(0).getPoint().x, patrolPoints.get(0).getPoint().y, 0);
 		this.patrolPoints.addAll(patrolPoints);
 	}
 	public void update() {
 		final Vector2 currentTarget = patrolPoints.get(nextPatrolPoint).getPoint();
 		waitStopwatch += Application.SECONDS_PER_FRAME;
 		if (!waiting && Vector2.dst(currentTarget.x, currentTarget.y, requestData(new GraphicsGetX(), Float.class), requestData(new GraphicsGetY(), Float.class)) < 0.1f) {
+			execute(new GraphicsSetRotation(patrolPoints.get(nextPatrolPoint).getRotation()));
 			nextPatrolPoint++;
 			if (nextPatrolPoint > patrolPoints.size() - 1) {
 				nextPatrolPoint = 0;
@@ -36,7 +37,6 @@ public final class Enemy extends Entity {
 			move(new Vector2());
 			waitStopwatch = 0;
 			waiting = true;
-			execute(new GraphicsSetRotation(patrolPoints.get(nextPatrolPoint).getRotation() + 180));
 		} else if (waitStopwatch >= waitDelay) {
 			waiting = false;
 			final Vector2 impulse = new Vector2();

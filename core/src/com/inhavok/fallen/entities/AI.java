@@ -54,7 +54,6 @@ final class AI {
 		}
 		AI.nodes = nodes;
 	}
-	//G is calculated incorrectly, should be relative to the startNode not the parentNode
 	private static void calculateMovementCost(final int parentX, final int parentY, final Vector2 endPoint) {
 		final Node parentNode = nodes.get(parentX).get(parentY);
 		for (int i = parentX - 1; i <= parentX + 1; i++) {

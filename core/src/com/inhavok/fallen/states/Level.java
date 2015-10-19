@@ -94,7 +94,7 @@ public final class Level {
 	private static Vector2 levelToPhysicsPosition(float x, float y) {
 		x /= Application.PIXELS_PER_METER;
 		y /= -Application.PIXELS_PER_METER;
-		y += (tiles.length * tileSize) / Application.PIXELS_PER_METER;
+		y += ((tiles.length - 1) * tileSize) / Application.PIXELS_PER_METER;
 		return new Vector2(x, y);
 	}
 	public static int physicsToTileX(final float x) {
