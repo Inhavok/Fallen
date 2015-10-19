@@ -52,7 +52,7 @@ public abstract class Entity {
 		}
 		return null;
 	}
-	public void updateState() {
+	public final void updateState() {
 		execute(new GraphicsAnimate(Gdx.graphics.getDeltaTime()));
 	}
 	public float getX() {

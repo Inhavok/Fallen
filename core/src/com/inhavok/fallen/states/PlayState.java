@@ -11,6 +11,7 @@ import com.inhavok.fallen.components.state_components.PlayStateUI;
 import com.inhavok.fallen.components.state_components.StateComponent;
 import com.inhavok.fallen.components.state_components.StateUI;
 import com.inhavok.fallen.components.state_components.StateEntities;
+import com.inhavok.fallen.entities.Enemy;
 
 public final class PlayState extends State {
 	public PlayState() {
@@ -26,6 +27,9 @@ public final class PlayState extends State {
 	@Override
 	public void updateState() {
 		Level.getPlayer().execute(new PlayerControllerUpdate());
+		for (Enemy enemy : Level.getEnemies()) {
+			enemy.update();
+		}
 		execute(new EntitiesLookAt(Level.getPlayer().getX(), Level.getPlayer().getY()));
 	}
 	@Override
