@@ -39,7 +39,7 @@ public abstract class Entity {
 				}
 			}
 		}
-		return null;
+		throw new NullPointerException();
 	}
 	public <T extends EntityComponent> boolean hasComponent(Class<T> componentClass) {
 		return getComponent(componentClass) != null;

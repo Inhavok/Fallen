@@ -64,7 +64,7 @@ public final class Enemy extends Entity {
 		if (patrolPoints.size() > 1) {
 			if (currentTarget == null) {
 				if (path.isEmpty()) {
-					path.addAll(AI.getPath(requestData(new PhysicsGetX(), Float.class), requestData(new PhysicsGetY(), Float.class), patrolPoints.get(nextPatrolPoint).getPoint()));
+					path.addAll(AI.getPath(requestData(new PhysicsGetX(), Float.class), requestData(new PhysicsGetY(), Float.class), patrolPoints.get(nextPatrolPoint).getPoint().x, patrolPoints.get(nextPatrolPoint).getPoint().y));
 				}
 				currentTarget = path.pollFirst();
 			} else if (Vector2.dst(currentTarget.x, currentTarget.y, requestData(new PhysicsGetX(), Float.class), requestData(new PhysicsGetY(), Float.class)) < 0.1f) {

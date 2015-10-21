@@ -7,21 +7,31 @@ import java.util.*;
 
 final class AI {
 	private static ArrayList<ArrayList<Node>> nodes;
-	private static final ArrayList<Node> evaluatedNodes = new ArrayList<Node>();
-	private static final LinkedList<Node> frontier = new LinkedList<Node>();
+	private static final PriorityQueue<Node> openList = new PriorityQueue<Node>(new Comparator<Node>() {
+		@Override
+		public int compare(Node o1, Node o2) {
+			if (o1.getF() < o2.getF()) {
+				return 1;
+			} else if (o1.getF() > o2.getF()) {
+				return 2;
+			}
+			return 0;
+		}
+	});
+	private static final ArrayList<Node> closedList = new ArrayList<Node>();
 	private AI() {
 	}
-	public static LinkedList<Vector2> getPath(final float startX, final float startY, final Vector2 endPoint) {
-		evaluatedNodes.clear();
-		frontier.clear();
-		convertTilesToNodes();
+	public static LinkedList<Vector2> getPath(final float startX, final float startY, final float endX, final float endY) {
+		nodes = new ArrayList<ArrayList<Node>>();
+		openList.clear();
+		closedList.clear();
+		convertTilesToNodes(Level.physicsToTileX(endX), Level.physicsToTileY(endY));
 		final Node startNode = nodes.get(Level.physicsToTileX(startX)).get(Level.physicsToTileY(startY));
-		evaluatedNodes.add(startNode);
-		frontier.add(startNode);
-		//Appears to be fine up until this point
-		while (!frontier.isEmpty()) {
-			final Node currentNode = frontier.pop();
-			if (currentNode == nodes.get(Level.physicsToTileX(endPoint.x)).get(Level.physicsToTileY(endPoint.y))) {
+		final Node endNode = nodes.get(Level.physicsToTileX(endX)).get(Level.physicsToTileY(endY));
+		openList.add(startNode);
+		while (!openList.isEmpty()) {
+			final Node currentNode = openList.poll();
+			if (currentNode == endNode) {
 				final LinkedList<Vector2> path = new LinkedList<Vector2>();
 				Node pathNode = currentNode;
 				while (pathNode != null) {
@@ -34,39 +44,60 @@ final class AI {
 		}
 		return null;
 	}
-	//Appears to be fine
-	private static void convertTilesToNodes() {
+	private static void convertTilesToNodes(final int endX, final int endY) {
 		final int[][] tiles = Level.getTiles();
-		nodes = new ArrayList<ArrayList<Node>>();
 		for (int i = 0; i < Level.getWidth(); i++) {
 			final ArrayList<Node> verticalStrip = new ArrayList<Node>();
 			for (int j = 0; j < Level.getHeight(); j++) {
-				verticalStrip.add(new Node(i, j, tiles[i][j]));
+				if (tiles[i][j] == 0) {
+					verticalStrip.add(null);
+				} else {
+					verticalStrip.add(new Node(i, j, calculateCost(i, j, endX, endY)));
+				}
 			}
 			nodes.add(verticalStrip);
 		}
 	}
-	//Appears to be fine
-	private static void checkAdjacentNodes(final Node centerNode) {
-		for (int i = Math.max(centerNode.x - 1, 0); i <= Math.min(centerNode.x + 1, Level.getWidth()); i++) {
-			for (int j = Math.max(centerNode.y - 1, 0); j <= Math.min(centerNode.y + 1, Level.getHeight()); j++) {
-				if (nodes.get(i).get(j).type == 1 && !evaluatedNodes.contains(nodes.get(i).get(j))) {
-					evaluatedNodes.add(nodes.get(i).get(j));
-					nodes.get(i).get(j).parent = centerNode;
-					frontier.add(nodes.get(i).get(j));
+	private static void checkAdjacentNodes(final Node parentNode) {
+		closedList.add(parentNode);
+		for (int i = Math.max(parentNode.x - 1, 0); i <= Math.min(parentNode.x + 1, Level.getWidth()); i++) {
+			for (int j = Math.max(parentNode.y - 1, 0); j <= Math.min(parentNode.y + 1, Level.getHeight()); j++) {
+				final Node currentNode = nodes.get(i).get(j);
+				if (currentNode != null && !closedList.contains(currentNode)) {
+					if (openList.contains(currentNode)) {
+						if (parentNode.g + calculateCost(parentNode.x, parentNode.y, currentNode.x, currentNode.y) < currentNode.g) {
+							currentNode.g = parentNode.g + calculateCost(parentNode.x, parentNode.y, currentNode.x, currentNode.y);
+							currentNode.parent = parentNode;
+						}
+					} else {
+						currentNode.g = parentNode.g + calculateCost(parentNode.x, parentNode.y, currentNode.x, currentNode.y);
+						currentNode.parent = parentNode;
+						openList.add(currentNode);
+					}
 				}
 			}
 		}
 	}
+	private static int calculateCost(final int nodeOneX, final int nodeOneY, final int nodeTwoX, final int nodeTwoY) {
+		final int nonDiagonalCost = 10;
+		final int diagonalCost = 14;
+		final int dX = Math.abs(nodeTwoX - nodeOneX);
+		final int dY = Math.abs(nodeTwoY - nodeOneY);
+		return nonDiagonalCost * (dX + dY) + (diagonalCost - 2 * nonDiagonalCost) * Math.min(dX, dY);
+	}
 	private static final class Node {
 		private final int x;
 		private final int y;
-		private final int type;
+		private int g;
+		private final int h;
 		private Node parent;
-		private Node(final int x, final int y, final int type) {
+		private Node(final int x, final int y, final int h) {
 			this.x = x;
 			this.y = y;
-			this.type = type;
+			this.h = h;
+		}
+		private int getF() {
+			return g + h;
 		}
 	}
 }

@@ -2,7 +2,6 @@ package com.inhavok.fallen;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.inhavok.fallen.Application;
 
 final class DesktopLauncher {
 	private DesktopLauncher() {
