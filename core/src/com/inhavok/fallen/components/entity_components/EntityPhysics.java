@@ -111,7 +111,7 @@ public final class EntityPhysics extends EntityComponent {
 	private float getRotation() {
 		return body.getAngle();
 	}
-	public Vector2 getLinearVelocity() {
+	private Vector2 getLinearVelocity() {
 		return body.getLinearVelocity();
 	}
 	public float getMass() {

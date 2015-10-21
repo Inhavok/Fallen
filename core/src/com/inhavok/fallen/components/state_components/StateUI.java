@@ -11,7 +11,6 @@ import com.inhavok.fallen.Application;
 import com.inhavok.fallen.Assets;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.state_commands.HandleKeyPress;
-import com.inhavok.fallen.commands.state_commands.HandleKeyRelease;
 import com.inhavok.fallen.states.State;
 
 import java.util.ArrayList;
@@ -36,21 +35,20 @@ public abstract class StateUI extends StateComponent {
 			}
 			public boolean keyUp(InputEvent event, int keycode) {
 				keysDown.remove(Integer.valueOf(keycode));
-				Application.stateCommand(new HandleKeyRelease(keycode));
 				return false;
 			}
 		});
 		Gdx.input.setInputProcessor(stage);
 	}
 	@Override
-	public void handleCommand(Command command) {
+	public void handleCommand(final Command command) {
 		if (command.getMessage() == Message.SHOW) {
 			table.setVisible(true);
-		} else if (command.getMessage() == Message.UPDATE_STATE) {
-			updateState();
+		} else if (command.getMessage() == Message.UPDATE) {
+			update();
 		}
 	}
-	private void updateState() {
+	void update() {
 	}
 	public static void act() {
 		stage.act();
@@ -72,6 +70,6 @@ public abstract class StateUI extends StateComponent {
 		return table;
 	}
 	public enum Message {
-		SHOW, UPDATE_STATE
+		SHOW, UPDATE
 	}
 }

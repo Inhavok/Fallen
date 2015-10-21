@@ -21,7 +21,7 @@ final class AI {
 	private static final ArrayList<Node> closedList = new ArrayList<Node>();
 	private AI() {
 	}
-	public static LinkedList<Vector2> getPath(final float startX, final float startY, final float endX, final float endY) {
+	public static Stack<Vector2> getPath(final float startX, final float startY, final float endX, final float endY) {
 		nodes = new ArrayList<ArrayList<Node>>();
 		openList.clear();
 		closedList.clear();
@@ -32,7 +32,7 @@ final class AI {
 		while (!openList.isEmpty()) {
 			final Node currentNode = openList.poll();
 			if (currentNode == endNode) {
-				final LinkedList<Vector2> path = new LinkedList<Vector2>();
+				final Stack<Vector2> path = new Stack<Vector2>();
 				Node pathNode = currentNode;
 				while (pathNode != null) {
 					path.push(Level.tileToPhysicsPosition(pathNode.x, pathNode.y));
@@ -42,7 +42,7 @@ final class AI {
 			}
 			checkAdjacentNodes(currentNode);
 		}
-		return null;
+		throw new NullPointerException();
 	}
 	private static void convertTilesToNodes(final int endX, final int endY) {
 		final int[][] tiles = Level.getTiles();
@@ -78,7 +78,7 @@ final class AI {
 			}
 		}
 	}
-	private static int calculateCost(final int nodeOneX, final int nodeOneY, final int nodeTwoX, final int nodeTwoY) {
+	private static double calculateCost(final int nodeOneX, final int nodeOneY, final int nodeTwoX, final int nodeTwoY) {
 		final int nonDiagonalCost = 10;
 		final int diagonalCost = 14;
 		final int dX = Math.abs(nodeTwoX - nodeOneX);
@@ -88,15 +88,15 @@ final class AI {
 	private static final class Node {
 		private final int x;
 		private final int y;
-		private int g;
-		private final int h;
+		private double g;
+		private final double h;
 		private Node parent;
-		private Node(final int x, final int y, final int h) {
+		private Node(final int x, final int y, final double h) {
 			this.x = x;
 			this.y = y;
 			this.h = h;
 		}
-		private int getF() {
+		private double getF() {
 			return g + h;
 		}
 	}

@@ -3,10 +3,9 @@ package com.inhavok.fallen.components.state_components;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetX;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetY;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesDraw;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesInterpolate;
@@ -27,8 +26,8 @@ public final class StateEntities extends StateComponent {
 	}
 	@Override
 	public void handleCommand(Command command) {
-		if (command.getMessage() == Message.UPDATE_STATE) {
-			updateState();
+		if (command.getMessage() == Message.UPDATE) {
+			update();
 		} else if (command.getMessage() == Message.INTERPOLATE) {
 			interpolate(((EntitiesInterpolate) command).getAlpha());
 		} else if (command.getMessage() == Message.DRAW) {
@@ -39,22 +38,22 @@ public final class StateEntities extends StateComponent {
 			lookAt(((EntitiesLookAt) command).getPoint());
 		}
 	}
-	private void updateState() {
+	private void update() {
 		previousState.clear();
 		previousState.addAll(currentState);
 		for (Entity entity : currentState) {
-			if (entity.hasComponent(EntityPhysics.class) && entity.hasComponent(EntityGraphics.class)) {
-				entity.execute(new GraphicsSetX(entity.requestData(new PhysicsGetX(), Float.class)));
-				entity.execute(new GraphicsSetY(entity.requestData(new PhysicsGetY(), Float.class)));
+			if (entity.hasComponent(EntityGraphics.class) && entity.hasComponent(EntityPhysics.class)) {
+				entity.execute(new GraphicsSetX(entity.getX()));
+				entity.execute(new GraphicsSetY(entity.getY()));
+				entity.execute(new GraphicsAnimate(Application.SECONDS_PER_FRAME));
 			}
-			entity.updateState();
 		}
 	}
 	private void interpolate(final float alpha) {
 		int currentEntityID = 0;
 		for (Entity interpolatedEntity : previousState) {
-			final Entity currentEntity = currentState.get(currentEntityID);
-			if (interpolatedEntity.hasComponent(EntityGraphics.class) && currentEntity.hasComponent(EntityGraphics.class)) {
+			if (interpolatedEntity.hasComponent(EntityGraphics.class) && interpolatedEntity.hasComponent(EntityPhysics.class)) {
+				final Entity currentEntity = currentState.get(currentEntityID);
 				interpolatedEntity.execute(new GraphicsSetX(interpolatedEntity.requestData(new GraphicsGetX(), Float.class) + (currentEntity.requestData(new GraphicsGetX(), Float.class) - interpolatedEntity.requestData(new GraphicsGetX(), Float.class)) * alpha));
 				interpolatedEntity.execute(new GraphicsSetY(interpolatedEntity.requestData(new GraphicsGetY(), Float.class) + (currentEntity.requestData(new GraphicsGetY(), Float.class) - interpolatedEntity.requestData(new GraphicsGetY(), Float.class)) * alpha));
 			}
@@ -80,10 +79,7 @@ public final class StateEntities extends StateComponent {
 		camera.viewportHeight = height;
 		camera.update();
 	}
-	public static OrthographicCamera getCamera() {
-		return camera;
-	}
 	public enum Message {
-		UPDATE_STATE, INTERPOLATE, DRAW, ADD, LOOK_AT
+		UPDATE, INTERPOLATE, DRAW, ADD, LOOK_AT
 	}
 }

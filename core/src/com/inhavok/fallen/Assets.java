@@ -18,7 +18,7 @@ public final class Assets {
 		final FreeTypeFontParameter fontParameter = new FreeTypeFontParameter();
 		fontParameter.size = 14;
 		skin.add("default-font", fontGenerator.generateFont(fontParameter), BitmapFont.class);
-		fontParameter.size = 60;
+		fontParameter.size = 40;
 		skin.add("title-font", fontGenerator.generateFont(fontParameter), BitmapFont.class);
 		fontParameter.size = 30;
 		skin.add("sub-title-font", fontGenerator.generateFont(fontParameter), BitmapFont.class);

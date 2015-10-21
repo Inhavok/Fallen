@@ -25,12 +25,12 @@ public final class PlayState extends State {
 		return components;
 	}
 	@Override
-	public void updateState() {
+	public void update() {
 		Level.getPlayer().execute(new PlayerControllerUpdate());
+		execute(new EntitiesLookAt(Level.getPlayer().getX(), Level.getPlayer().getY()));
 		for (Enemy enemy : Level.getEnemies()) {
 			enemy.update();
 		}
-		execute(new EntitiesLookAt(Level.getPlayer().getX(), Level.getPlayer().getY()));
 	}
 	@Override
 	public void handleKeyPress(final int keycode) {

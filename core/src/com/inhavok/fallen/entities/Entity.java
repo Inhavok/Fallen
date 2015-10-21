@@ -1,8 +1,9 @@
 package com.inhavok.fallen.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
+import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetX;
+import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetY;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetX;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetY;
 import com.inhavok.fallen.commands.DataRequest;
@@ -52,13 +53,10 @@ public abstract class Entity {
 		}
 		return null;
 	}
-	public final void updateState() {
-		execute(new GraphicsAnimate(Gdx.graphics.getDeltaTime()));
-	}
 	public float getX() {
-		return requestData(new GraphicsGetX(), Float.class);
+		return requestData(new PhysicsGetX(), Float.class);
 	}
 	public float getY() {
-		return requestData(new GraphicsGetY(), Float.class);
+		return requestData(new PhysicsGetY(), Float.class);
 	}
 }

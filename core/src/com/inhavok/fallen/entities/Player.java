@@ -9,7 +9,6 @@ import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.Gra
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetAnimationFrameDuration;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetLayerRotation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsApplyLinearImpulse;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetLinearVelocity;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.PlayerController;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;

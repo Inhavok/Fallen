@@ -3,7 +3,6 @@ package com.inhavok.fallen.components.entity_components.graphics.layers;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 
 public abstract class AnimatedLayer extends Layer {

@@ -8,7 +8,7 @@ import com.inhavok.fallen.components.entity_components.graphics.IceTileGraphics;
 
 import java.util.ArrayList;
 
-public class IceTile extends Entity {
+public final class IceTile extends Entity {
 	public IceTile(final float x, final float y) {
 		super(x, y, 0);
 	}

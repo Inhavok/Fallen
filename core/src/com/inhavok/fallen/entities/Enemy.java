@@ -2,11 +2,8 @@ package com.inhavok.fallen.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsApplyLinearImpulse;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetX;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetY;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
@@ -15,7 +12,6 @@ import com.inhavok.fallen.components.entity_components.graphics.layers.PlayerLeg
 import com.inhavok.fallen.states.Level;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Stack;
 
 public final class Enemy extends Entity {
@@ -23,7 +19,7 @@ public final class Enemy extends Entity {
 	private float waitStopwatch = 0;
 	private final int waitDelay = 5;
 	private boolean waiting;
-	private final LinkedList<Vector2> path = new LinkedList<Vector2>();
+	private final Stack<Vector2> path = new Stack<Vector2>();
 	private Vector2 currentTarget = null;
 	private final ArrayList<Level.PatrolPoint> patrolPoints = new ArrayList<Level.PatrolPoint>();
 	public Enemy(final ArrayList<Level.PatrolPoint> patrolPoints) {
@@ -64,10 +60,10 @@ public final class Enemy extends Entity {
 		if (patrolPoints.size() > 1) {
 			if (currentTarget == null) {
 				if (path.isEmpty()) {
-					path.addAll(AI.getPath(requestData(new PhysicsGetX(), Float.class), requestData(new PhysicsGetY(), Float.class), patrolPoints.get(nextPatrolPoint).getPoint().x, patrolPoints.get(nextPatrolPoint).getPoint().y));
+					path.addAll(AI.getPath(getX(), getY(), patrolPoints.get(nextPatrolPoint).getPoint().x, patrolPoints.get(nextPatrolPoint).getPoint().y));
 				}
-				currentTarget = path.pollFirst();
-			} else if (Vector2.dst(currentTarget.x, currentTarget.y, requestData(new PhysicsGetX(), Float.class), requestData(new PhysicsGetY(), Float.class)) < 0.1f) {
+				currentTarget = path.pop();
+			} else if (Vector2.dst(currentTarget.x, currentTarget.y, getX(), getY()) < 0.1f) {
 				currentTarget = null;
 				if (path.isEmpty()) {
 					nextPatrolPoint++;
@@ -77,16 +73,16 @@ public final class Enemy extends Entity {
 				}
 			} else {
 				final Vector2 impulse = new Vector2();
-				if (requestData(new PhysicsGetX(), Float.class) < currentTarget.x - 0.1f) {
+				if (getX() < currentTarget.x - 0.1f) {
 					impulse.add(0.5f, 0);
 				}
-				if (requestData(new PhysicsGetX(), Float.class) > currentTarget.x + 0.1f) {
+				if (getX() > currentTarget.x + 0.1f) {
 					impulse.sub(0.5f, 0);
 				}
-				if (requestData(new PhysicsGetY(), Float.class) < currentTarget.y - 0.1f) {
+				if (getY() < currentTarget.y - 0.1f) {
 					impulse.add(0, 0.5f);
 				}
-				if (requestData(new PhysicsGetY(), Float.class) > currentTarget.y + 0.1f) {
+				if (getY() > currentTarget.y + 0.1f) {
 					impulse.sub(0, 0.5f);
 				}
 				move(impulse);

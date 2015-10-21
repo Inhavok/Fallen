@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesDraw;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesUpdateState;
-import com.inhavok.fallen.commands.component_commands.state.state_ui.UIUpdateState;
+import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesUpdate;
+import com.inhavok.fallen.commands.component_commands.state.state_ui.UIUpdate;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.state_components.StateEntities;
 import com.inhavok.fallen.components.state_components.StateUI;
@@ -46,9 +46,9 @@ public final class Application extends ApplicationAdapter {
 		accumulatedTime += Gdx.graphics.getDeltaTime();
 		while (accumulatedTime >= SECONDS_PER_FRAME) {
 			EntityPhysics.step(SECONDS_PER_FRAME, 8, 3);
-			currentState.updateState();
-			currentState.execute(new EntitiesUpdateState());
-			currentState.execute(new UIUpdateState());
+			currentState.update();
+			currentState.execute(new EntitiesUpdate());
+			currentState.execute(new UIUpdate());
 			accumulatedTime -= SECONDS_PER_FRAME;
 		}
 		if (accumulatedTime > 0) {
