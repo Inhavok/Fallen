@@ -20,7 +20,7 @@ import com.inhavok.fallen.commands.component_commands.state.state_entities.Entit
 import java.util.ArrayList;
 
 public final class Application extends ApplicationAdapter {
-	public static final float SECONDS_PER_FRAME = 1/60f;
+	public static final float SECONDS_PER_STEP = 1/60f;
 	public static final int PIXELS_PER_METER = 16;
 	private static SpriteBatch spriteBatch;
 	private static final ArrayList<State> states = new ArrayList<State>();
@@ -44,15 +44,15 @@ public final class Application extends ApplicationAdapter {
 	}
 	private static void updateState() {
 		accumulatedTime += Gdx.graphics.getDeltaTime();
-		while (accumulatedTime >= SECONDS_PER_FRAME) {
-			EntityPhysics.step(SECONDS_PER_FRAME, 8, 3);
+		while (accumulatedTime >= SECONDS_PER_STEP) {
+			EntityPhysics.step(SECONDS_PER_STEP, 8, 3);
 			currentState.update();
 			currentState.execute(new EntitiesUpdate());
 			currentState.execute(new UIUpdate());
-			accumulatedTime -= SECONDS_PER_FRAME;
+			accumulatedTime -= SECONDS_PER_STEP;
 		}
 		if (accumulatedTime > 0) {
-			currentState.execute(new EntitiesInterpolate(accumulatedTime / SECONDS_PER_FRAME));
+			currentState.execute(new EntitiesInterpolate(accumulatedTime / SECONDS_PER_STEP));
 		}
 		StateUI.act();
 	}

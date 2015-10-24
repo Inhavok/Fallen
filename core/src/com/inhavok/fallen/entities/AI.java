@@ -60,8 +60,8 @@ final class AI {
 	}
 	private static void checkAdjacentNodes(final Node parentNode) {
 		closedList.add(parentNode);
-		for (int i = Math.max(parentNode.x - 1, 0); i <= Math.min(parentNode.x + 1, Level.getWidth()); i++) {
-			for (int j = Math.max(parentNode.y - 1, 0); j <= Math.min(parentNode.y + 1, Level.getHeight()); j++) {
+		for (int i = Math.max(parentNode.x - 1, 0); i <= Math.min(parentNode.x + 1, Level.getWidth() - 1); i++) {
+			for (int j = Math.max(parentNode.y - 1, 0); j <= Math.min(parentNode.y + 1, Level.getHeight() - 1); j++) {
 				final Node currentNode = nodes.get(i).get(j);
 				if (currentNode != null && !closedList.contains(currentNode)) {
 					if (openList.contains(currentNode)) {

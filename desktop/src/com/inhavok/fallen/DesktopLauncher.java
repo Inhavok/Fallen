@@ -9,7 +9,7 @@ final class DesktopLauncher {
 	public static void main(final String[] args) {
 		final LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
 		configuration.fullscreen = true;
-		configuration.foregroundFPS = Math.round(1 / Application.SECONDS_PER_FRAME);
+		configuration.foregroundFPS = Math.round(1 / Application.SECONDS_PER_STEP);
 		configuration.backgroundFPS = configuration.foregroundFPS;
 		new LwjglApplication(new Application(), configuration);
 	}

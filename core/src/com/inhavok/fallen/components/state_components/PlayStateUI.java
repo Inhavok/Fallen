@@ -31,9 +31,9 @@ public final class PlayStateUI extends StateUI {
 	}
 	@Override
 	public void update() {
-		currentUpdateStopwatch += Application.SECONDS_PER_FRAME;
-		highUpdateStopwatch += Application.SECONDS_PER_FRAME;
-		lowUpdateStopwatch += Application.SECONDS_PER_FRAME;
+		currentUpdateStopwatch += Application.SECONDS_PER_STEP;
+		highUpdateStopwatch += Application.SECONDS_PER_STEP;
+		lowUpdateStopwatch += Application.SECONDS_PER_STEP;
 		if (currentUpdateStopwatch >= currentUpdateDelay) {
 			currentFPSLabel.setText("Current: " + Math.round(1 / Gdx.graphics.getDeltaTime()));
 			currentUpdateStopwatch = 0;

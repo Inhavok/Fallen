@@ -45,7 +45,7 @@ public final class StateEntities extends StateComponent {
 			if (entity.hasComponent(EntityGraphics.class) && entity.hasComponent(EntityPhysics.class)) {
 				entity.execute(new GraphicsSetX(entity.getX()));
 				entity.execute(new GraphicsSetY(entity.getY()));
-				entity.execute(new GraphicsAnimate(Application.SECONDS_PER_FRAME));
+				entity.execute(new GraphicsAnimate(Application.SECONDS_PER_STEP));
 			}
 		}
 	}
