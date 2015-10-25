@@ -10,7 +10,8 @@ import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 import com.inhavok.fallen.components.entity_components.graphics.PlayerGraphics;
 import com.inhavok.fallen.components.entity_components.graphics.layers.PlayerLegsLayer;
-import com.inhavok.fallen.states.Level;
+import com.inhavok.fallen.utility.Level;
+import com.inhavok.fallen.utility.Pathfinder;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -49,7 +50,7 @@ public final class Enemy extends Entity {
 	}
 	private void calculatePathPoint() {
 		if (path.isEmpty()) {
-			path.addAll(AI.getPath(getX(), getY(), patrolPoints.get(currentPatrolPoint).getPoint().x, patrolPoints.get(currentPatrolPoint).getPoint().y));
+			path.addAll(Pathfinder.getPath(getX(), getY(), patrolPoints.get(currentPatrolPoint).getPoint().x, patrolPoints.get(currentPatrolPoint).getPoint().y));
 		}
 		currentTarget = path.pop();
 	}

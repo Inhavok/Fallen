@@ -12,6 +12,7 @@ import com.inhavok.fallen.components.state_components.StateComponent;
 import com.inhavok.fallen.components.state_components.StateUI;
 import com.inhavok.fallen.components.state_components.StateEntities;
 import com.inhavok.fallen.entities.Enemy;
+import com.inhavok.fallen.utility.Level;
 
 public final class PlayState extends State {
 	public PlayState() {

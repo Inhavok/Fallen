@@ -9,7 +9,6 @@ import com.inhavok.fallen.commands.component_commands.entity.entity_physics.*;
 public final class EntityPhysics extends EntityComponent {
 	private static final World world = new World(new Vector2(0, 0), true);
 	private final Body body;
-	private boolean colliding;
 	public EntityPhysics(final float width, final float height, final BodyType bodyType, final float linearDamping, final float angularDamping) {
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = bodyType;
@@ -18,28 +17,6 @@ public final class EntityPhysics extends EntityComponent {
 		body.setLinearDamping(linearDamping);
 		body.setAngularDamping(angularDamping);
 		addRectangularFixture(width, height, bodyType);
-		if (bodyType == BodyType.DynamicBody) {
-			world.setContactListener(new ContactListener() {
-				@Override
-				public void beginContact(final Contact contact) {
-					if (contact.getFixtureA().getBody() == body) {
-						colliding = true;
-					}
-				}
-				@Override
-				public void endContact(final Contact contact) {
-					if (contact.getFixtureA().getBody() == body) {
-						colliding = false;
-					}
-				}
-				@Override
-				public void preSolve(final Contact contact, final Manifold oldManifold) {
-				}
-				@Override
-				public void postSolve(final Contact contact, final ContactImpulse impulse) {
-				}
-			});
-		}
 	}
 	public static void step(final float timeStep, final int velocityIterations, final int positionIterations) {
 		world.step(timeStep, velocityIterations, positionIterations);
@@ -93,14 +70,8 @@ public final class EntityPhysics extends EntityComponent {
 	private void applyLinearImpulse(final Vector2 impulse) {
 		body.applyLinearImpulse(impulse, body.getPosition(), true);
 	}
-	public void applyAngularImpulse(final float impulse) {
-		body.applyAngularImpulse(impulse, true);
-	}
 	public static void dispose() {
 		world.dispose();
-	}
-	public static World getWorld() {
-		return world;
 	}
 	private float getX() {
 		return body.getPosition().x;
@@ -113,12 +84,6 @@ public final class EntityPhysics extends EntityComponent {
 	}
 	private Vector2 getLinearVelocity() {
 		return body.getLinearVelocity();
-	}
-	public float getMass() {
-		return body.getMass();
-	}
-	public boolean isColliding() {
-		return colliding;
 	}
 	private void setX(final float x) {
 		body.setTransform(x, body.getPosition().y, body.getAngle());

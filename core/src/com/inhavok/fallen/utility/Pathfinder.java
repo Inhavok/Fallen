@@ -1,11 +1,10 @@
-package com.inhavok.fallen.entities;
+package com.inhavok.fallen.utility;
 
 import com.badlogic.gdx.math.Vector2;
-import com.inhavok.fallen.states.Level;
 
 import java.util.*;
 
-final class AI {
+public final class Pathfinder {
 	private static ArrayList<ArrayList<Node>> nodes;
 	private static final PriorityQueue<Node> openList = new PriorityQueue<Node>(new Comparator<Node>() {
 		@Override
@@ -19,7 +18,7 @@ final class AI {
 		}
 	});
 	private static final ArrayList<Node> closedList = new ArrayList<Node>();
-	private AI() {
+	private Pathfinder() {
 	}
 	public static Stack<Vector2> getPath(final float startX, final float startY, final float endX, final float endY) {
 		nodes = new ArrayList<ArrayList<Node>>();
@@ -64,16 +63,12 @@ final class AI {
 			for (int j = Math.max(parentNode.y - 1, 0); j <= Math.min(parentNode.y + 1, Level.getHeight() - 1); j++) {
 				final Node currentNode = nodes.get(i).get(j);
 				if (currentNode != null && !closedList.contains(currentNode)) {
-					if (openList.contains(currentNode)) {
-						if (parentNode.g + calculateCost(parentNode.x, parentNode.y, currentNode.x, currentNode.y) < currentNode.g) {
-							currentNode.g = parentNode.g + calculateCost(parentNode.x, parentNode.y, currentNode.x, currentNode.y);
-							currentNode.parent = parentNode;
-						}
-					} else {
-						currentNode.g = parentNode.g + calculateCost(parentNode.x, parentNode.y, currentNode.x, currentNode.y);
+					final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, currentNode.x, currentNode.y);
+					if ((openList.contains(currentNode) && newG < currentNode.g) || !openList.contains(currentNode)) {
+						currentNode.g = newG;
 						currentNode.parent = parentNode;
-						openList.add(currentNode);
 					}
+					openList.add(currentNode);
 				}
 			}
 		}
@@ -83,7 +78,7 @@ final class AI {
 		final int diagonalCost = 14;
 		final int dX = Math.abs(nodeTwoX - nodeOneX);
 		final int dY = Math.abs(nodeTwoY - nodeOneY);
-		return nonDiagonalCost * (dX + dY) + (diagonalCost - 2 * nonDiagonalCost) * Math.min(dX, dY);
+		return nonDiagonalCost * (dX + dY) - (2 * nonDiagonalCost - diagonalCost) * Math.min(dX, dY);
 	}
 	private static final class Node {
 		private final int x;

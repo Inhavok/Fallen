@@ -1,4 +1,4 @@
-package com.inhavok.fallen.states;
+package com.inhavok.fallen.utility;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +10,7 @@ import com.inhavok.fallen.entities.Enemy;
 import com.inhavok.fallen.entities.FloorTile;
 import com.inhavok.fallen.entities.IceTile;
 import com.inhavok.fallen.entities.Player;
+import com.inhavok.fallen.states.PlayState;
 
 import java.util.ArrayList;
 
