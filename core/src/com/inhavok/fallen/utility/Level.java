@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
 import com.inhavok.fallen.entities.Enemy;
-import com.inhavok.fallen.entities.FloorTile;
+import com.inhavok.fallen.entities.FloorNTile;
 import com.inhavok.fallen.entities.IceTile;
 import com.inhavok.fallen.entities.Player;
 import com.inhavok.fallen.states.PlayState;
@@ -45,7 +45,7 @@ public final class Level {
 		for (int i = tileLayer.get("height").asInt() - 1; i >= 0; i--) {
 			for (int j = 0; j < tileLayer.get("width").asInt(); j++) {
 				if (tileLayer.get("data").get(currentValue).asInt() == 1) {
-					playState.execute(new EntitiesAdd(new FloorTile(j, i)));
+					playState.execute(new EntitiesAdd(new FloorNTile(j, i)));
 					tiles[j][i] = 1;
 				} else if (tileLayer.get("data").get(currentValue).asInt() == 14) {
 					playState.execute(new EntitiesAdd(new IceTile(j, i)));

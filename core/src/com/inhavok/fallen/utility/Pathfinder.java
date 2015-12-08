@@ -59,26 +59,27 @@ public final class Pathfinder {
 	}
 	private static void checkAdjacentNodes(final Node parentNode) {
 		closedList.add(parentNode);
-		for (int i = Math.max(parentNode.x - 1, 0); i <= Math.min(parentNode.x + 1, Level.getWidth() - 1); i++) {
-			for (int j = Math.max(parentNode.y - 1, 0); j <= Math.min(parentNode.y + 1, Level.getHeight() - 1); j++) {
-				final Node currentNode = nodes.get(i).get(j);
-				if (currentNode != null && !closedList.contains(currentNode)) {
-					final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, currentNode.x, currentNode.y);
-					if ((openList.contains(currentNode) && newG < currentNode.g) || !openList.contains(currentNode)) {
-						currentNode.g = newG;
-						currentNode.parent = parentNode;
-					}
-					openList.add(currentNode);
-				}
+		rankAdjacentNode(parentNode, parentNode.x + 1, parentNode.y);
+		rankAdjacentNode(parentNode, parentNode.x - 1, parentNode.y);
+		rankAdjacentNode(parentNode, parentNode.x, parentNode.y + 1);
+		rankAdjacentNode(parentNode, parentNode.x, parentNode.y - 1);
+	}
+	private static void rankAdjacentNode(final Node parentNode, final int x, final int y) {
+		Node adjacentNode = null;
+		if (x >= 0 && x < nodes.size() && y >= 0 && y < nodes.get(x).size()) {
+			adjacentNode = nodes.get(x).get(y);
+		}
+		if (adjacentNode != null && !closedList.contains(adjacentNode)) {
+			final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, adjacentNode.x, adjacentNode.y);
+			if ((openList.contains(adjacentNode) && newG < adjacentNode.g) || !openList.contains(adjacentNode)) {
+				adjacentNode.g = newG;
+				adjacentNode.parent = parentNode;
 			}
+			openList.add(adjacentNode);
 		}
 	}
 	private static double calculateCost(final int nodeOneX, final int nodeOneY, final int nodeTwoX, final int nodeTwoY) {
-		final int nonDiagonalCost = 10;
-		final int diagonalCost = 14;
-		final int dX = Math.abs(nodeTwoX - nodeOneX);
-		final int dY = Math.abs(nodeTwoY - nodeOneY);
-		return nonDiagonalCost * (dX + dY) - (2 * nonDiagonalCost - diagonalCost) * Math.min(dX, dY);
+		return Math.abs(nodeTwoX - nodeOneX) + Math.abs(nodeTwoY - nodeOneY);
 	}
 	private static final class Node {
 		private final int x;

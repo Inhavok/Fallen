@@ -5,8 +5,8 @@ import com.inhavok.fallen.components.entity_components.graphics.FloorTileGraphic
 
 import java.util.ArrayList;
 
-public final class FloorTile extends Entity {
-	public FloorTile(final float x, final float y) {
+public final class FloorNTile extends Entity {
+	public FloorNTile(final float x, final float y) {
 		super(x, y, 0);
 	}
 	@Override

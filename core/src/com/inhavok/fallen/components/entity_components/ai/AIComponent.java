@@ -11,7 +11,7 @@ public class AIComponent extends EntityComponent {
 	@Override
 	public void handleCommand(final Command command) {
 		if (command.getMessage() == Message.THINK) {
-
+			behaviourTree.execute();
 		}
 	}
 	public enum Message {
