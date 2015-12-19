@@ -11,8 +11,10 @@ public abstract class SelectorNode extends BehaviourNode {
     }
     @Override
     protected void execute() {
-        if (condition.met() && trueNode != null) {
-            trueNode.execute();
+        if (condition.met()) {
+            if (trueNode != null) {
+                trueNode.execute();
+            }
         } else if (falseNode != null) {
             falseNode.execute();
         }

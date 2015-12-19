@@ -5,11 +5,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
+import com.inhavok.fallen.commands.component_commands.entity.AIThink;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesDraw;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesInterpolate;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesLookAt;
+import com.inhavok.fallen.components.entity_components.ai.EntityAI;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.entities.Entity;
@@ -42,6 +44,9 @@ public final class StateEntities extends StateComponent {
 		previousState.clear();
 		previousState.addAll(currentState);
 		for (Entity entity : currentState) {
+			if (entity.hasComponent(EntityAI.class)) {
+				entity.execute(new AIThink());
+			}
 			if (entity.hasComponent(EntityGraphics.class) && entity.hasComponent(EntityPhysics.class)) {
 				entity.execute(new GraphicsSetX(entity.getX()));
 				entity.execute(new GraphicsSetY(entity.getY()));

@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
-import com.inhavok.fallen.entities.Enemy;
+import com.inhavok.fallen.entities.Facilitator;
 import com.inhavok.fallen.entities.FloorNTile;
 import com.inhavok.fallen.entities.IceTile;
 import com.inhavok.fallen.entities.Player;
@@ -20,7 +20,7 @@ public final class Level {
 	private static int[][] tiles;
 	private static int tileSize;
 	private static Player player;
-	private static final ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	private static final ArrayList<Facilitator> enemies = new ArrayList<Facilitator>();
 	private Level() {
 	}
 	public static void load(final PlayState playState) {
@@ -87,9 +87,9 @@ public final class Level {
 		return false;
 	}
 	private static void loadEnemy(final ArrayList<PatrolPoint> patrolPoints, final PlayState playState) {
-		final Enemy enemy = new Enemy(patrolPoints);
-		enemies.add(enemy);
-		playState.execute(new EntitiesAdd(enemy));
+		final Facilitator facilitator = new Facilitator(patrolPoints);
+		enemies.add(facilitator);
+		playState.execute(new EntitiesAdd(facilitator));
 		patrolPoints.clear();
 	}
 	private static Vector2 levelToPhysicsPosition(float x, float y) {
@@ -119,7 +119,7 @@ public final class Level {
 	public static Player getPlayer() {
 		return player;
 	}
-	public static ArrayList<Enemy> getEnemies() {
+	public static ArrayList<Facilitator> getEnemies() {
 		return enemies;
 	}
 	public static final class PatrolPoint {

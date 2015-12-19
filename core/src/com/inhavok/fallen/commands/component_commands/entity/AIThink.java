@@ -1,14 +1,14 @@
 package com.inhavok.fallen.commands.component_commands.entity;
 
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.components.entity_components.ai.AIComponent;
+import com.inhavok.fallen.components.entity_components.ai.EntityAI;
 
-public class AIThink extends Command<AIComponent> {
+public class AIThink extends Command<EntityAI> {
 	public AIThink() {
-		super(AIComponent.class);
+		super(EntityAI.class);
 	}
 	@Override
 	public Enum getMessage() {
-		return AIComponent.Message.THINK;
+		return EntityAI.Message.THINK;
 	}
 }
