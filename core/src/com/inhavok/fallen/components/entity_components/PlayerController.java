@@ -21,16 +21,16 @@ public final class PlayerController extends EntityComponent {
 		player.faceCursor();
 		final Vector2 impulse = new Vector2();
 		if (StateUI.getKeysDown().contains(Input.Keys.W)) {
-			impulse.add(0, 2);
+			impulse.add(0, 3.5f);
 		}
 		if (StateUI.getKeysDown().contains(Input.Keys.S)) {
-			impulse.add(0, -2);
+			impulse.add(0, -3.5f);
 		}
 		if (StateUI.getKeysDown().contains(Input.Keys.A)) {
-			impulse.add(-2, 0);
+			impulse.add(-3.5f, 0);
 		}
 		if (StateUI.getKeysDown().contains(Input.Keys.D)) {
-			impulse.add(2, 0);
+			impulse.add(3.5f, 0);
 		}
 		if (StateUI.getKeysDown().contains(Input.Keys.SHIFT_LEFT)) {
 			impulse.scl(1.75f);

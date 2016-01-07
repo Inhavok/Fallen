@@ -8,7 +8,6 @@ import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetAnimation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetAnimationFrameDuration;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetLayerRotation;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.GraphicsSetRotation;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsApplyLinearImpulse;
 import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetLinearVelocity;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
@@ -28,7 +27,7 @@ public final class Player extends Entity {
 	ArrayList<EntityComponent> addComponents() {
 		final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
 		final EntityGraphics graphics = new PlayerGraphics();
-		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.3f, graphics.getHeight() - 0.3f, BodyDef.BodyType.DynamicBody, 50, 0);
+		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.3f, graphics.getHeight() - 0.3f, BodyDef.BodyType.DynamicBody, 100, 0);
 		components.add(graphics);
 		components.add(physics);
 		components.add(new PlayerController(this));
@@ -40,7 +39,7 @@ public final class Player extends Entity {
 	public void move(final Vector2 impulse) {
 		execute(new PhysicsApplyLinearImpulse(impulse.x, impulse.y));
 		final Vector2 velocity = requestData(new PhysicsGetLinearVelocity(), Vector2.class);
-		if (velocity.len() > 0.1f) {
+		if (velocity.len() >= 1) {
 			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING));
 			execute(new GraphicsSetAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, 0.75f / (float) (1.25 * Math.pow(velocity.len(), 0.5))));
 			execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, velocity.angle() - 90));

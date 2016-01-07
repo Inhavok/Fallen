@@ -15,7 +15,6 @@ import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 import com.inhavok.fallen.components.entity_components.graphics.PlayerGraphics;
 import com.inhavok.fallen.components.entity_components.graphics.layers.PlayerLegsLayer;
 import com.inhavok.fallen.utility.GameMath;
-import com.inhavok.fallen.utility.Level;
 import com.inhavok.fallen.utility.Level.PatrolPoint;
 import com.inhavok.fallen.utility.Pathfinder;
 
@@ -37,7 +36,7 @@ public final class Facilitator extends Entity {
 	}
 	public void update() {
 		final Vector2 referencePatrolPoint = patrolPoints.get(currentPatrolPoint).getPoint();
-		if (GameMath.closeTo(referencePatrolPoint.x, referencePatrolPoint.y, getX(), getY(), tolerance)) {
+		if (GameMath.closeTo(referencePatrolPoint.x, referencePatrolPoint.y, getX(), getY(), tolerance * 2)) {
 			if (waiting()) {
 				waitStopwatch += Application.SECONDS_PER_STEP;
 				if (!waiting()) {
@@ -49,12 +48,15 @@ public final class Facilitator extends Entity {
 				waitAtPatrolPoint();
 			}
 		} else {
-			if (GameMath.closeTo(currentTarget.x, currentTarget.y, getX(), getY(), tolerance)) {
+			if (GameMath.closeTo(currentTarget.x, currentTarget.y, getX(), getY(), tolerance * 2)) {
 				calculatePathPoint();
 			}
 			move();
 		}
-		updateGraphics();
+		final Vector2 velocity = requestData(new PhysicsGetLinearVelocity(), Vector2.class);
+		if (velocity.len() < tolerance * 2) {
+			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
+		}
 	}
 	private boolean waiting() {
 		return waitStopwatch < 5;
@@ -78,34 +80,30 @@ public final class Facilitator extends Entity {
 	private void move() {
 		final Vector2 impulse = new Vector2();
 		if (getX() < currentTarget.x - tolerance) {
-			impulse.add(0.5f, 0);
+			impulse.add(1, 0);
 		}
 		if (getX() > currentTarget.x + tolerance) {
-			impulse.sub(0.5f, 0);
+			impulse.sub(1, 0);
 		}
 		if (getY() < currentTarget.y - tolerance) {
-			impulse.add(0, 0.5f);
+			impulse.add(0, 1);
 		}
 		if (getY() > currentTarget.y + tolerance) {
-			impulse.sub(0, 0.5f);
+			impulse.sub(0, 1);
 		}
 		execute(new PhysicsApplyLinearImpulse(impulse.x, impulse.y));
-	}
-	private void updateGraphics() {
 		final Vector2 velocity = requestData(new PhysicsGetLinearVelocity(), Vector2.class);
-		if (velocity.len() > 0.1f) {
+		if (velocity.len() >= tolerance * 2) {
 			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING));
 			execute(new GraphicsSetAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, 0.75f / (float) (1.25 * Math.pow(velocity.len(), 0.5))));
 			execute(new GraphicsSetRotation(velocity.angle() - 90));
-		} else {
-			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
 		}
 	}
 	@Override
 	ArrayList<EntityComponent> addComponents() {
 		final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
 		final EntityGraphics graphics = new PlayerGraphics();
-		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.3f, graphics.getHeight() - 0.3f, BodyDef.BodyType.DynamicBody, 50, 0);
+		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.3f, graphics.getHeight() - 0.3f, BodyDef.BodyType.DynamicBody, 100, 0);
 		components.add(graphics);
 		components.add(physics);
 		components.add(new EntityAI(new BehaviourTree(new TestNode())));
