@@ -9,7 +9,6 @@ final class DesktopLauncher {
 	public static void main(final String[] args) {
 		final LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
 		configuration.title = "Fallen";
-		configuration.useGL30 = true;
 		new LwjglApplication(new Application(), configuration);
 	}
 }
