@@ -95,7 +95,7 @@ public final class Facilitator extends Entity {
 		final Vector2 velocity = requestData(new PhysicsGetLinearVelocity(), Vector2.class);
 		if (velocity.len() > 0.1f) {
 			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING));
-			execute(new GraphicsSetAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, 0.75f / velocity.len()));
+			execute(new GraphicsSetAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, 0.75f / (float) (1.25 * Math.pow(velocity.len(), 0.5))));
 			execute(new GraphicsSetRotation(velocity.angle() - 90));
 		} else {
 			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
