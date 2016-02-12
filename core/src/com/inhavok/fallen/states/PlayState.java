@@ -9,7 +9,7 @@ import com.inhavok.fallen.commands.component_commands.state.state_entities.Entit
 import com.inhavok.fallen.components.state_components.PlayStateUI;
 import com.inhavok.fallen.components.state_components.StateComponent;
 import com.inhavok.fallen.components.state_components.StateEntities;
-import com.inhavok.fallen.entities.Facilitator;
+import com.inhavok.fallen.entities.characters.Facilitator;
 import com.inhavok.fallen.utility.Level;
 
 public final class PlayState extends State {
