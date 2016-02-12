@@ -44,6 +44,8 @@ public abstract class EntityGraphics extends EntityComponent {
 			((GraphicsGetX) command).setData(getX());
 		} else if (command.getMessage() == Message.GET_Y) {
 			((GraphicsGetY) command).setData(getY());
+		} else if (command.getMessage() == Message.GET_ROTATION) {
+			((GraphicsGetRotation) command).setData(((Layer) layers.values().toArray()[0]).getRotation());
 		} else if (command.getMessage() == Message.SET_X) {
 			setX(((GraphicsSetX) command).getX());
 		} else if (command.getMessage() == Message.SET_Y) {
@@ -115,6 +117,6 @@ public abstract class EntityGraphics extends EntityComponent {
 		}
 	}
 	public enum Message {
-		ANIMATE, DRAW, GET_X, GET_Y, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION, SET_ANIMATION_FRAME_DURATION, SET_LAYER_ROTATION
+		ANIMATE, DRAW, GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION, SET_ANIMATION_FRAME_DURATION, SET_LAYER_ROTATION
 	}
 }

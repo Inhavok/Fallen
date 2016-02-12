@@ -9,13 +9,11 @@ import com.inhavok.fallen.commands.component_commands.entity.entity_physics.*;
 public final class EntityPhysics extends EntityComponent {
 	private static final World world = new World(new Vector2(0, 0), true);
 	private final Body body;
-	public EntityPhysics(final float width, final float height, final BodyType bodyType, final float linearDamping, final float angularDamping) {
+	public EntityPhysics(final float width, final float height, final BodyType bodyType) {
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = bodyType;
 		bodyDef.fixedRotation = true;
 		body = world.createBody(bodyDef);
-		body.setLinearDamping(linearDamping);
-		body.setAngularDamping(angularDamping);
 		addRectangularFixture(width, height, bodyType);
 	}
 	public static void step(final float timeStep, final int velocityIterations, final int positionIterations) {
@@ -23,8 +21,8 @@ public final class EntityPhysics extends EntityComponent {
 	}
 	@Override
 	public void handleCommand(Command command) {
-		if (command.getMessage() == Message.APPLY_LINEAR_IMPULSE) {
-			applyLinearImpulse(((PhysicsApplyLinearImpulse) command).getImpulse());
+		if (command.getMessage() == Message.CHANGE_LINEAR_VELOCITY) {
+			changeLinearVelocity(((PhysicsChangeLinearVelocity) command).getNewVelocity());
 		} else if (command.getMessage() == Message.GET_X) {
 			((PhysicsGetX) command).setData(getX());
 		} else if (command.getMessage() == Message.GET_Y) {
@@ -67,8 +65,8 @@ public final class EntityPhysics extends EntityComponent {
 			polygonShape.dispose();
 		}
 	}
-	private void applyLinearImpulse(final Vector2 impulse) {
-		body.applyLinearImpulse(impulse, body.getPosition(), true);
+	private void changeLinearVelocity(final Vector2 newVelocity) {
+		body.applyLinearImpulse(newVelocity.sub(body.getLinearVelocity()).scl(body.getMass()), body.getPosition(), true);
 	}
 	public static void dispose() {
 		world.dispose();
@@ -95,6 +93,6 @@ public final class EntityPhysics extends EntityComponent {
 		body.setTransform(body.getPosition().x, body.getPosition().y, angle);
 	}
 	public enum Message {
-		APPLY_LINEAR_IMPULSE, GET_X, GET_Y, GET_ROTATION, GET_LINEAR_VELOCITY, SET_X, SET_Y, SET_ROTATION
+		CHANGE_LINEAR_VELOCITY, GET_X, GET_Y, GET_ROTATION, GET_LINEAR_VELOCITY, SET_X, SET_Y, SET_ROTATION
 	}
 }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.components.state_components.StateUI;
-import com.inhavok.fallen.entities.Player;
+import com.inhavok.fallen.entities.characters.Player;
 
 public final class PlayerController extends EntityComponent {
 	private final Player player;
@@ -18,27 +18,28 @@ public final class PlayerController extends EntityComponent {
 		}
 	}
 	private void update() {
-		player.faceCursor();
-		final Vector2 impulse = new Vector2();
+		final float baseSpeed = player.getBaseSpeed();
+		final Vector2 walkVelocity = new Vector2();
 		if (StateUI.getKeysDown().contains(Input.Keys.W)) {
-			impulse.add(0, 3.5f);
+			walkVelocity.add(0, baseSpeed);
 		}
 		if (StateUI.getKeysDown().contains(Input.Keys.S)) {
-			impulse.add(0, -3.5f);
+			walkVelocity.sub(0, baseSpeed);
 		}
 		if (StateUI.getKeysDown().contains(Input.Keys.A)) {
-			impulse.add(-3.5f, 0);
+			walkVelocity.sub(baseSpeed, 0);
 		}
 		if (StateUI.getKeysDown().contains(Input.Keys.D)) {
-			impulse.add(3.5f, 0);
+			walkVelocity.add(baseSpeed, 0);
 		}
 		if (StateUI.getKeysDown().contains(Input.Keys.SHIFT_LEFT)) {
-			impulse.scl(1.75f);
+			walkVelocity.scl(1.75f);
 		}
 		if (StateUI.getKeysDown().contains(Input.Keys.CONTROL_LEFT)) {
-			impulse.scl(0.25f);
+			walkVelocity.scl(0.25f);
 		}
-		player.move(impulse);
+		player.walk(walkVelocity);
+		player.update();
 	}
 	public enum Message {
 		UPDATE

@@ -29,6 +29,7 @@ public final class Application extends ApplicationAdapter {
 	@Override
 	public void create() {
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		//Gdx.graphics.setWindowedMode(960, 600);
 		Assets.initialise();
 		spriteBatch = new SpriteBatch();
 		StateUI.initialise(new ScreenViewport(), spriteBatch);

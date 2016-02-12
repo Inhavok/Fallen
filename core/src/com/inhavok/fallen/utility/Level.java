@@ -6,10 +6,10 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
-import com.inhavok.fallen.entities.Facilitator;
-import com.inhavok.fallen.entities.FloorTile;
-import com.inhavok.fallen.entities.IceTile;
-import com.inhavok.fallen.entities.Player;
+import com.inhavok.fallen.entities.characters.Facilitator;
+import com.inhavok.fallen.entities.environment.FloorTile;
+import com.inhavok.fallen.entities.environment.IceTile;
+import com.inhavok.fallen.entities.characters.Player;
 import com.inhavok.fallen.states.PlayState;
 
 import java.util.ArrayList;

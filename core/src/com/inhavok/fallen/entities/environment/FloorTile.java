@@ -1,7 +1,8 @@
-package com.inhavok.fallen.entities;
+package com.inhavok.fallen.entities.environment;
 
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.graphics.FloorTileGraphics;
+import com.inhavok.fallen.entities.Entity;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ public final class FloorTile extends Entity {
 		super(x, y, 0);
 	}
 	@Override
-	ArrayList<EntityComponent> addComponents() {
+	protected ArrayList<EntityComponent> addComponents() {
 		final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
 		components.add(new FloorTileGraphics());
 		return components;
