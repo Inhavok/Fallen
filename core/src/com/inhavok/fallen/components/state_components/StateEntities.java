@@ -44,6 +44,7 @@ public final class StateEntities extends StateComponent {
 		previousState.clear();
 		previousState.addAll(currentState);
 		for (Entity entity : currentState) {
+			entity.update();
 			if (entity.hasComponent(EntityAI.class)) {
 				entity.execute(new AIThink());
 			}

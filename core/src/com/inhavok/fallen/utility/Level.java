@@ -119,9 +119,6 @@ public final class Level {
 	public static Player getPlayer() {
 		return player;
 	}
-	public static ArrayList<Facilitator> getEnemies() {
-		return enemies;
-	}
 	public static final class PatrolPoint {
 		private final Vector2 point;
 		private final int angle;

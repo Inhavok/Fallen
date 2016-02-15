@@ -39,7 +39,6 @@ public final class PlayerController extends EntityComponent {
 			walkVelocity.scl(0.25f);
 		}
 		player.walk(walkVelocity);
-		player.update();
 	}
 	public enum Message {
 		UPDATE

@@ -30,6 +30,7 @@ public final class Player extends BipedalEntity {
 		components.add(new PlayerController(this));
 		return components;
 	}
+	@Override
 	public void update() {
 		faceCursor();
 		rotateLegs();
@@ -40,10 +41,10 @@ public final class Player extends BipedalEntity {
 	//TODO calculate smallest equivalent angle
 	private void rotateLegs() {
 		final float rotation = requestData(new GraphicsGetRotation(), Float.class);
-		if (Math.abs(desiredLegsRotation - rotation) <= 5) {
+		if (Math.abs(desiredLegsRotation - rotation) <= 15) {
 			execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, desiredLegsRotation));
 		} else {
-			execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, rotation + 15 * GameMath.calDifferencePolarity(desiredLegsRotation, rotation)));
+			execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.LEGS, rotation + 720 * Application.SECONDS_PER_STEP * GameMath.calDifferencePolarity(desiredLegsRotation, rotation)));
 		}
 	}
 	@Override

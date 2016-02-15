@@ -14,7 +14,9 @@ import java.util.ArrayList;
 public abstract class Entity {
 	private final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
 	protected Entity(final float x, final float y, final float angle) {
-		components.addAll(addComponents());
+		if (addComponents() != null) {
+			components.addAll(addComponents());
+		}
 		execute(new GraphicsSetX(x));
 		execute(new GraphicsSetY(y));
 		execute(new GraphicsSetRotation(angle));
@@ -22,6 +24,8 @@ public abstract class Entity {
 		execute(new PhysicsSetY(y));
 	}
 	protected abstract ArrayList<EntityComponent> addComponents();
+	public void update() {
+	}
 	public final <T extends EntityComponent> void execute(Command<T> command) {
 		if (hasComponent(command.getListeningClass())) {
 			for (EntityComponent component : components) {

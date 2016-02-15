@@ -16,12 +16,14 @@ import com.inhavok.fallen.states.MenuState;
 import com.inhavok.fallen.states.PlayState;
 import com.inhavok.fallen.states.State;
 import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesInterpolate;
+import com.inhavok.fallen.utility.EntityCanvas;
 
 import java.util.ArrayList;
 
 public final class Application extends ApplicationAdapter {
 	public static final float SECONDS_PER_STEP = 1/60f;
 	public static final int PIXELS_PER_METER = 16;
+	public static final int ZOOM_FACTOR = 4;
 	private static SpriteBatch spriteBatch;
 	private static final ArrayList<State> states = new ArrayList<State>();
 	private static State currentState;
@@ -29,9 +31,10 @@ public final class Application extends ApplicationAdapter {
 	@Override
 	public void create() {
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-		//Gdx.graphics.setWindowedMode(960, 600);
+		//Gdx.graphics.setWindowedMode(800, 450);
 		Assets.initialise();
 		spriteBatch = new SpriteBatch();
+		EntityCanvas.initialise();
 		StateUI.initialise(new ScreenViewport(), spriteBatch);
 		states.add(new PlayState());
 		states.add(new MenuState());
@@ -61,16 +64,22 @@ public final class Application extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		currentState.execute(new EntitiesDraw(spriteBatch));
+		EntityCanvas.draw();
 		StateUI.draw();
 	}
 	public static void stateCommand(final Command command) {
 		currentState.handleCommand(command);
 	}
+	public static int getVisibleWidth() {
+		return Gdx.graphics.getWidth() / (PIXELS_PER_METER * ZOOM_FACTOR);
+	}
+	public static int getVisibleHeight() {
+		return Gdx.graphics.getHeight() / (PIXELS_PER_METER * ZOOM_FACTOR);
+	}
 	@Override
 	public void resize(int width, int height) {
 		StateUI.resize(width, height);
-		final float zoomFactor = 4;
-		StateEntities.resize(width / (PIXELS_PER_METER * zoomFactor), height / (PIXELS_PER_METER * zoomFactor));
+		StateEntities.resize(getVisibleWidth(), getVisibleHeight());
 	}
 	@Override
 	public void dispose() {

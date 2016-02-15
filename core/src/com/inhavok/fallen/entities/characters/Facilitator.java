@@ -45,6 +45,7 @@ public final class Facilitator extends BipedalEntity {
 		components.add(new EntityAI(new BehaviourTree(new TestNode())));
 		return components;
 	}
+	@Override
 	public void update() {
 		final Vector2 currentPatrolPoint = patrolPoints.get(this.currentPatrolPoint).getPoint();
 		if (GameMath.closeTo(currentPatrolPoint.x, currentPatrolPoint.y, getX(), getY(), TOLERANCE)) {
@@ -61,7 +62,7 @@ public final class Facilitator extends BipedalEntity {
 			followTarget();
 		}
 		final Vector2 velocity = requestData(new PhysicsGetLinearVelocity(), Vector2.class);
-		if (GameMath.calGreatestComponentLength(velocity) < TOLERANCE) {
+		if (GameMath.calGreatestComponentLength(velocity) == 0) {
 			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
 		}
 		rotate();
@@ -102,7 +103,7 @@ public final class Facilitator extends BipedalEntity {
 		if (Math.abs(desiredRotation - rotation) <= TOLERANCE * 5) {
 			execute(new GraphicsSetRotation(desiredRotation));
 		} else {
-			execute(new GraphicsSetRotation(rotation + 5 * GameMath.calDifferencePolarity(desiredRotation, rotation)));
+			execute(new GraphicsSetRotation(rotation + 360 * Application.SECONDS_PER_STEP * GameMath.calDifferencePolarity(desiredRotation, rotation)));
 		}
 	}
 	@Override
