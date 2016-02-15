@@ -75,23 +75,21 @@ public final class Facilitator extends BipedalEntity {
 		if (currentPatrolPoint > patrolPoints.size() - 1) {
 			currentPatrolPoint = 0;
 		}
-	}
-	private void calculatePathPoint() {
-		if (currentPath.isEmpty()) {
-			currentPath.addAll(Pathfinder.getPath(getX(), getY(), patrolPoints.get(currentPatrolPoint).getPoint().x, patrolPoints.get(currentPatrolPoint).getPoint().y));
-		}
-		currentTarget = currentPath.pop();
+		currentPath.addAll(Pathfinder.getPath(getX(), getY(), patrolPoints.get(currentPatrolPoint).getPoint().x, patrolPoints.get(currentPatrolPoint).getPoint().y));
 	}
 	private void followTarget() {
 		final Vector2 walkVelocity = new Vector2(currentTarget.x - getX(), currentTarget.y - getY()).setLength(getBaseSpeed());
 		if (GameMath.closeTo(currentTarget.x, currentTarget.y, getX(), getY(), TOLERANCE * 5)) {
-			if (currentPath.size() > 0 || GameMath.closeTo(currentTarget.x, currentTarget.y, getX(), getY(), TOLERANCE)) {
-				calculatePathPoint();
-			} else {
+			if (targetIsPatrolPoint()) {
 				walkVelocity.scl(Vector2.len(currentTarget.x - getX(), currentTarget.y - getY()) / (TOLERANCE * 5));
+			} else {
+				currentTarget = currentPath.pop();
 			}
 		}
 		walk(walkVelocity);
+	}
+	private boolean targetIsPatrolPoint() {
+		return currentPath.size() == 0;
 	}
 	private void waitAtPatrolPoint() {
 		walk(Vector2.Zero);
