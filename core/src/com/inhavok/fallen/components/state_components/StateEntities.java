@@ -1,7 +1,9 @@
 package com.inhavok.fallen.components.state_components;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
@@ -23,6 +25,7 @@ public final class StateEntities extends StateComponent {
 	private final ArrayList<Entity> previousState = new ArrayList<Entity>();
 	private final ArrayList<Entity> currentState = new ArrayList<Entity>();
 	private static final OrthographicCamera camera = new OrthographicCamera();
+	private static final float cameraSpeed = 2;
 	public StateEntities(final State state) {
 		super(state);
 	}
@@ -76,8 +79,18 @@ public final class StateEntities extends StateComponent {
 		spriteBatch.end();
 	}
 	private static void lookAt(final Vector2 point) {
-		camera.position.x = point.x;
-		camera.position.y = point.y;
+		final Vector2 toPlayer = new Vector2(point.sub(camera.position.x, camera.position.y));
+		final Vector2 moveVelocity = new Vector2(toPlayer).setLength(cameraSpeed).scl(Application.SECONDS_PER_STEP);
+		final float maximumDistance = 3;
+		if (toPlayer.len() / maximumDistance < 1) {
+			moveVelocity.scl(toPlayer.len() * toPlayer.len() * toPlayer.len() / maximumDistance);
+		} else if (toPlayer.len() / maximumDistance > 1) {
+			moveVelocity.scl(toPlayer.len() * toPlayer.len() * toPlayer.len() / maximumDistance);
+		}
+		camera.position.x += moveVelocity.x;
+		camera.position.y += moveVelocity.y;
+		System.out.println(camera.position.x);
+		System.out.println(camera.position.y);
 		camera.update();
 	}
 	public static void resize(final float width, final float height) {

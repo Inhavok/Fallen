@@ -30,8 +30,8 @@ public final class Application extends ApplicationAdapter {
 	private static float accumulatedTime;
 	@Override
 	public void create() {
-		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-		//Gdx.graphics.setWindowedMode(960, 600);
+		//Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		Gdx.graphics.setWindowedMode(960, 600);
 		Assets.initialise();
 		spriteBatch = new SpriteBatch();
 		EntityCanvas.initialise();
