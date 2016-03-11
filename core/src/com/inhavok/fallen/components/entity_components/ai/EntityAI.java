@@ -3,7 +3,6 @@ package com.inhavok.fallen.components.entity_components.ai;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 
-//TODO implement EntityAI
 public class EntityAI extends EntityComponent {
 	private final BehaviourTree behaviourTree;
 	public EntityAI(final BehaviourTree behaviourTree) {

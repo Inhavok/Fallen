@@ -38,7 +38,6 @@ public final class Player extends BipedalEntity {
 	private void faceCursor() {
 		execute(new GraphicsSetLayerRotation(PlayerGraphics.Layer.TORSO, MathUtils.atan2((Gdx.graphics.getHeight() - Gdx.input.getY() - Gdx.graphics.getHeight() / 2) / (float) Application.PIXELS_PER_METER, (Gdx.input.getX() - Gdx.graphics.getWidth() / 2) / (float) Application.PIXELS_PER_METER) * MathUtils.radiansToDegrees - 90));
 	}
-	//TODO calculate smallest equivalent angle
 	private void rotateLegs() {
 		final float rotation = requestData(new GraphicsGetRotation(), Float.class);
 		if (Math.abs(desiredLegsRotation - rotation) <= 15) {
@@ -48,13 +47,13 @@ public final class Player extends BipedalEntity {
 		}
 	}
 	@Override
-	void walkEvent(final float angle, final float greatestComponentLength) {
+	void beginWalkEvent(final float angle, final float greatestComponentLength) {
 		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING));
 		execute(new GraphicsSetAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, calculateFrameDuration(greatestComponentLength)));
 		desiredLegsRotation = angle - 90;
 	}
 	@Override
-	void stopEvent() {
+	void stopWalkEvent() {
 		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
 	}
 }

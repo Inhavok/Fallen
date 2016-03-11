@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetLinearVelocity;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.entity_components.ai.EntityAI;
@@ -61,10 +60,6 @@ public final class Facilitator extends BipedalEntity {
 		} else {
 			followTarget();
 		}
-		final Vector2 velocity = requestData(new PhysicsGetLinearVelocity(), Vector2.class);
-		if (GameMath.calGreatestComponentLength(velocity) == 0) {
-			execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
-		}
 		rotate();
 	}
 	private boolean waiting() {
@@ -105,9 +100,13 @@ public final class Facilitator extends BipedalEntity {
 		}
 	}
 	@Override
-	void walkEvent(float angle, float greatestComponentLength) {
+	void beginWalkEvent(float angle, float greatestComponentLength) {
 		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING));
 		execute(new GraphicsSetAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, calculateFrameDuration(greatestComponentLength)));
 		desiredRotation = angle - 90;
+	}
+	@Override
+	void stopWalkEvent() {
+		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
 	}
 }

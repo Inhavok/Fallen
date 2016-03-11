@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public final class Application extends ApplicationAdapter {
 	public static final float SECONDS_PER_STEP = 1/60f;
 	public static final int PIXELS_PER_METER = 16;
-	public static final int ZOOM_FACTOR = 4;
+	private static final int ZOOM_FACTOR = 4;
 	private static SpriteBatch spriteBatch;
 	private static final ArrayList<State> states = new ArrayList<State>();
 	private static State currentState;

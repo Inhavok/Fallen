@@ -6,7 +6,6 @@ import com.inhavok.fallen.utility.EntityCanvas;
 
 import java.util.ArrayList;
 
-//TODO implement Bullet
 public class Bullet extends Entity {
 	private final int x;
 	private final int y;
