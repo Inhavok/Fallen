@@ -15,7 +15,7 @@ public final class MenuState extends State {
         return components;
     }
     @Override
-    protected void handleKeyPress(int keycode) {
+    public void handleKeyPress(int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
             Gdx.app.exit();
         }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.*;
 
 public final class EntityPhysics extends EntityComponent {
 	private static final World world = new World(new Vector2(0, 0), true);
@@ -21,23 +20,7 @@ public final class EntityPhysics extends EntityComponent {
 	}
 	@Override
 	public void handleCommand(Command command) {
-		if (command.getMessage() == Message.CHANGE_LINEAR_VELOCITY) {
-			changeLinearVelocity(((PhysicsChangeLinearVelocity) command).getNewVelocity());
-		} else if (command.getMessage() == Message.GET_X) {
-			((PhysicsGetX) command).setData(getX());
-		} else if (command.getMessage() == Message.GET_Y) {
-			((PhysicsGetY) command).setData(getY());
-		} else if (command.getMessage() == Message.GET_ROTATION) {
-			((PhysicsGetRotation) command).setData(getRotation());
-		} else if (command.getMessage() == Message.GET_LINEAR_VELOCITY) {
-			((PhysicsGetLinearVelocity) command).setData(getLinearVelocity());
-		} else if (command.getMessage() == Message.SET_X) {
-			setX(((PhysicsSetX) command).getX());
-		} else if (command.getMessage() == Message.SET_Y) {
-			setY(((PhysicsSetY) command).getY());
-		} else if (command.getMessage() == Message.SET_ROTATION) {
-			setRotation(((PhysicsSetRotation) command).getAngle());
-		}
+		command.execute(this);
 	}
 	private void addRectangularFixture(final float width, final float height, BodyType bodyType) {
 		final FixtureDef fixtureDef = new FixtureDef();
@@ -65,34 +48,31 @@ public final class EntityPhysics extends EntityComponent {
 			polygonShape.dispose();
 		}
 	}
-	private void changeLinearVelocity(final Vector2 newVelocity) {
+	public void changeLinearVelocity(final Vector2 newVelocity) {
 		body.applyLinearImpulse(newVelocity.sub(body.getLinearVelocity()).scl(body.getMass()), body.getPosition(), true);
 	}
 	public static void dispose() {
 		world.dispose();
 	}
-	private float getX() {
+	public float getX() {
 		return body.getPosition().x;
 	}
-	private float getY() {
+	public float getY() {
 		return body.getPosition().y;
 	}
-	private float getRotation() {
+	public float getRotation() {
 		return body.getAngle();
 	}
-	private Vector2 getLinearVelocity() {
+	public Vector2 getLinearVelocity() {
 		return body.getLinearVelocity();
 	}
-	private void setX(final float x) {
+	public void setX(final float x) {
 		body.setTransform(x, body.getPosition().y, body.getAngle());
 	}
-	private void setY(final float y) {
+	public void setY(final float y) {
 		body.setTransform(body.getPosition().x, y, body.getAngle());
 	}
-	private void setRotation(final float angle) {
+	public void setRotation(final float angle) {
 		body.setTransform(body.getPosition().x, body.getPosition().y, angle);
-	}
-	public enum Message {
-		CHANGE_LINEAR_VELOCITY, GET_X, GET_Y, GET_ROTATION, GET_LINEAR_VELOCITY, SET_X, SET_Y, SET_ROTATION
 	}
 }

@@ -2,22 +2,16 @@ package com.inhavok.fallen.components.entity_components;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.components.state_components.StateUI;
 import com.inhavok.fallen.entities.characters.Player;
 
-public final class PlayerController extends EntityComponent {
+public final class PlayerController extends EntityController {
 	private final Player player;
 	public PlayerController(final Player player) {
 		this.player = player;
 	}
 	@Override
-	public void handleCommand(Command command) {
-		if (command.getMessage() == Message.UPDATE) {
-			update();
-		}
-	}
-	private void update() {
+	public void update() {
 		final float baseSpeed = player.getBaseSpeed();
 		final Vector2 walkVelocity = new Vector2();
 		if (StateUI.getKeysDown().contains(Input.Keys.W)) {
@@ -39,8 +33,5 @@ public final class PlayerController extends EntityComponent {
 			walkVelocity.scl(0.25f);
 		}
 		player.walk(walkVelocity);
-	}
-	public enum Message {
-		UPDATE
 	}
 }

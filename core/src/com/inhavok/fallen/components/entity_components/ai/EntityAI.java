@@ -10,11 +10,9 @@ public class EntityAI extends EntityComponent {
 	}
 	@Override
 	public void handleCommand(final Command command) {
-		if (command.getMessage() == Message.THINK) {
-			behaviourTree.execute();
-		}
+		command.execute(this);
 	}
-	public enum Message {
-		THINK
+	public void think() {
+		behaviourTree.execute();
 	}
 }

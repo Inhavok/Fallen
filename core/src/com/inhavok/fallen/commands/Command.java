@@ -5,7 +5,7 @@ public abstract class Command<T extends CommandListener> {
     protected Command(final Class<T> listeningClass) {
         this.listeningClass = listeningClass;
     }
-    public abstract Enum getMessage();
+    public abstract void execute(T listener);
     public final Class<T> getListeningClass() {
         return listeningClass;
     }

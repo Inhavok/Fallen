@@ -6,16 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesDraw;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesUpdate;
-import com.inhavok.fallen.commands.component_commands.state.state_ui.UIUpdate;
+import com.inhavok.fallen.commands.state.EntitiesCommand;
+import com.inhavok.fallen.commands.state.UICommand;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.state_components.StateEntities;
 import com.inhavok.fallen.components.state_components.StateUI;
 import com.inhavok.fallen.states.MenuState;
 import com.inhavok.fallen.states.PlayState;
 import com.inhavok.fallen.states.State;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesInterpolate;
 import com.inhavok.fallen.utility.EntityCanvas;
 
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ public final class Application extends ApplicationAdapter {
 	private static float accumulatedTime;
 	@Override
 	public void create() {
-		//Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		Gdx.graphics.setWindowedMode(960, 600);
 		Assets.initialise();
 		spriteBatch = new SpriteBatch();
@@ -51,19 +48,39 @@ public final class Application extends ApplicationAdapter {
 		while (accumulatedTime >= SECONDS_PER_STEP) {
 			EntityPhysics.step(SECONDS_PER_STEP, 8, 3);
 			currentState.update();
-			currentState.execute(new EntitiesUpdate());
-			currentState.execute(new UIUpdate());
+			currentState.execute(new EntitiesCommand() {
+				@Override
+				public void execute(StateEntities listener) {
+					listener.update();
+				}
+			});
+			currentState.execute(new UICommand() {
+				@Override
+				public void execute(StateUI listener) {
+					listener.update();
+				}
+			});
 			accumulatedTime -= SECONDS_PER_STEP;
 		}
 		if (accumulatedTime > 0) {
-			currentState.execute(new EntitiesInterpolate(accumulatedTime / SECONDS_PER_STEP));
+			currentState.execute(new EntitiesCommand() {
+				@Override
+				public void execute(StateEntities listener) {
+					listener.interpolate(accumulatedTime / SECONDS_PER_STEP);
+				}
+			});
 		}
 		StateUI.act();
 	}
 	private static void drawGraphics() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		currentState.execute(new EntitiesDraw(spriteBatch));
+		currentState.execute(new EntitiesCommand() {
+			@Override
+			public void execute(StateEntities listener) {
+				listener.draw(spriteBatch);
+			}
+		});
 		EntityCanvas.draw();
 		StateUI.draw();
 	}

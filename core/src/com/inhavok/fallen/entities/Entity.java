@@ -1,13 +1,12 @@
 package com.inhavok.fallen.entities;
 
-import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetX;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsGetY;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetX;
-import com.inhavok.fallen.commands.component_commands.entity.entity_physics.PhysicsSetY;
-import com.inhavok.fallen.commands.DataRequest;
+
+import com.inhavok.fallen.commands.*;
+import com.inhavok.fallen.commands.entity.GraphicsCommand;
+import com.inhavok.fallen.commands.entity.PhysicsCommand;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
+import com.inhavok.fallen.components.entity_components.EntityPhysics;
+import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 
 import java.util.ArrayList;
 
@@ -17,16 +16,26 @@ public abstract class Entity {
 		if (addComponents() != null) {
 			components.addAll(addComponents());
 		}
-		execute(new GraphicsSetX(x));
-		execute(new GraphicsSetY(y));
-		execute(new GraphicsSetRotation(angle));
-		execute(new PhysicsSetX(x));
-		execute(new PhysicsSetY(y));
+		execute(new GraphicsCommand() {
+			@Override
+			public void execute(EntityGraphics listener) {
+				listener.setX(x);
+				listener.setY(y);
+				listener.setRotation(angle);
+			}
+		});
+		execute(new PhysicsCommand() {
+			@Override
+			public void execute(EntityPhysics listener) {
+				listener.setX(x);
+				listener.setY(y);
+			}
+		});
 	}
 	protected abstract ArrayList<EntityComponent> addComponents();
 	public void update() {
 	}
-	public final <T extends EntityComponent> void execute(Command<T> command) {
+	public final <T extends EntityComponent> void execute(final Command<T> command) {
 		if (hasComponent(command.getListeningClass())) {
 			for (EntityComponent component : components) {
 				if (command.getListeningClass().isInstance(component)) {
@@ -34,17 +43,6 @@ public abstract class Entity {
 				}
 			}
 		}
-	}
-	public final <T extends EntityComponent, S> S requestData(DataRequest<T> dataRequest, Class<S> dataClass) {
-		if (hasComponent(dataRequest.getListeningClass())) {
-			for (EntityComponent component : components) {
-				if (dataRequest.getListeningClass().isInstance(component)) {
-					component.handleCommand(dataRequest);
-					return dataRequest.getData(dataClass);
-				}
-			}
-		}
-		throw new NullPointerException();
 	}
 	public <T extends EntityComponent> boolean hasComponent(Class<T> componentClass) {
 		return getComponent(componentClass) != null;
@@ -58,9 +56,23 @@ public abstract class Entity {
 		return null;
 	}
 	public float getX() {
-		return requestData(new PhysicsGetX(), Float.class);
+		final CommandData<Float> data = new CommandData<Float>();
+		execute(new PhysicsCommand() {
+			@Override
+			public void execute(EntityPhysics listener) {
+				data.setData(listener.getX());
+			}
+		});
+		return data.getData();
 	}
 	public float getY() {
-		return requestData(new PhysicsGetY(), Float.class);
+		final CommandData<Float> data = new CommandData<Float>();
+		execute(new PhysicsCommand() {
+			@Override
+			public void execute(EntityPhysics listener) {
+				data.setData(listener.getY());
+			}
+		});
+		return data.getData();
 	}
 }

@@ -5,7 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.inhavok.fallen.Application;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
+import com.inhavok.fallen.commands.state.EntitiesCommand;
+import com.inhavok.fallen.components.state_components.StateEntities;
 import com.inhavok.fallen.entities.characters.Facilitator;
 import com.inhavok.fallen.entities.environment.FloorTile;
 import com.inhavok.fallen.entities.environment.IceTile;
@@ -44,11 +45,23 @@ public final class Level {
 		int currentValue = 0;
 		for (int i = tileLayer.get("height").asInt() - 1; i >= 0; i--) {
 			for (int j = 0; j < tileLayer.get("width").asInt(); j++) {
+				final int x = j;
+				final int y = i;
 				if (tileLayer.get("data").get(currentValue).asInt() == 1) {
-					playState.execute(new EntitiesAdd(new FloorTile(j, i)));
+					playState.execute(new EntitiesCommand() {
+						@Override
+						public void execute(StateEntities listener) {
+							listener.add(new FloorTile(x, y));
+						}
+					});
 					tiles[j][i] = 1;
 				} else if (tileLayer.get("data").get(currentValue).asInt() == 14) {
-					playState.execute(new EntitiesAdd(new IceTile(j, i)));
+					playState.execute(new EntitiesCommand() {
+						@Override
+						public void execute(StateEntities listener) {
+							listener.add(new IceTile(x, y));
+						}
+					});
 					tiles[j][i] = 0;
 				}
 				currentValue++;
@@ -60,7 +73,12 @@ public final class Level {
 			if (interaction.get("name").asString().equals("spawnPoint")) {
 				final Vector2 spawnPoint = levelToPhysicsPosition(interaction.get("x").asInt(), interaction.get("y").asInt());
 				player = new Player(spawnPoint.x, spawnPoint.y, 0);
-				playState.execute(new EntitiesAdd(player));
+				playState.execute(new EntitiesCommand() {
+					@Override
+					public void execute(StateEntities listener) {
+						listener.add(player);
+					}
+				});
 			}
 		}
 	}
@@ -89,7 +107,12 @@ public final class Level {
 	private static void loadEnemy(final ArrayList<PatrolPoint> patrolPoints, final PlayState playState) {
 		final Facilitator facilitator = new Facilitator(patrolPoints);
 		enemies.add(facilitator);
-		playState.execute(new EntitiesAdd(facilitator));
+		playState.execute(new EntitiesCommand() {
+			@Override
+			public void execute(StateEntities listener) {
+				listener.add(facilitator);
+			}
+		});
 		patrolPoints.clear();
 	}
 	private static Vector2 levelToPhysicsPosition(float x, float y) {

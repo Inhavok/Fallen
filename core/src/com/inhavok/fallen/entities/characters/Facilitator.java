@@ -3,7 +3,8 @@ package com.inhavok.fallen.entities.characters;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.Application;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
+import com.inhavok.fallen.commands.CommandData;
+import com.inhavok.fallen.commands.entity.GraphicsCommand;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
 import com.inhavok.fallen.components.entity_components.ai.EntityAI;
@@ -92,21 +93,48 @@ public final class Facilitator extends BipedalEntity {
 		waitStopwatch = 0;
 	}
 	private void rotate() {
-		final float rotation = requestData(new GraphicsGetRotation(), Float.class);
+		final CommandData<Float> data = new CommandData<Float>();
+		execute(new GraphicsCommand() {
+			@Override
+			public void execute(EntityGraphics listener) {
+				data.setData(listener.getRotation());
+			}
+		});
+		final float rotation = data.getData();
 		if (Math.abs(desiredRotation - rotation) <= TOLERANCE * 5) {
-			execute(new GraphicsSetRotation(desiredRotation));
+			execute(new GraphicsCommand() {
+				@Override
+				public void execute(EntityGraphics listener) {
+					listener.setRotation(desiredRotation);
+				}
+			});
 		} else {
-			execute(new GraphicsSetRotation(rotation + 360 * Application.SECONDS_PER_STEP * GameMath.calDifferencePolarity(desiredRotation, rotation)));
+			execute(new GraphicsCommand() {
+				@Override
+				public void execute(EntityGraphics listener) {
+					listener.setRotation(rotation + 360 * Application.SECONDS_PER_STEP * GameMath.calDifferencePolarity(desiredRotation, rotation));
+				}
+			});
 		}
 	}
 	@Override
-	void beginWalkEvent(float angle, float greatestComponentLength) {
-		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING));
-		execute(new GraphicsSetAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, calculateFrameDuration(greatestComponentLength)));
+	void walkEvent(final float angle, final float greatestComponentLength) {
+		execute(new GraphicsCommand() {
+			@Override
+			public void execute(EntityGraphics listener) {
+				listener.setAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING);
+				listener.setAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, calculateFrameDuration(greatestComponentLength));
+			}
+		});
 		desiredRotation = angle - 90;
 	}
 	@Override
 	void stopWalkEvent() {
-		execute(new GraphicsSetAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE));
+		execute(new GraphicsCommand() {
+			@Override
+			public void execute(EntityGraphics listener) {
+				listener.setAnimation(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.IDLE);
+			}
+		});
 	}
 }

@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.Assets;
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.state_commands.HandleKeyPress;
+import com.inhavok.fallen.commands.state.StateCommand;
 import com.inhavok.fallen.states.State;
 
 import java.util.ArrayList;
@@ -28,9 +28,14 @@ public abstract class StateUI extends StateComponent {
 	public static void initialise(final Viewport viewport, final SpriteBatch spriteBatch) {
 		stage = new Stage(viewport, spriteBatch);
 		stage.addListener(new InputListener() {
-			public boolean keyDown(InputEvent event, int keycode) {
+			public boolean keyDown(InputEvent event, final int keycode) {
 				keysDown.add(keycode);
-				Application.stateCommand(new HandleKeyPress(keycode));
+				Application.stateCommand(new StateCommand() {
+					@Override
+					public void execute(State listener) {
+						listener.handleKeyPress(keycode);
+					}
+				});
 				return false;
 			}
 			public boolean keyUp(InputEvent event, int keycode) {
@@ -42,13 +47,9 @@ public abstract class StateUI extends StateComponent {
 	}
 	@Override
 	public void handleCommand(final Command command) {
-		if (command.getMessage() == Message.SHOW) {
-			table.setVisible(true);
-		} else if (command.getMessage() == Message.UPDATE) {
-			update();
-		}
+		command.execute(this);
 	}
-	void update() {
+	public void update() {
 	}
 	public static void act() {
 		stage.act();
@@ -60,6 +61,12 @@ public abstract class StateUI extends StateComponent {
 		stage.getViewport().update(width, height);
 		keysDown.clear();
 	}
+	public final void show() {
+		table.setVisible(true);
+	}
+	public final void hide() {
+		table.setVisible(false);
+	}
 	public static void dispose() {
 		stage.dispose();
 	}
@@ -68,8 +75,5 @@ public abstract class StateUI extends StateComponent {
 	}
 	final Table getTable() {
 		return table;
-	}
-	public enum Message {
-		SHOW, UPDATE
 	}
 }

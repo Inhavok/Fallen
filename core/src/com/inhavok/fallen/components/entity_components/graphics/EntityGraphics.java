@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
 import com.inhavok.fallen.components.entity_components.EntityComponent;
 import com.inhavok.fallen.components.entity_components.graphics.layers.AnimatedLayer;
 import com.inhavok.fallen.components.entity_components.graphics.layers.Layer;
@@ -36,41 +35,9 @@ public abstract class EntityGraphics extends EntityComponent {
 	abstract LinkedHashMap<Enum, Layer> addLayers();
 	@Override
 	public void handleCommand(Command command) {
-		if (command.getMessage() == Message.DRAW) {
-			draw(((GraphicsDraw) command).getSpriteBatch());
-		} else if (command.getMessage() == Message.ANIMATE) {
-			animate(((GraphicsAnimate) command).getDelta());
-		} else if (command.getMessage() == Message.GET_X) {
-			((GraphicsGetX) command).setData(getX());
-		} else if (command.getMessage() == Message.GET_Y) {
-			((GraphicsGetY) command).setData(getY());
-		} else if (command.getMessage() == Message.GET_ROTATION) {
-			((GraphicsGetRotation) command).setData(((Layer) layers.values().toArray()[0]).getRotation());
-		} else if (command.getMessage() == Message.SET_X) {
-			setX(((GraphicsSetX) command).getX());
-		} else if (command.getMessage() == Message.SET_Y) {
-			setY(((GraphicsSetY) command).getY());
-		} else if (command.getMessage() == Message.SET_ROTATION) {
-			setRotation(((GraphicsSetRotation) command).getAngle());
-		} else if (command.getMessage() == Message.SET_ANIMATION) {
-			final GraphicsSetAnimation graphicsSetAnimation = (GraphicsSetAnimation) command;
-			if (layers.get(graphicsSetAnimation.getLayer()) instanceof AnimatedLayer) {
-				final AnimatedLayer animatedLayer = (AnimatedLayer) layers.get(graphicsSetAnimation.getLayer());
-				if (animatedLayer.getAnimation() != animatedLayer.getAnimation(graphicsSetAnimation.getAnimation())) {
-					animatedLayer.setAnimation(graphicsSetAnimation.getAnimation());
-				}
-			}
-		} else if (command.getMessage() == Message.SET_ANIMATION_FRAME_DURATION) {
-			final GraphicsSetAnimationFrameDuration graphicsSetAnimationFrameDuration = (GraphicsSetAnimationFrameDuration) command;
-			if (layers.get(graphicsSetAnimationFrameDuration.getLayer()) instanceof AnimatedLayer) {
-				((AnimatedLayer) layers.get(graphicsSetAnimationFrameDuration.getLayer())).setAnimationFrameDuration(graphicsSetAnimationFrameDuration.getAnimation(), graphicsSetAnimationFrameDuration.getFrameDuration());
-			}
-		} else if (command.getMessage() == Message.SET_LAYER_ROTATION) {
-			final GraphicsSetLayerRotation graphicsSetLayerRotation = (GraphicsSetLayerRotation) command;
-			layers.get(graphicsSetLayerRotation.getLayer()).setRotation(graphicsSetLayerRotation.getRotation());
-		}
+		command.execute(this);
 	}
-	private void animate(final float delta) {
+	public void animate(final float delta) {
 		for (Layer layer : layers.values()) {
 			if (layer instanceof AnimatedLayer) {
 				((AnimatedLayer) layer).animate(delta);
@@ -87,7 +54,7 @@ public abstract class EntityGraphics extends EntityComponent {
 		textureRegions.add(atlasRegion);
 		return new Animation(1, textureRegions, PlayMode.LOOP);
 	}
-	private void draw(final SpriteBatch spriteBatch) {
+	public void draw(final SpriteBatch spriteBatch) {
 		for (Layer layer : layers.values()) {
 			final Sprite sprite = layer.getSprite();
 			spriteBatch.draw(new TextureRegion(sprite.getTexture(), sprite.getRegionX(), sprite.getRegionY(), sprite.getRegionWidth(), sprite.getRegionHeight()), x, y, width / 2, height / 2, width, height, sprite.getScaleX(), sprite.getScaleY(), layer.getRotation());
@@ -99,24 +66,43 @@ public abstract class EntityGraphics extends EntityComponent {
 	public final float getHeight() {
 		return height;
 	}
-	private float getX() {
+	public final float getX() {
 		return x + width / 2;
 	}
-	private float getY() {
+	public final float getY() {
 		return y + height / 2;
 	}
-	private void setX(final float x) {
+	public final float getRotation() {
+		return ((Layer) layers.values().toArray()[0]).getRotation();
+	}
+	public final float getLayerRotation(final Enum layer) {
+		return layers.get(layer).getRotation();
+	}
+	public final void setX(final float x) {
 		this.x = x - width / 2;
 	}
-	private void setY(final float y) {
+	public final void setY(final float y) {
 		this.y = y - height / 2;
 	}
-	private void setRotation(final float angle) {
+	public final void setRotation(final float angle) {
 		for (Layer layer : layers.values()) {
 			layer.setRotation(angle);
 		}
 	}
-	public enum Message {
-		ANIMATE, DRAW, GET_X, GET_Y, GET_ROTATION, SET_X, SET_Y, SET_ROTATION, SET_ANIMATION, SET_ANIMATION_FRAME_DURATION, SET_LAYER_ROTATION
+	public final void setLayerRotation(final Enum layer, final float rotation) {
+		layers.get(layer).setRotation(rotation);
+	}
+	public final void setAnimation(final Enum layer, final Enum animation) {
+		if (layers.get(layer) instanceof AnimatedLayer) {
+			final AnimatedLayer animatedLayer = (AnimatedLayer) layers.get(layer);
+			if (animatedLayer.getAnimation() != animatedLayer.getAnimation(animation)) {
+				animatedLayer.setAnimation(animation);
+			}
+		}
+	}
+	public final void setAnimationFrameDuration(final Enum layer, final Enum animation, final float frameDuration) {
+		if (layers.get(layer) instanceof AnimatedLayer) {
+			((AnimatedLayer) layers.get(layer)).setAnimationFrameDuration(animation, frameDuration);
+		}
 	}
 }

@@ -5,12 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.component_commands.entity.AIThink;
-import com.inhavok.fallen.commands.component_commands.entity.entity_graphics.*;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesAdd;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesDraw;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesInterpolate;
-import com.inhavok.fallen.commands.component_commands.state.state_entities.EntitiesLookAt;
+import com.inhavok.fallen.commands.CommandData;
+import com.inhavok.fallen.commands.entity.AICommand;
+import com.inhavok.fallen.commands.entity.GraphicsCommand;
 import com.inhavok.fallen.components.entity_components.ai.EntityAI;
 import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
 import com.inhavok.fallen.components.entity_components.EntityPhysics;
@@ -29,57 +26,85 @@ public final class StateEntities extends StateComponent {
 	}
 	@Override
 	public void handleCommand(Command command) {
-		if (command.getMessage() == Message.UPDATE) {
-			update();
-		} else if (command.getMessage() == Message.INTERPOLATE) {
-			interpolate(((EntitiesInterpolate) command).getAlpha());
-		} else if (command.getMessage() == Message.DRAW) {
-			draw(((EntitiesDraw) command).getSpriteBatch());
-		} else if (command.getMessage() == Message.ADD) {
-			currentState.add(((EntitiesAdd) command).getEntity());
-		} else if (command.getMessage() == Message.LOOK_AT) {
-			lookAt(((EntitiesLookAt) command).getPoint());
-		}
+		command.execute(this);
 	}
-	private void update() {
+	public void update() {
 		previousState.clear();
 		previousState.addAll(currentState);
-		for (Entity entity : currentState) {
+		for (final Entity entity : currentState) {
 			entity.update();
 			if (entity.hasComponent(EntityAI.class)) {
-				entity.execute(new AIThink());
+				entity.execute(new AICommand() {
+					@Override
+					public void execute(EntityAI listener) {
+						listener.think();
+					}
+				});
 			}
 			if (entity.hasComponent(EntityGraphics.class) && entity.hasComponent(EntityPhysics.class)) {
-				entity.execute(new GraphicsSetX(entity.getX()));
-				entity.execute(new GraphicsSetY(entity.getY()));
-				entity.execute(new GraphicsAnimate(Application.SECONDS_PER_STEP));
+				entity.execute(new GraphicsCommand() {
+					@Override
+					public void execute(EntityGraphics listener) {
+						listener.setX(entity.getX());
+						listener.setY(entity.getY());
+						listener.animate(Application.SECONDS_PER_STEP);
+					}
+				});
 			}
 		}
 	}
-	private void interpolate(final float alpha) {
+	public void interpolate(final float alpha) {
 		int currentEntityID = 0;
-		for (Entity interpolatedEntity : previousState) {
+		for (final Entity interpolatedEntity : previousState) {
 			if (interpolatedEntity.hasComponent(EntityGraphics.class) && interpolatedEntity.hasComponent(EntityPhysics.class)) {
 				final Entity currentEntity = currentState.get(currentEntityID);
-				interpolatedEntity.execute(new GraphicsSetX(interpolatedEntity.requestData(new GraphicsGetX(), Float.class) + (currentEntity.requestData(new GraphicsGetX(), Float.class) - interpolatedEntity.requestData(new GraphicsGetX(), Float.class)) * alpha));
-				interpolatedEntity.execute(new GraphicsSetY(interpolatedEntity.requestData(new GraphicsGetY(), Float.class) + (currentEntity.requestData(new GraphicsGetY(), Float.class) - interpolatedEntity.requestData(new GraphicsGetY(), Float.class)) * alpha));
+				interpolatedEntity.execute(new GraphicsCommand() {
+					@Override
+					public void execute(EntityGraphics listener) {
+						final CommandData<Float> previousXData = new CommandData<Float>();
+						final CommandData<Float> previousYData = new CommandData<Float>();
+						final CommandData<Float> nextXData = new CommandData<Float>();
+						final CommandData<Float> nextYData = new CommandData<Float>();
+						interpolatedEntity.execute(new GraphicsCommand() {
+							@Override
+							public void execute(EntityGraphics listener) {
+								previousXData.setData(listener.getX());
+								previousYData.setData(listener.getY());
+							}
+						});
+						currentEntity.execute(new GraphicsCommand() {
+							@Override
+							public void execute(EntityGraphics listener) {
+								nextXData.setData(listener.getX());
+								nextYData.setData(listener.getY());
+							}
+						});
+						listener.setX(previousXData.getData() + (nextXData.getData() - previousXData.getData()) * alpha);
+						listener.setY(previousYData.getData() + (nextYData.getData() - previousYData.getData()) * alpha);
+					}
+				});
 			}
 			currentEntityID++;
 		}
 	}
-	private void draw(final SpriteBatch spriteBatch) {
+	public void draw(final SpriteBatch spriteBatch) {
 		camera.update();
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
 		for (Entity entity : previousState) {
-			entity.execute(new GraphicsDraw(spriteBatch));
+			entity.execute(new GraphicsCommand() {
+				@Override
+				public void execute(EntityGraphics listener) {
+					listener.draw(spriteBatch);
+				}
+			});
 		}
 		spriteBatch.end();
 	}
-	private static void lookAt(final Vector2 point) {
-		final Vector2 toPlayer = new Vector2(point.sub(camera.position.x, camera.position.y));
-		if (toPlayer.len() > 0.5) {
-			final Vector2 moveVelocity = new Vector2(toPlayer).setLength(cameraSpeed).scl(Application.SECONDS_PER_STEP).scl((float) Math.pow(toPlayer.len(), 5));
+	public static void lookAt(final float x, final float y) {
+		final Vector2 toEntity = new Vector2(new Vector2(x, y).sub(camera.position.x, camera.position.y));
+		if (toEntity.len() > 0.5) {
+			final Vector2 moveVelocity = new Vector2(toEntity).setLength(cameraSpeed).scl(Application.SECONDS_PER_STEP).scl((float) Math.pow(toEntity.len(), 5));
 			camera.position.x += moveVelocity.x;
 			camera.position.y += moveVelocity.y;
 			camera.update();
@@ -90,7 +115,7 @@ public final class StateEntities extends StateComponent {
 		camera.viewportHeight = height;
 		camera.update();
 	}
-	public enum Message {
-		UPDATE, INTERPOLATE, DRAW, ADD, LOOK_AT
+	public void add(final Entity entity) {
+		currentState.add(entity);
 	}
 }

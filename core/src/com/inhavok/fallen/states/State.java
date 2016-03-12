@@ -2,9 +2,9 @@ package com.inhavok.fallen.states;
 
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.CommandListener;
-import com.inhavok.fallen.commands.component_commands.state.state_ui.UIShow;
-import com.inhavok.fallen.commands.state_commands.HandleKeyPress;
+import com.inhavok.fallen.commands.state.UICommand;
 import com.inhavok.fallen.components.state_components.StateComponent;
+import com.inhavok.fallen.components.state_components.StateUI;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,12 @@ public abstract class State implements CommandListener {
 	}
 	abstract ArrayList<StateComponent> addComponents();
 	public final void activate() {
-		execute(new UIShow());
+		execute(new UICommand() {
+			@Override
+			public void execute(StateUI listener) {
+				listener.show();
+			}
+		});
 	}
 	public <T extends StateComponent> void execute(Command<T> command) {
 		if (hasComponent(command.getListeningClass())) {
@@ -30,11 +35,11 @@ public abstract class State implements CommandListener {
 	}
 	@Override
 	public void handleCommand(Command command) {
-		if (command.getMessage() == Message.HANDLE_KEY_PRESS) {
-			handleKeyPress(((HandleKeyPress) command).getKeycode());
-		}
+		command.execute(this);
 	}
-	void handleKeyPress(int keycode) {
+	public void handleKeyPress(final int keycode) {
+	}
+	public void handleKeyRelease(final int keycode) {
 	}
 	private <T extends StateComponent> boolean hasComponent(Class<T> componentClass) {
 		return getComponent(componentClass) != null;
@@ -49,8 +54,5 @@ public abstract class State implements CommandListener {
 	}
 	public final ArrayList<StateComponent> getComponents() {
 		return components;
-	}
-	public enum Message {
-		HANDLE_KEY_PRESS
 	}
 }
