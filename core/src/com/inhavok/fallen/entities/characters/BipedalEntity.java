@@ -15,17 +15,15 @@ public abstract class BipedalEntity extends Entity {
 		this.baseSpeed = baseSpeed;
 	}
 	public final void walk(final Vector2 walkVelocity) {
-		final CommandData<Vector2> data = new CommandData<Vector2>();
 		execute(new PhysicsCommand() {
 			@Override
 			public void execute(EntityPhysics listener) {
 				listener.changeLinearVelocity(walkVelocity);
-				data.setData(listener.getLinearVelocity());
 			}
 		});
-		final float greatestComponentLength = GameMath.calGreatestComponentLength(data.getData());
+		final float greatestComponentLength = GameMath.calGreatestComponentLength(walkVelocity);
 		if (greatestComponentLength > 0) {
-			walkEvent(data.getData().angle(), greatestComponentLength);
+			walkEvent(walkVelocity.angle(), greatestComponentLength);
 			walking = true;
 		} else if (walking) {
 			stopWalkEvent();

@@ -49,7 +49,7 @@ public final class EntityPhysics extends EntityComponent {
 		}
 	}
 	public void changeLinearVelocity(final Vector2 newVelocity) {
-		body.applyLinearImpulse(newVelocity.sub(body.getLinearVelocity()).scl(body.getMass()), body.getPosition(), true);
+		body.applyLinearImpulse(new Vector2(newVelocity).sub(body.getLinearVelocity()).scl(body.getMass()), body.getPosition(), true);
 	}
 	public static void dispose() {
 		world.dispose();
