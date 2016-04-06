@@ -1,9 +1,8 @@
 package com.inhavok.fallen.entities.characters;
 
 import com.badlogic.gdx.math.Vector2;
-import com.inhavok.fallen.commands.CommandData;
 import com.inhavok.fallen.commands.entity.PhysicsCommand;
-import com.inhavok.fallen.components.entity_components.EntityPhysics;
+import com.inhavok.fallen.entity_components.EntityPhysics;
 import com.inhavok.fallen.entities.Entity;
 import com.inhavok.fallen.utility.GameMath;
 

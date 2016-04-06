@@ -1,4 +1,4 @@
-package com.inhavok.fallen.components.entity_components;
+package com.inhavok.fallen.entity_components;
 
 import com.inhavok.fallen.commands.CommandListener;
 

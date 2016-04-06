@@ -1,4 +1,4 @@
-package com.inhavok.fallen.components.entity_components.ai;
+package com.inhavok.fallen.entity_components.ai;
 
 public abstract class SelectorNode extends BehaviourNode {
     private final Condition condition;

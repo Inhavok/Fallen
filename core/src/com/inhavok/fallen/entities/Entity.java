@@ -4,9 +4,9 @@ package com.inhavok.fallen.entities;
 import com.inhavok.fallen.commands.*;
 import com.inhavok.fallen.commands.entity.GraphicsCommand;
 import com.inhavok.fallen.commands.entity.PhysicsCommand;
-import com.inhavok.fallen.components.entity_components.EntityComponent;
-import com.inhavok.fallen.components.entity_components.EntityPhysics;
-import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
+import com.inhavok.fallen.entity_components.EntityComponent;
+import com.inhavok.fallen.entity_components.EntityPhysics;
+import com.inhavok.fallen.entity_components.graphics.EntityGraphics;
 
 import java.util.ArrayList;
 
@@ -56,23 +56,33 @@ public abstract class Entity {
 		return null;
 	}
 	public float getX() {
-		final CommandData<Float> data = new CommandData<Float>();
+		final Data<Float> data = new Data<Float>();
 		execute(new PhysicsCommand() {
 			@Override
 			public void execute(EntityPhysics listener) {
-				data.setData(listener.getX());
+				data.a = listener.getX();
 			}
 		});
-		return data.getData();
+		return data.a;
 	}
 	public float getY() {
-		final CommandData<Float> data = new CommandData<Float>();
+		final Data<Float> data = new Data<Float>();
 		execute(new PhysicsCommand() {
 			@Override
 			public void execute(EntityPhysics listener) {
-				data.setData(listener.getY());
+				data.a = listener.getY();
 			}
 		});
-		return data.getData();
+		return data.a;
+	}
+	public float getGraphicsRotation() {
+		final Data<Float> data = new Data<Float>();
+		execute(new GraphicsCommand() {
+			@Override
+			public void execute(EntityGraphics listener) {
+				data.a = listener.getRotation();
+			}
+		});
+		return data.a;
 	}
 }

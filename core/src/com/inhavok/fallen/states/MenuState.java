@@ -2,8 +2,8 @@ package com.inhavok.fallen.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.inhavok.fallen.components.state_components.MenuStateUI;
-import com.inhavok.fallen.components.state_components.StateComponent;
+import com.inhavok.fallen.state_components.MenuStateUI;
+import com.inhavok.fallen.state_components.StateComponent;
 
 import java.util.ArrayList;
 

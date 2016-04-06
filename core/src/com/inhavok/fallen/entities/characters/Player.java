@@ -4,14 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.Application;
-import com.inhavok.fallen.commands.CommandData;
+import com.inhavok.fallen.commands.Data;
 import com.inhavok.fallen.commands.entity.GraphicsCommand;
-import com.inhavok.fallen.components.entity_components.EntityComponent;
-import com.inhavok.fallen.components.entity_components.PlayerController;
-import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
-import com.inhavok.fallen.components.entity_components.EntityPhysics;
-import com.inhavok.fallen.components.entity_components.graphics.PlayerGraphics;
-import com.inhavok.fallen.components.entity_components.graphics.layers.PlayerLegsLayer;
+import com.inhavok.fallen.entity_components.EntityComponent;
+import com.inhavok.fallen.entity_components.controllers.PlayerController;
+import com.inhavok.fallen.entity_components.graphics.EntityGraphics;
+import com.inhavok.fallen.entity_components.EntityPhysics;
+import com.inhavok.fallen.entity_components.graphics.PlayerGraphics;
+import com.inhavok.fallen.entity_components.graphics.layers.PlayerLegsLayer;
 import com.inhavok.fallen.utility.GameMath;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public final class Player extends BipedalEntity {
 	protected ArrayList<EntityComponent> addComponents() {
 		final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
 		final EntityGraphics graphics = new PlayerGraphics();
-		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.3f, graphics.getHeight() - 0.3f, BodyDef.BodyType.DynamicBody);
+		final EntityPhysics physics = new EntityPhysics(graphics.getWidth() - 0.3f, graphics.getHeight() - 0.3f, BodyDef.BodyType.DynamicBody, "");
 		components.add(graphics);
 		components.add(physics);
 		components.add(new PlayerController(this));
@@ -45,14 +45,14 @@ public final class Player extends BipedalEntity {
 		});
 	}
 	private void rotateLegs() {
-		final CommandData<Float> data = new CommandData<Float>();
+		final Data<Float> data = new Data<Float>();
 		execute(new GraphicsCommand() {
 			@Override
 			public void execute(EntityGraphics listener) {
-				data.setData(listener.getLayerRotation(PlayerGraphics.Layer.LEGS));
+				data.a = listener.getLayerRotation(PlayerGraphics.Layer.LEGS);
 			}
 		});
-		final float legsRotation = data.getData();
+		final float legsRotation = data.a;
 		if (Math.abs(desiredLegsRotation - legsRotation) > 10) {
 			execute(new GraphicsCommand() {
 				@Override

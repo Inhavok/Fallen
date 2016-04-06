@@ -1,16 +1,16 @@
-package com.inhavok.fallen.components.state_components;
+package com.inhavok.fallen.state_components;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.CommandData;
+import com.inhavok.fallen.commands.Data;
 import com.inhavok.fallen.commands.entity.AICommand;
 import com.inhavok.fallen.commands.entity.GraphicsCommand;
-import com.inhavok.fallen.components.entity_components.ai.EntityAI;
-import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
-import com.inhavok.fallen.components.entity_components.EntityPhysics;
+import com.inhavok.fallen.entity_components.ai.EntityAI;
+import com.inhavok.fallen.entity_components.graphics.EntityGraphics;
+import com.inhavok.fallen.entity_components.EntityPhysics;
 import com.inhavok.fallen.entities.Entity;
 import com.inhavok.fallen.states.State;
 
@@ -61,26 +61,26 @@ public final class StateEntities extends StateComponent {
 				interpolatedEntity.execute(new GraphicsCommand() {
 					@Override
 					public void execute(EntityGraphics listener) {
-						final CommandData<Float> previousXData = new CommandData<Float>();
-						final CommandData<Float> previousYData = new CommandData<Float>();
-						final CommandData<Float> nextXData = new CommandData<Float>();
-						final CommandData<Float> nextYData = new CommandData<Float>();
+						final Data<Float> previousXData = new Data<Float>();
+						final Data<Float> previousYData = new Data<Float>();
+						final Data<Float> nextXData = new Data<Float>();
+						final Data<Float> nextYData = new Data<Float>();
 						interpolatedEntity.execute(new GraphicsCommand() {
 							@Override
 							public void execute(EntityGraphics listener) {
-								previousXData.setData(listener.getX());
-								previousYData.setData(listener.getY());
+								previousXData.a = listener.getX();
+								previousYData.a = listener.getY();
 							}
 						});
 						currentEntity.execute(new GraphicsCommand() {
 							@Override
 							public void execute(EntityGraphics listener) {
-								nextXData.setData(listener.getX());
-								nextYData.setData(listener.getY());
+								nextXData.a = listener.getX();
+								nextYData.a = listener.getY();
 							}
 						});
-						listener.setX(previousXData.getData() + (nextXData.getData() - previousXData.getData()) * alpha);
-						listener.setY(previousYData.getData() + (nextYData.getData() - previousYData.getData()) * alpha);
+						listener.setX(previousXData.a + (nextXData.a - previousXData.a) * alpha);
+						listener.setY(previousYData.a + (nextYData.a - previousYData.a) * alpha);
 					}
 				});
 			}
@@ -117,5 +117,8 @@ public final class StateEntities extends StateComponent {
 	}
 	public void add(final Entity entity) {
 		currentState.add(entity);
+	}
+	public static OrthographicCamera getCamera() {
+		return camera;
 	}
 }

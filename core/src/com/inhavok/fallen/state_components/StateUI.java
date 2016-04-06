@@ -1,4 +1,4 @@
-package com.inhavok.fallen.components.state_components;
+package com.inhavok.fallen.state_components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

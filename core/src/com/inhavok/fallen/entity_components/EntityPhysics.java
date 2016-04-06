@@ -1,22 +1,32 @@
-package com.inhavok.fallen.components.entity_components;
+package com.inhavok.fallen.entity_components;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.inhavok.fallen.commands.Command;
+import com.inhavok.fallen.utility.Ray;
 
 public final class EntityPhysics extends EntityComponent {
 	private static final World world = new World(new Vector2(0, 0), true);
 	private final Body body;
 	public EntityPhysics(final float width, final float height, final BodyType bodyType) {
+		this(width, height, bodyType, null);
+	}
+	public EntityPhysics(final float width, final float height, final BodyType bodyType, final String data) {
 		final BodyDef bodyDef = new BodyDef();
 		bodyDef.type = bodyType;
 		bodyDef.fixedRotation = true;
 		body = world.createBody(bodyDef);
 		addRectangularFixture(width, height, bodyType);
+		body.setUserData(data);
 	}
 	public static void step(final float timeStep, final int velocityIterations, final int positionIterations) {
 		world.step(timeStep, velocityIterations, positionIterations);
+	}
+	public static void addRay(final Ray ray) {
+		world.rayCast(ray.getCallback(), ray.getStartPoint(), ray.getEndPoint());
+		ray.collision();
+		//EntityCanvas.drawVector(ray.getStartPoint().x, ray.getStartPoint().y, ray.getActualEndPoint().x, ray.getActualEndPoint().y);
 	}
 	@Override
 	public void handleCommand(Command command) {

@@ -1,4 +1,4 @@
-package com.inhavok.fallen.components.entity_components.graphics;
+package com.inhavok.fallen.entity_components.graphics;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
@@ -9,9 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.components.entity_components.EntityComponent;
-import com.inhavok.fallen.components.entity_components.graphics.layers.AnimatedLayer;
-import com.inhavok.fallen.components.entity_components.graphics.layers.Layer;
+import com.inhavok.fallen.entity_components.EntityComponent;
+import com.inhavok.fallen.entity_components.graphics.layers.AnimatedLayer;
+import com.inhavok.fallen.entity_components.graphics.layers.Layer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

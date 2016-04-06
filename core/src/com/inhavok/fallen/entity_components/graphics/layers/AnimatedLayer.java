@@ -1,4 +1,4 @@
-package com.inhavok.fallen.components.entity_components.graphics.layers;
+package com.inhavok.fallen.entity_components.graphics.layers;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;

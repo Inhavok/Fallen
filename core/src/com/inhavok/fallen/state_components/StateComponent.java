@@ -1,4 +1,4 @@
-package com.inhavok.fallen.components.state_components;
+package com.inhavok.fallen.state_components;
 
 import com.inhavok.fallen.commands.CommandListener;
 import com.inhavok.fallen.states.State;

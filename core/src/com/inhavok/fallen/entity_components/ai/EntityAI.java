@@ -1,7 +1,7 @@
-package com.inhavok.fallen.components.entity_components.ai;
+package com.inhavok.fallen.entity_components.ai;
 
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.components.entity_components.EntityComponent;
+import com.inhavok.fallen.entity_components.EntityComponent;
 
 public class EntityAI extends EntityComponent {
 	private final BehaviourTree behaviourTree;

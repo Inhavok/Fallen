@@ -1,18 +1,20 @@
 package com.inhavok.fallen.entities.characters;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.Application;
-import com.inhavok.fallen.commands.CommandData;
+import com.inhavok.fallen.commands.Data;
 import com.inhavok.fallen.commands.entity.GraphicsCommand;
-import com.inhavok.fallen.components.entity_components.EntityComponent;
-import com.inhavok.fallen.components.entity_components.EntityPhysics;
-import com.inhavok.fallen.components.entity_components.ai.EntityAI;
-import com.inhavok.fallen.components.entity_components.ai.BehaviourTree;
-import com.inhavok.fallen.components.entity_components.ai.facilitator.TestNode;
-import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
-import com.inhavok.fallen.components.entity_components.graphics.PlayerGraphics;
-import com.inhavok.fallen.components.entity_components.graphics.layers.PlayerLegsLayer;
+import com.inhavok.fallen.entity_components.EntityComponent;
+import com.inhavok.fallen.entity_components.EntityPhysics;
+import com.inhavok.fallen.utility.Ray;
+import com.inhavok.fallen.entity_components.ai.EntityAI;
+import com.inhavok.fallen.entity_components.ai.BehaviourTree;
+import com.inhavok.fallen.entity_components.ai.facilitator.TestNode;
+import com.inhavok.fallen.entity_components.graphics.EntityGraphics;
+import com.inhavok.fallen.entity_components.graphics.PlayerGraphics;
+import com.inhavok.fallen.entity_components.graphics.layers.PlayerLegsLayer;
 import com.inhavok.fallen.utility.GameMath;
 import com.inhavok.fallen.utility.Level.PatrolPoint;
 import com.inhavok.fallen.utility.Pathfinder;
@@ -27,6 +29,7 @@ public final class Facilitator extends BipedalEntity {
 	private float waitStopwatch = WAIT_DELAY;
 	private final Stack<Vector2> currentPath = new Stack<Vector2>();
 	private Vector2 currentTarget;
+	private final Vector2 enemyPosition = new Vector2();
 	private static final float TOLERANCE = 0.05f;
 	private float desiredRotation;
 	public Facilitator(final ArrayList<PatrolPoint> patrolPoints) {
@@ -47,21 +50,47 @@ public final class Facilitator extends BipedalEntity {
 	}
 	@Override
 	public void update() {
-		final Vector2 currentPatrolPoint = patrolPoints.get(this.currentPatrolPoint).getPoint();
-		if (GameMath.closeTo(currentPatrolPoint.x, currentPatrolPoint.y, getX(), getY(), TOLERANCE)) {
-			if (waiting()) {
-				waitStopwatch += Application.SECONDS_PER_STEP;
-				if (!waiting()) {
-					calculateNextPatrolPoint();
-					followTarget();
+		if (foundEnemy()) {
+			walk(Vector2.Zero);
+			desiredRotation = enemyPosition.sub(getX(), getY()).angle() - 90;
+			rotate();
+		} else {
+			final Vector2 currentPatrolPoint = patrolPoints.get(this.currentPatrolPoint).getPoint();
+			if (GameMath.closeTo(currentPatrolPoint.x, currentPatrolPoint.y, getX(), getY(), TOLERANCE)) {
+				if (waiting()) {
+					waitStopwatch += Application.SECONDS_PER_STEP;
+					if (!waiting()) {
+						calculateNextPatrolPoint();
+						followTarget();
+					}
+				} else {
+					waitAtPatrolPoint();
 				}
 			} else {
-				waitAtPatrolPoint();
+				followTarget();
 			}
-		} else {
-			followTarget();
+			rotate();
 		}
-		rotate();
+	}
+	private boolean foundEnemy() {
+		final double fov = 130 * MathUtils.degreesToRadians;
+		final double rayAngleIncrement = fov / 100;
+		for (double i = -fov / 2; i <= fov / 2; i += rayAngleIncrement) {
+			final boolean[] foundEnemy = {false};
+			EntityPhysics.addRay(new Ray(new Vector2(getX(), getY()), (float) ((MathUtils.degreesToRadians * getGraphicsRotation()) + i + Math.PI / 2)) {
+				@Override
+				public void collision() {
+					if (getHitFixture().getBody().getUserData() != null) {
+						enemyPosition.set(getHitFixture().getBody().getPosition());
+						foundEnemy[0] = true;
+					}
+				}
+			});
+			if (foundEnemy[0]) {
+				return true;
+			}
+		}
+		return false;
 	}
 	private boolean waiting() {
 		return waitStopwatch < WAIT_DELAY;
@@ -93,14 +122,14 @@ public final class Facilitator extends BipedalEntity {
 		waitStopwatch = 0;
 	}
 	private void rotate() {
-		final CommandData<Float> data = new CommandData<Float>();
+		final Data<Float> data = new Data<Float>();
 		execute(new GraphicsCommand() {
 			@Override
 			public void execute(EntityGraphics listener) {
-				data.setData(listener.getRotation());
+				data.a = listener.getRotation();
 			}
 		});
-		final float rotation = data.getData();
+		final float rotation = data.a;
 		if (Math.abs(desiredRotation - rotation) > 7) {
 			execute(new GraphicsCommand() {
 				@Override

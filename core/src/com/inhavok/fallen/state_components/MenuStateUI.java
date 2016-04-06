@@ -1,4 +1,4 @@
-package com.inhavok.fallen.components.state_components;
+package com.inhavok.fallen.state_components;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.inhavok.fallen.Assets;

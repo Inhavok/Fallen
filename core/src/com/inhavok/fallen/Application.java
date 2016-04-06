@@ -8,9 +8,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.state.EntitiesCommand;
 import com.inhavok.fallen.commands.state.UICommand;
-import com.inhavok.fallen.components.entity_components.EntityPhysics;
-import com.inhavok.fallen.components.state_components.StateEntities;
-import com.inhavok.fallen.components.state_components.StateUI;
+import com.inhavok.fallen.entity_components.EntityPhysics;
+import com.inhavok.fallen.state_components.StateEntities;
+import com.inhavok.fallen.state_components.StateUI;
 import com.inhavok.fallen.states.MenuState;
 import com.inhavok.fallen.states.PlayState;
 import com.inhavok.fallen.states.State;
@@ -81,16 +81,16 @@ public final class Application extends ApplicationAdapter {
 				listener.draw(spriteBatch);
 			}
 		});
-		EntityCanvas.draw();
+		EntityCanvas.draw(StateEntities.getCamera().combined);
 		StateUI.draw();
 	}
 	public static void stateCommand(final Command command) {
 		currentState.handleCommand(command);
 	}
-	public static int getVisibleWidth() {
+	private static int getVisibleWidth() {
 		return Gdx.graphics.getWidth() / (PIXELS_PER_METER * ZOOM_FACTOR);
 	}
-	public static int getVisibleHeight() {
+	private static int getVisibleHeight() {
 		return Gdx.graphics.getHeight() / (PIXELS_PER_METER * ZOOM_FACTOR);
 	}
 	@Override

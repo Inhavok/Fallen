@@ -1,7 +1,7 @@
 package com.inhavok.fallen.entities.environment;
 
-import com.inhavok.fallen.components.entity_components.EntityComponent;
-import com.inhavok.fallen.components.entity_components.graphics.FloorTileGraphics;
+import com.inhavok.fallen.entity_components.EntityComponent;
+import com.inhavok.fallen.entity_components.graphics.FloorTileGraphics;
 import com.inhavok.fallen.entities.Entity;
 
 import java.util.ArrayList;

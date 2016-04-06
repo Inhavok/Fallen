@@ -1,35 +1,31 @@
 package com.inhavok.fallen.utility;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.inhavok.fallen.Application;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
 
 public final class EntityCanvas {
-	private static SpriteBatch spriteBatch;
-	private static Pixmap pixmap;
-	private static Texture texture;
-	private static boolean clearOnDraw;
+	private static ShapeRenderer shapeRenderer = new ShapeRenderer();
+	private static final ArrayList<Pair<Vector2, Vector2>> vectors = new ArrayList<Pair<Vector2, Vector2>>();
 	private EntityCanvas() {
 	}
 	public static void initialise() {
-		spriteBatch = new SpriteBatch();
+		shapeRenderer = new ShapeRenderer();
 	}
-	public static void draw() {
-		spriteBatch.begin();
-		//spriteBatch.draw(texture, 0, 0);
-		spriteBatch.end();
-		clearOnDraw = true;
-	}
-	public static void drawVector(final int x1, final int y1, final int x2, final int y2) {
-		if (pixmap == null) {
-			pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
+	public static void draw(final Matrix4 projection) {
+		shapeRenderer.setProjectionMatrix(projection);
+		shapeRenderer.setColor(1, 1, 1, 1);
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+		for (Pair<Vector2, Vector2> vector : vectors) {
+			shapeRenderer.line(vector.getKey(), vector.getValue());
 		}
-		pixmap.setColor(1, 1, 1, 1);
-		pixmap.drawLine(x1 * Application.PIXELS_PER_METER, flipY(y1 * Application.PIXELS_PER_METER), x2 * Application.PIXELS_PER_METER, flipY(y2 * Application.PIXELS_PER_METER));
+		shapeRenderer.end();
+		vectors.clear();
 	}
-	private static int flipY(final int y) {
-		return pixmap.getHeight() - y;
+	public static void drawVector(final float x1, final float y1, final float x2, final float y2) {
+		vectors.add(new Pair<Vector2, Vector2>(new Vector2(x1, y1), new Vector2(x2, y2)));
 	}
 }

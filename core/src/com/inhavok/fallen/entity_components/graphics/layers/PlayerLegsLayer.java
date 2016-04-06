@@ -1,7 +1,7 @@
-package com.inhavok.fallen.components.entity_components.graphics.layers;
+package com.inhavok.fallen.entity_components.graphics.layers;
 
 import com.inhavok.fallen.Assets;
-import com.inhavok.fallen.components.entity_components.graphics.EntityGraphics;
+import com.inhavok.fallen.entity_components.graphics.EntityGraphics;
 
 import java.util.HashMap;
 

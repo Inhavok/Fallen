@@ -6,6 +6,7 @@ import java.util.*;
 
 public final class Pathfinder {
 	private static ArrayList<ArrayList<Node>> nodes;
+	@SuppressWarnings("Since15")
 	private static final PriorityQueue<Node> openList = new PriorityQueue<Node>(new Comparator<Node>() {
 		@Override
 		public int compare(Node o1, Node o2) {
@@ -71,7 +72,7 @@ public final class Pathfinder {
 		}
 		if (adjacentNode != null && !closedList.contains(adjacentNode)) {
 			final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, adjacentNode.x, adjacentNode.y);
-			if ((openList.contains(adjacentNode) && newG < adjacentNode.g) || !openList.contains(adjacentNode)) {
+			if (!openList.contains(adjacentNode) || newG < adjacentNode.g) {
 				adjacentNode.g = newG;
 				adjacentNode.parent = parentNode;
 			}

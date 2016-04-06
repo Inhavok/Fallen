@@ -3,8 +3,8 @@ package com.inhavok.fallen.states;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.commands.CommandListener;
 import com.inhavok.fallen.commands.state.UICommand;
-import com.inhavok.fallen.components.state_components.StateComponent;
-import com.inhavok.fallen.components.state_components.StateUI;
+import com.inhavok.fallen.state_components.StateComponent;
+import com.inhavok.fallen.state_components.StateUI;
 
 import java.util.ArrayList;
 

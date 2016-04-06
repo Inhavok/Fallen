@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.state.EntitiesCommand;
-import com.inhavok.fallen.components.state_components.StateEntities;
+import com.inhavok.fallen.state_components.StateEntities;
 import com.inhavok.fallen.entities.characters.Facilitator;
 import com.inhavok.fallen.entities.environment.FloorTile;
 import com.inhavok.fallen.entities.environment.IceTile;
