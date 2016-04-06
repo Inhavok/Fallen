@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.inhavok.fallen.commands.Command;
+import com.inhavok.fallen.utility.EntityCanvas;
 import com.inhavok.fallen.utility.Ray;
 
 public final class EntityPhysics extends EntityComponent {
@@ -26,7 +27,7 @@ public final class EntityPhysics extends EntityComponent {
 	public static void addRay(final Ray ray) {
 		world.rayCast(ray.getCallback(), ray.getStartPoint(), ray.getEndPoint());
 		ray.collision();
-		//EntityCanvas.drawVector(ray.getStartPoint().x, ray.getStartPoint().y, ray.getActualEndPoint().x, ray.getActualEndPoint().y);
+		EntityCanvas.drawVector(ray.getStartPoint().x, ray.getStartPoint().y, ray.getActualEndPoint().x, ray.getActualEndPoint().y);
 	}
 	@Override
 	public void handleCommand(Command command) {

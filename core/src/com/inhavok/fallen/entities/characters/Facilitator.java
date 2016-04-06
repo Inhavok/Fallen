@@ -75,8 +75,8 @@ public final class Facilitator extends BipedalEntity {
 	private boolean foundEnemy() {
 		final double fov = 120 * MathUtils.degreesToRadians;
 		final double rayAngleIncrement = fov / 60;
+		final boolean[] foundEnemy = {false};
 		for (double i = -fov / 2; i <= fov / 2; i += rayAngleIncrement) {
-			final boolean[] foundEnemy = {false};
 			EntityPhysics.addRay(new Ray(new Vector2(getX(), getY()), (float) ((MathUtils.degreesToRadians * getGraphicsRotation()) + i + Math.PI / 2)) {
 				@Override
 				public void collision() {
@@ -86,11 +86,8 @@ public final class Facilitator extends BipedalEntity {
 					}
 				}
 			});
-			if (foundEnemy[0]) {
-				return true;
-			}
 		}
-		return false;
+		return foundEnemy[0];
 	}
 	private boolean waiting() {
 		return waitStopwatch < WAIT_DELAY;
