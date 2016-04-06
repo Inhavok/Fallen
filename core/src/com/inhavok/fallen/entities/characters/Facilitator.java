@@ -129,12 +129,12 @@ public final class Facilitator extends BipedalEntity {
 				data.a = listener.getRotation();
 			}
 		});
-		final float rotation = data.a;
-		if (Math.abs(desiredRotation - rotation) > 7) {
+		final float currentRotation = data.a;
+		if (Math.abs(desiredRotation - currentRotation) > 7) {
 			execute(new GraphicsCommand() {
 				@Override
 				public void execute(EntityGraphics listener) {
-					listener.setRotation(rotation + 360 * Application.SECONDS_PER_STEP * GameMath.calDifferencePolarity(desiredRotation, rotation));
+					listener.setRotation(currentRotation + 360 * Application.SECONDS_PER_STEP * GameMath.calRotationDirection(currentRotation, desiredRotation));
 				}
 			});
 		}

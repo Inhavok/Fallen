@@ -52,12 +52,12 @@ public final class Player extends BipedalEntity {
 				data.a = listener.getLayerRotation(PlayerGraphics.Layer.LEGS);
 			}
 		});
-		final float legsRotation = data.a;
-		if (Math.abs(desiredLegsRotation - legsRotation) > 10) {
+		final float currentLegsRotation = data.a;
+		if (Math.abs(desiredLegsRotation - currentLegsRotation) > 10) {
 			execute(new GraphicsCommand() {
 				@Override
 				public void execute(EntityGraphics listener) {
-					listener.setLayerRotation(PlayerGraphics.Layer.LEGS, legsRotation + 720 * Application.SECONDS_PER_STEP * GameMath.calDifferencePolarity(desiredLegsRotation, legsRotation));
+					listener.setLayerRotation(PlayerGraphics.Layer.LEGS, currentLegsRotation + 720 * Application.SECONDS_PER_STEP * GameMath.calRotationDirection(currentLegsRotation, desiredLegsRotation));
 				}
 			});
 		}
