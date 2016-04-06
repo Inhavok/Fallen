@@ -73,8 +73,8 @@ public final class Facilitator extends BipedalEntity {
 		}
 	}
 	private boolean foundEnemy() {
-		final double fov = 130 * MathUtils.degreesToRadians;
-		final double rayAngleIncrement = fov / 100;
+		final double fov = 120 * MathUtils.degreesToRadians;
+		final double rayAngleIncrement = fov / 60;
 		for (double i = -fov / 2; i <= fov / 2; i += rayAngleIncrement) {
 			final boolean[] foundEnemy = {false};
 			EntityPhysics.addRay(new Ray(new Vector2(getX(), getY()), (float) ((MathUtils.degreesToRadians * getGraphicsRotation()) + i + Math.PI / 2)) {
