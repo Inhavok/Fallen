@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
-import com.inhavok.fallen.commands.Data;
+import com.inhavok.fallen.utility.Data;
 import com.inhavok.fallen.commands.entity.AICommand;
 import com.inhavok.fallen.commands.entity.GraphicsCommand;
 import com.inhavok.fallen.entity_components.ai.EntityAI;

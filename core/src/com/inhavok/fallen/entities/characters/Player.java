@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.Application;
-import com.inhavok.fallen.commands.Data;
+import com.inhavok.fallen.utility.Data;
 import com.inhavok.fallen.commands.entity.GraphicsCommand;
 import com.inhavok.fallen.entity_components.EntityComponent;
 import com.inhavok.fallen.entity_components.controllers.PlayerController;

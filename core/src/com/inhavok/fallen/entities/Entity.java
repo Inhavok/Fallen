@@ -7,6 +7,7 @@ import com.inhavok.fallen.commands.entity.PhysicsCommand;
 import com.inhavok.fallen.entity_components.EntityComponent;
 import com.inhavok.fallen.entity_components.EntityPhysics;
 import com.inhavok.fallen.entity_components.graphics.EntityGraphics;
+import com.inhavok.fallen.utility.Data;
 
 import java.util.ArrayList;
 
