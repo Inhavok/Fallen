@@ -22,7 +22,6 @@ public abstract class StateUI extends StateComponent {
 	public StateUI(final State state) {
 		super(state);
 		table.setFillParent(true);
-		table.debug();
 		table.setVisible(false);
 		stage.addActor(table);
 	}
@@ -59,7 +58,7 @@ public abstract class StateUI extends StateComponent {
 		stage.draw();
 	}
 	public static void resize(final int width, final int height) {
-		stage.getViewport().update(width, height);
+		stage.getViewport().update(width,height,true);
 		keysDown.clear();
 	}
 	public final void show() {
