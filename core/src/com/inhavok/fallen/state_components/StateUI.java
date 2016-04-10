@@ -21,8 +21,8 @@ public abstract class StateUI extends StateComponent {
 	private final Table table = new Table(Assets.getSkin());
 	public StateUI(final State state) {
 		super(state);
-		table.setFillParent(false);
-		table.setPosition(Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight());
+		table.setFillParent(true);
+		table.debug();
 		table.setVisible(false);
 		stage.addActor(table);
 	}
