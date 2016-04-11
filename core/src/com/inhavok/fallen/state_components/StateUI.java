@@ -58,7 +58,7 @@ public abstract class StateUI extends StateComponent {
 		stage.draw();
 	}
 	public static void resize(final int width, final int height) {
-		stage.getViewport().update(width,height,true);
+		stage.getViewport().update(width, height, true);
 		keysDown.clear();
 	}
 	public final void show() {

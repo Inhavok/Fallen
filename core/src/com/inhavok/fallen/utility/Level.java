@@ -55,7 +55,7 @@ public final class Level {
 						}
 					});
 					tiles[j][i] = 1;
-				} else if (tileLayer.get("data").get(currentValue).asInt() == 14) {
+				} else if (tileLayer.get("data").get(currentValue).asInt() == 2) {
 					playState.execute(new EntitiesCommand() {
 						@Override
 						public void execute(StateEntities listener) {
