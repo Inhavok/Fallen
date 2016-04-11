@@ -96,7 +96,7 @@ public final class Application extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		StateUI.resize(width, height);
-		StateEntities.resize(width / 30, height / 30);
+		StateEntities.resize(16, 10);
 	}
 	@Override
 	public void dispose() {
