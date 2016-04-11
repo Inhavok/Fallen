@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 
 public class PlayerGraphics extends EntityGraphics {
 	public PlayerGraphics() {
-		super(1/4f);
+		super(1/2f);
 	}
 	@Override
 	LinkedHashMap<Enum, com.inhavok.fallen.entity_components.graphics.layers.Layer> addLayers() {

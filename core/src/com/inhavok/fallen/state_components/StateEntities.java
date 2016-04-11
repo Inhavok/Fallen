@@ -103,12 +103,12 @@ public final class StateEntities extends StateComponent {
 	}
 	public static void lookAt(final float x, final float y) {
 		final Vector2 toEntity = new Vector2(new Vector2(x, y).sub(camera.position.x, camera.position.y));
-		if (toEntity.len() > 0.5) {
+		//if (toEntity.len() > 0.5) {
 			final Vector2 moveVelocity = new Vector2(toEntity).setLength(cameraSpeed).scl(Application.SECONDS_PER_STEP).scl((float) Math.pow(toEntity.len(), 5));
-			camera.position.x += moveVelocity.x;
-			camera.position.y += moveVelocity.y;
+			camera.position.x += toEntity.x;
+			camera.position.y += toEntity.y;
 			camera.update();
-		}
+		//}
 	}
 	public static void resize(final float width, final float height) {
 		camera.viewportWidth = width;
