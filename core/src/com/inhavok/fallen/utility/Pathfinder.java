@@ -72,7 +72,7 @@ public final class Pathfinder {
 		}
 		if (adjacentNode != null && !closedList.contains(adjacentNode)) {
 			final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, adjacentNode.x, adjacentNode.y);
-			if (!openList.contains(adjacentNode) || newG < adjacentNode.g) {
+			if ((openList.contains(adjacentNode) && newG < adjacentNode.g) || !openList.contains(adjacentNode)) {
 				adjacentNode.g = newG;
 				adjacentNode.parent = parentNode;
 			}

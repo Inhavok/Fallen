@@ -115,7 +115,7 @@ public final class Facilitator extends BipedalEntity {
 	}
 	private void waitAtPatrolPoint() {
 		walk(Vector2.Zero);
-		desiredRotation = patrolPoints.get(currentPatrolPoint).getRotation();
+		desiredRotation = patrolPoints.get(currentPatrolPoint).getRotation() - 90;
 		waitStopwatch = 0;
 	}
 	private void rotate() {

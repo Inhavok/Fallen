@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public final class Application extends ApplicationAdapter {
 	public static final float SECONDS_PER_STEP = 1/60f;
 	public static final int PIXELS_PER_METER = 32;
-	private static final int ZOOM_FACTOR = 1;
 	private static SpriteBatch spriteBatch;
 	private static final ArrayList<State> states = new ArrayList<State>();
 	private static State currentState;
@@ -86,12 +85,6 @@ public final class Application extends ApplicationAdapter {
 	}
 	public static void stateCommand(final Command command) {
 		currentState.handleCommand(command);
-	}
-	private static int getVisibleWidth() {
-		return Gdx.graphics.getWidth() / (PIXELS_PER_METER * ZOOM_FACTOR);
-	}
-	private static int getVisibleHeight() {
-		return Gdx.graphics.getHeight() / (PIXELS_PER_METER * ZOOM_FACTOR);
 	}
 	@Override
 	public void resize(int width, int height) {

@@ -2,7 +2,6 @@ package com.inhavok.fallen.state_components;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.inhavok.fallen.Application;
 import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.utility.Data;
@@ -20,7 +19,6 @@ public final class StateEntities extends StateComponent {
 	private final ArrayList<Entity> previousState = new ArrayList<Entity>();
 	private final ArrayList<Entity> currentState = new ArrayList<Entity>();
 	private static final OrthographicCamera camera = new OrthographicCamera();
-	private static final float cameraSpeed = 3;
 	public StateEntities(final State state) {
 		super(state);
 	}
@@ -102,13 +100,9 @@ public final class StateEntities extends StateComponent {
 		spriteBatch.end();
 	}
 	public static void lookAt(final float x, final float y) {
-		final Vector2 toEntity = new Vector2(new Vector2(x, y).sub(camera.position.x, camera.position.y));
-		//if (toEntity.len() > 0.5) {
-			final Vector2 moveVelocity = new Vector2(toEntity).setLength(cameraSpeed).scl(Application.SECONDS_PER_STEP).scl((float) Math.pow(toEntity.len(), 5));
-			camera.position.x += toEntity.x;
-			camera.position.y += toEntity.y;
-			camera.update();
-		//}
+		camera.position.x = x;
+		camera.position.y = y;
+		camera.update();
 	}
 	public static void resize(final float width, final float height) {
 		camera.viewportWidth = width;
