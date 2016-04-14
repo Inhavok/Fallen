@@ -4,20 +4,17 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.inhavok.fallen.Application;
-import com.inhavok.fallen.utility.Data;
+import com.inhavok.fallen.utility.*;
 import com.inhavok.fallen.commands.entity.GraphicsCommand;
 import com.inhavok.fallen.entity_components.EntityComponent;
 import com.inhavok.fallen.entity_components.EntityPhysics;
-import com.inhavok.fallen.utility.Ray;
 import com.inhavok.fallen.entity_components.ai.EntityAI;
 import com.inhavok.fallen.entity_components.ai.BehaviourTree;
 import com.inhavok.fallen.entity_components.ai.facilitator.TestNode;
 import com.inhavok.fallen.entity_components.graphics.EntityGraphics;
 import com.inhavok.fallen.entity_components.graphics.PlayerGraphics;
 import com.inhavok.fallen.entity_components.graphics.layers.PlayerLegsLayer;
-import com.inhavok.fallen.utility.GameMath;
 import com.inhavok.fallen.utility.Level.PatrolPoint;
-import com.inhavok.fallen.utility.Pathfinder;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -50,6 +47,13 @@ public final class Facilitator extends BipedalEntity {
 	}
 	@Override
 	public void update() {
+		Vector2 previous = null;
+		for (Vector2 point : currentPath) {
+			if (previous != null) {
+				EntityCanvas.drawVector(previous.x, previous.y, point.x, point.y);
+			}
+			previous = point;
+		}
 		if (foundEnemy()) {
 			walk(Vector2.Zero);
 			desiredRotation = enemyPosition.sub(getX(), getY()).angle() - 90;
