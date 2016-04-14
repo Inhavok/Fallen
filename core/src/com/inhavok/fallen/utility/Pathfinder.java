@@ -66,20 +66,20 @@ public final class Pathfinder {
 		rankAdjacentNode(parentNode, parentNode.x, parentNode.y - 1);
 	}
 	private static void rankAdjacentNode(final Node parentNode, final int x, final int y) {
-		Node adjacentNode = null;
-		if (x >= 0 && x < nodes.size() && y >= 0 && y < nodes.get(x).size()) {
-			adjacentNode = nodes.get(x).get(y);
-		}
-		if (adjacentNode != null && !closedList.contains(adjacentNode)) {
-			final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, adjacentNode.x, adjacentNode.y);
-			final boolean discovered = openList.contains(adjacentNode);
-			if (!discovered || newG < adjacentNode.g) {
-				adjacentNode.g = newG;
-				adjacentNode.parent = parentNode;
+		try {
+			final Node adjacentNode = nodes.get(x).get(y);
+			if (adjacentNode != null && !closedList.contains(adjacentNode)) {
+				final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, adjacentNode.x, adjacentNode.y);
+				final boolean discovered = openList.contains(adjacentNode);
+				if (!discovered || newG < adjacentNode.g) {
+					adjacentNode.g = newG;
+					adjacentNode.parent = parentNode;
+				}
+				if (!discovered) {
+					openList.add(adjacentNode);
+				}
 			}
-			if (!discovered) {
-				openList.add(adjacentNode);
-			}
+		} catch (final IndexOutOfBoundsException ignore) {
 		}
 	}
 	private static double calculateCost(final int nodeOneX, final int nodeOneY, final int nodeTwoX, final int nodeTwoY) {
