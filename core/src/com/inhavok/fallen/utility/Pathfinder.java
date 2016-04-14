@@ -72,11 +72,14 @@ public final class Pathfinder {
 		}
 		if (adjacentNode != null && !closedList.contains(adjacentNode)) {
 			final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, adjacentNode.x, adjacentNode.y);
-			if ((openList.contains(adjacentNode) && newG < adjacentNode.g) || !openList.contains(adjacentNode)) {
+			final boolean discovered = openList.contains(adjacentNode);
+			if (!discovered || newG < adjacentNode.g) {
 				adjacentNode.g = newG;
 				adjacentNode.parent = parentNode;
 			}
-			openList.add(adjacentNode);
+			if (!discovered) {
+				openList.add(adjacentNode);
+			}
 		}
 	}
 	private static double calculateCost(final int nodeOneX, final int nodeOneY, final int nodeTwoX, final int nodeTwoY) {
