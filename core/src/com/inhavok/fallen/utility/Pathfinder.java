@@ -40,6 +40,8 @@ public final class Pathfinder {
 				}
 				return path;
 			}
+			closedList.add(currentNode);
+			openList.remove(currentNode);
 			checkAdjacentNodes(currentNode);
 		}
 		throw new NullPointerException();
@@ -59,7 +61,6 @@ public final class Pathfinder {
 		}
 	}
 	private static void checkAdjacentNodes(final Node parentNode) {
-		closedList.add(parentNode);
 		rankAdjacentNode(parentNode, parentNode.x + 1, parentNode.y);
 		rankAdjacentNode(parentNode, parentNode.x - 1, parentNode.y);
 		rankAdjacentNode(parentNode, parentNode.x, parentNode.y + 1);
@@ -69,13 +70,13 @@ public final class Pathfinder {
 		try {
 			final Node adjacentNode = nodes.get(x).get(y);
 			if (adjacentNode != null && !closedList.contains(adjacentNode)) {
+				final boolean onFrontier = openList.contains(adjacentNode);
 				final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, adjacentNode.x, adjacentNode.y);
-				final boolean discovered = openList.contains(adjacentNode);
-				if (!discovered || newG < adjacentNode.g) {
+				if (!onFrontier || newG < adjacentNode.g) {
 					adjacentNode.g = newG;
 					adjacentNode.parent = parentNode;
 				}
-				if (!discovered) {
+				if (!onFrontier) {
 					openList.add(adjacentNode);
 				}
 			}
