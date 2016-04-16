@@ -2,7 +2,6 @@ package com.inhavok.fallen.entity_components.controllers;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import com.inhavok.fallen.entity_components.controllers.EntityController;
 import com.inhavok.fallen.state_components.StateUI;
 import com.inhavok.fallen.entities.characters.Player;
 
