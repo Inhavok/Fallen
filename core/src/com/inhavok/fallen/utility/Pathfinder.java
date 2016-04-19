@@ -11,9 +11,9 @@ public final class Pathfinder {
 		@Override
 		public int compare(Node o1, Node o2) {
 			if (o1.getF() < o2.getF()) {
-				return 1;
+				return -1;
 			} else if (o1.getF() > o2.getF()) {
-				return 2;
+				return 1;
 			}
 			return 0;
 		}
@@ -31,6 +31,7 @@ public final class Pathfinder {
 		openList.add(startNode);
 		while (!openList.isEmpty()) {
 			final Node currentNode = openList.poll();
+			closedList.add(currentNode);
 			if (currentNode == endNode) {
 				final Stack<Vector2> path = new Stack<Vector2>();
 				Node pathNode = currentNode;
@@ -40,8 +41,6 @@ public final class Pathfinder {
 				}
 				return path;
 			}
-			closedList.add(currentNode);
-			openList.remove(currentNode);
 			checkAdjacentNodes(currentNode);
 		}
 		throw new NullPointerException();
@@ -71,7 +70,7 @@ public final class Pathfinder {
 			final Node adjacentNode = nodes.get(x).get(y);
 			if (adjacentNode != null && !closedList.contains(adjacentNode)) {
 				final boolean onFrontier = openList.contains(adjacentNode);
-				final double newG = parentNode.g + calculateCost(parentNode.x, parentNode.y, adjacentNode.x, adjacentNode.y);
+				final double newG = parentNode.g + 1;
 				if (!onFrontier || newG < adjacentNode.g) {
 					adjacentNode.g = newG;
 					adjacentNode.parent = parentNode;
