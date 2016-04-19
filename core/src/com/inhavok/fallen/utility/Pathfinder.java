@@ -62,8 +62,8 @@ public final class Pathfinder {
 	private static void checkAdjacentNodes(final Node parentNode) {
 		rankAdjacentNode(parentNode, parentNode.x + 1, parentNode.y);
 		rankAdjacentNode(parentNode, parentNode.x - 1, parentNode.y);
-		rankAdjacentNode(parentNode, parentNode.x, parentNode.y + 1);
 		rankAdjacentNode(parentNode, parentNode.x, parentNode.y - 1);
+		rankAdjacentNode(parentNode, parentNode.x, parentNode.y + 1);
 	}
 	private static void rankAdjacentNode(final Node parentNode, final int x, final int y) {
 		try {
