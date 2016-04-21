@@ -16,7 +16,6 @@ import com.inhavok.fallen.utility.Level;
 public final class PlayState extends State {
 	private final Level level = new Level(this);
 	public PlayState() {
-		level.load(this);
 		execute(new EntitiesCommand() {
 			@Override
 			public void execute(StateEntities listener) {

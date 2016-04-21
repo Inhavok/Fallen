@@ -49,13 +49,6 @@ public final class Facilitator extends BipedalEntity {
 	}
 	@Override
 	public void update() {
-		Vector2 previous = null;
-		for (Vector2 point : currentPath) {
-			if (previous != null) {
-				EntityCanvas.queueVector(previous.x, previous.y, point.x, point.y);
-			}
-			previous = point;
-		}
 		if (foundEnemy()) {
 			walk(Vector2.Zero);
 			desiredRotation = enemyPosition.sub(getX(), getY()).angle() - 90;

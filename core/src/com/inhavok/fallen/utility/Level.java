@@ -24,9 +24,6 @@ public final class Level {
 	private final Pathfinder pathfinder = new Pathfinder(this);
 	private final ArrayList<Facilitator> enemies = new ArrayList<Facilitator>();
 	public Level(final PlayState playState) {
-		load(playState);
-	}
-	public void load(final PlayState playState) {
 		final JsonValue level = (new JsonReader()).parse(Gdx.files.internal("levels/TestLevel.json"));
 		width = level.get("width").asInt();
 		height = level.get("height").asInt();
