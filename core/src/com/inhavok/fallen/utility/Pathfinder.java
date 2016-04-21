@@ -62,8 +62,8 @@ public final class Pathfinder {
 	private static void checkAdjacentNodes(final Node parentNode) {
 		rankAdjacentNode(parentNode, parentNode.x + 1, parentNode.y);
 		rankAdjacentNode(parentNode, parentNode.x - 1, parentNode.y);
-		rankAdjacentNode(parentNode, parentNode.x, parentNode.y - 1);
 		rankAdjacentNode(parentNode, parentNode.x, parentNode.y + 1);
+		rankAdjacentNode(parentNode, parentNode.x, parentNode.y - 1);
 	}
 	private static void rankAdjacentNode(final Node parentNode, final int x, final int y) {
 		try {
@@ -75,15 +75,16 @@ public final class Pathfinder {
 					adjacentNode.g = newG;
 					adjacentNode.parent = parentNode;
 				}
-				if (!onFrontier) {
-					openList.add(adjacentNode);
+				if (onFrontier) {
+					openList.remove(adjacentNode);
 				}
+				openList.add(adjacentNode);
 			}
 		} catch (final IndexOutOfBoundsException ignore) {
 		}
 	}
 	private static double calculateCost(final int nodeOneX, final int nodeOneY, final int nodeTwoX, final int nodeTwoY) {
-		return Math.abs(nodeTwoX - nodeOneX) + Math.abs(nodeTwoY - nodeOneY);
+		return Math.abs(nodeTwoX - nodeOneX) + 1.05 * Math.abs(nodeTwoY - nodeOneY);
 	}
 	private static final class Node {
 		private final int x;
