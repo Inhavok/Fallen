@@ -25,12 +25,12 @@ public abstract class StateUI extends StateComponent {
 		table.setVisible(false);
 		stage.addActor(table);
 	}
-	public static void initialise(final Viewport viewport, final SpriteBatch spriteBatch) {
+	public static void initialise(final Application application, final Viewport viewport, final SpriteBatch spriteBatch) {
 		stage = new Stage(viewport, spriteBatch);
 		stage.addListener(new InputListener() {
 			public boolean keyDown(InputEvent event, final int keycode) {
 				keysDown.add(keycode);
-				Application.stateCommand(new StateCommand() {
+				application.stateCommand(new StateCommand() {
 					@Override
 					public void execute(State listener) {
 						listener.handleKeyPress(keycode);

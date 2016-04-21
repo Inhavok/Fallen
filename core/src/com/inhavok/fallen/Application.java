@@ -21,9 +21,9 @@ import java.util.ArrayList;
 public final class Application extends ApplicationAdapter {
 	public static final float SECONDS_PER_STEP = 1/60f;
 	public static final int PIXELS_PER_METER = 32;
-	private static SpriteBatch spriteBatch;
-	private static final ArrayList<State> states = new ArrayList<State>();
-	private static State currentState;
+	private SpriteBatch spriteBatch;
+	private final ArrayList<State> states = new ArrayList<State>();
+	private State currentState;
 	private static float accumulatedTime;
 	@Override
 	public void create() {
@@ -31,7 +31,7 @@ public final class Application extends ApplicationAdapter {
 		Assets.initialise();
 		spriteBatch = new SpriteBatch();
 		EntityCanvas.initialise();
-		StateUI.initialise(new ScreenViewport(), spriteBatch);
+		StateUI.initialise(this, new ScreenViewport(), spriteBatch);
 		states.add(new PlayState());
 		states.add(new MenuState());
 		currentState = states.get(0);
@@ -42,7 +42,7 @@ public final class Application extends ApplicationAdapter {
 		updateState();
 		drawGraphics();
 	}
-	private static void updateState() {
+	private void updateState() {
 		accumulatedTime += Gdx.graphics.getDeltaTime();
 		while (accumulatedTime >= SECONDS_PER_STEP) {
 			EntityPhysics.step(SECONDS_PER_STEP, 8, 3);
@@ -71,7 +71,7 @@ public final class Application extends ApplicationAdapter {
 		}
 		StateUI.act();
 	}
-	private static void drawGraphics() {
+	private void drawGraphics() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		currentState.execute(new EntitiesCommand() {
@@ -83,7 +83,7 @@ public final class Application extends ApplicationAdapter {
 		EntityCanvas.draw(StateEntities.getCamera().combined);
 		StateUI.draw();
 	}
-	public static void stateCommand(final Command command) {
+	public void stateCommand(final Command command) {
 		currentState.handleCommand(command);
 	}
 	@Override
