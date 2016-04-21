@@ -26,6 +26,6 @@ public class Bullet extends Entity {
 	public void update() {
 		distance += Application.SECONDS_PER_STEP;
 		final float angleInRadians = angle * MathUtils.degreesToRadians;
-		EntityCanvas.drawVector(x, y, (float) (distance * Math.cos(angleInRadians)), (float) (distance * Math.sin(angleInRadians)));
+		EntityCanvas.queueVector(x, y, (float) (distance * Math.cos(angleInRadians)), (float) (distance * Math.sin(angleInRadians)));
 	}
 }

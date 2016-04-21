@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public final class Facilitator extends BipedalEntity {
+	private final Pathfinder pathfinder;
 	private final ArrayList<PatrolPoint> patrolPoints = new ArrayList<PatrolPoint>();
 	private int currentPatrolPoint = 0;
 	private static final float WAIT_DELAY = 5;
@@ -29,8 +30,9 @@ public final class Facilitator extends BipedalEntity {
 	private final Vector2 enemyPosition = new Vector2();
 	private static final float TOLERANCE = 0.05f;
 	private float desiredRotation;
-	public Facilitator(final ArrayList<PatrolPoint> patrolPoints) {
+	public Facilitator(final Pathfinder pathfinder, final ArrayList<PatrolPoint> patrolPoints) {
 		super(patrolPoints.get(0).getPoint().x, patrolPoints.get(0).getPoint().y, 0, 1);
+		this.pathfinder = pathfinder;
 		currentTarget = patrolPoints.get(0).getPoint();
 		this.patrolPoints.addAll(patrolPoints);
 		waitAtPatrolPoint();
@@ -50,7 +52,7 @@ public final class Facilitator extends BipedalEntity {
 		Vector2 previous = null;
 		for (Vector2 point : currentPath) {
 			if (previous != null) {
-				EntityCanvas.drawVector(previous.x, previous.y, point.x, point.y);
+				EntityCanvas.queueVector(previous.x, previous.y, point.x, point.y);
 			}
 			previous = point;
 		}
@@ -101,7 +103,7 @@ public final class Facilitator extends BipedalEntity {
 		if (currentPatrolPoint > patrolPoints.size() - 1) {
 			currentPatrolPoint = 0;
 		}
-		currentPath.addAll(Pathfinder.getPath(getX(), getY(), patrolPoints.get(currentPatrolPoint).getPoint().x, patrolPoints.get(currentPatrolPoint).getPoint().y));
+		currentPath.addAll(pathfinder.getPath(getX(), getY(), patrolPoints.get(currentPatrolPoint).getPoint().x, patrolPoints.get(currentPatrolPoint).getPoint().y));
 	}
 	private void followTarget() {
 		final Vector2 walkVelocity = new Vector2(currentTarget.x - getX(), currentTarget.y - getY()).setLength(getBaseSpeed());

@@ -14,8 +14,9 @@ import com.inhavok.fallen.entities.characters.Player;
 import com.inhavok.fallen.utility.Level;
 
 public final class PlayState extends State {
+	private final Level level = new Level(this);
 	public PlayState() {
-		Level.load(this);
+		level.load(this);
 		execute(new EntitiesCommand() {
 			@Override
 			public void execute(StateEntities listener) {
@@ -32,14 +33,19 @@ public final class PlayState extends State {
 	}
 	@Override
 	public void update() {
-		final Player player = Level.getPlayer();
+		final Player player = level.getPlayer();
 		player.execute(new ControllerCommand() {
 			@Override
 			public void execute(EntityController listener) {
 				listener.update();
 			}
 		});
-		StateEntities.lookAt(player.getX(), player.getY());
+		execute(new EntitiesCommand() {
+			@Override
+			public void execute(StateEntities listener) {
+				listener.lookAt(player.getX(), player.getY());
+			}
+		});
 	}
 	@Override
 	public void handleKeyPress(final int keycode) {

@@ -27,7 +27,7 @@ public final class EntityPhysics extends EntityComponent {
 	public static void addRay(final Ray ray) {
 		world.rayCast(ray.getCallback(), ray.getStartPoint(), ray.getEndPoint());
 		ray.collision();
-		EntityCanvas.drawVector(ray.getStartPoint().x, ray.getStartPoint().y, ray.getActualEndPoint().x, ray.getActualEndPoint().y);
+		EntityCanvas.queueVector(ray.getStartPoint().x, ray.getStartPoint().y, ray.getActualEndPoint().x, ray.getActualEndPoint().y);
 	}
 	@Override
 	public void handleCommand(Command command) {

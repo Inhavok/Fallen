@@ -16,15 +16,17 @@ import com.inhavok.fallen.states.PlayState;
 import java.util.ArrayList;
 
 public final class Level {
-	private static int width;
-	private static int height;
-	private static int[][] tiles;
-	private static int tileSize;
-	private static Player player;
-	private static final ArrayList<Facilitator> enemies = new ArrayList<Facilitator>();
-	private Level() {
+	private int width;
+	private int height;
+	private int[][] tiles;
+	private int tileSize;
+	private Player player;
+	private final Pathfinder pathfinder = new Pathfinder(this);
+	private final ArrayList<Facilitator> enemies = new ArrayList<Facilitator>();
+	public Level(final PlayState playState) {
+		load(playState);
 	}
-	public static void load(final PlayState playState) {
+	public void load(final PlayState playState) {
 		final JsonValue level = (new JsonReader()).parse(Gdx.files.internal("levels/TestLevel.json"));
 		width = level.get("width").asInt();
 		height = level.get("height").asInt();
@@ -41,7 +43,7 @@ public final class Level {
 			}
 		}
 	}
-	private static void loadTiles(final JsonValue tileLayer, final PlayState playState) {
+	private void loadTiles(final JsonValue tileLayer, final PlayState playState) {
 		int currentValue = 0;
 		for (int i = tileLayer.get("height").asInt() - 1; i >= 0; i--) {
 			for (int j = 0; j < tileLayer.get("width").asInt(); j++) {
@@ -68,7 +70,7 @@ public final class Level {
 			}
 		}
 	}
-	private static void loadInteractions(final JsonValue interactions, final PlayState playState) {
+	private void loadInteractions(final JsonValue interactions, final PlayState playState) {
 		for (JsonValue interaction : interactions) {
 			if (interaction.get("name").asString().equals("spawnPoint")) {
 				final Vector2 spawnPoint = levelToPhysicsPosition(interaction.get("x").asInt(), interaction.get("y").asInt());
@@ -82,7 +84,7 @@ public final class Level {
 			}
 		}
 	}
-	private static void loadAI(final JsonValue points, final PlayState playState) {
+	private void loadAI(final JsonValue points, final PlayState playState) {
 		enemies.clear();
 		int currentEnemy = 1;
 		final ArrayList<PatrolPoint> patrolPoints = new ArrayList<PatrolPoint>();
@@ -97,15 +99,15 @@ public final class Level {
 			loadEnemy(patrolPoints, playState);
 		}
 	}
-	private static boolean loadPatrolPoint(final JsonValue patrolPoint, final int currentEnemy, final ArrayList<PatrolPoint> points) {
+	private boolean loadPatrolPoint(final JsonValue patrolPoint, final int currentEnemy, final ArrayList<PatrolPoint> points) {
 		if (patrolPoint.get("name").asString().matches("patrol" + currentEnemy + ".*")) {
 			points.add(new PatrolPoint(levelToPhysicsPosition(patrolPoint.get("x").asInt(), patrolPoint.get("y").asInt()), Integer.parseInt(patrolPoint.get("properties").get("rotation").asString())));
 			return true;
 		}
 		return false;
 	}
-	private static void loadEnemy(final ArrayList<PatrolPoint> patrolPoints, final PlayState playState) {
-		final Facilitator facilitator = new Facilitator(patrolPoints);
+	private void loadEnemy(final ArrayList<PatrolPoint> patrolPoints, final PlayState playState) {
+		final Facilitator facilitator = new Facilitator(pathfinder, patrolPoints);
 		enemies.add(facilitator);
 		playState.execute(new EntitiesCommand() {
 			@Override
@@ -115,31 +117,31 @@ public final class Level {
 		});
 		patrolPoints.clear();
 	}
-	private static Vector2 levelToPhysicsPosition(float x, float y) {
+	private Vector2 levelToPhysicsPosition(float x, float y) {
 		x /= Application.PIXELS_PER_METER;
 		y /= -Application.PIXELS_PER_METER;
 		y += ((tiles.length - 1) * tileSize) / Application.PIXELS_PER_METER;
 		return new Vector2(x, y);
 	}
-	public static int physicsToTileX(final float x) {
+	public int physicsToTileX(final float x) {
 		return Math.round(x / (tileSize / Application.PIXELS_PER_METER));
 	}
-	public static int physicsToTileY(final float y) {
+	public int physicsToTileY(final float y) {
 		return Math.round(y / (tileSize / Application.PIXELS_PER_METER));
 	}
-	public static Vector2 tileToPhysicsPosition(final int x, final int y) {
+	public Vector2 tileToPhysicsPosition(final int x, final int y) {
 		return new Vector2(x * (tileSize / Application.PIXELS_PER_METER), y * (tileSize / Application.PIXELS_PER_METER));
 	}
-	public static int getWidth() {
+	public int getWidth() {
 		return width;
 	}
-	public static int getHeight() {
+	public int getHeight() {
 		return height;
 	}
-	public static int[][] getTiles() {
+	public int[][] getTiles() {
 		return tiles;
 	}
-	public static Player getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 	public static final class PatrolPoint {

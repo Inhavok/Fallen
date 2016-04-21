@@ -5,9 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.*;
 
 public final class Pathfinder {
-	private static ArrayList<ArrayList<Node>> nodes;
+	private final Level level;
+	private ArrayList<ArrayList<Node>> nodes;
 	@SuppressWarnings("Since15")
-	private static final PriorityQueue<Node> openList = new PriorityQueue<Node>(new Comparator<Node>() {
+	private final PriorityQueue<Node> openList = new PriorityQueue<Node>(new Comparator<Node>() {
 		@Override
 		public int compare(Node o1, Node o2) {
 			if (o1.getF() < o2.getF()) {
@@ -18,16 +19,17 @@ public final class Pathfinder {
 			return 0;
 		}
 	});
-	private static final ArrayList<Node> closedList = new ArrayList<Node>();
-	private Pathfinder() {
+	private final ArrayList<Node> closedList = new ArrayList<Node>();
+	Pathfinder(final Level level) {
+		 this.level = level;
 	}
-	public static Stack<Vector2> getPath(final float startX, final float startY, final float endX, final float endY) {
+	public Stack<Vector2> getPath(final float startX, final float startY, final float endX, final float endY) {
 		nodes = new ArrayList<ArrayList<Node>>();
 		openList.clear();
 		closedList.clear();
-		convertTilesToNodes(Level.physicsToTileX(endX), Level.physicsToTileY(endY));
-		final Node startNode = nodes.get(Level.physicsToTileX(startX)).get(Level.physicsToTileY(startY));
-		final Node endNode = nodes.get(Level.physicsToTileX(endX)).get(Level.physicsToTileY(endY));
+		convertTilesToNodes(level.physicsToTileX(endX), level.physicsToTileY(endY));
+		final Node startNode = nodes.get(level.physicsToTileX(startX)).get(level.physicsToTileY(startY));
+		final Node endNode = nodes.get(level.physicsToTileX(endX)).get(level.physicsToTileY(endY));
 		openList.add(startNode);
 		while (!openList.isEmpty()) {
 			final Node currentNode = openList.poll();
@@ -36,7 +38,7 @@ public final class Pathfinder {
 				final Stack<Vector2> path = new Stack<Vector2>();
 				Node pathNode = currentNode;
 				while (pathNode != null) {
-					path.push(Level.tileToPhysicsPosition(pathNode.x, pathNode.y));
+					path.push(level.tileToPhysicsPosition(pathNode.x, pathNode.y));
 					pathNode = pathNode.parent;
 				}
 				return path;
@@ -45,11 +47,11 @@ public final class Pathfinder {
 		}
 		throw new NullPointerException();
 	}
-	private static void convertTilesToNodes(final int endX, final int endY) {
-		final int[][] tiles = Level.getTiles();
-		for (int i = 0; i < Level.getWidth(); i++) {
+	private void convertTilesToNodes(final int endX, final int endY) {
+		final int[][] tiles = level.getTiles();
+		for (int i = 0; i < level.getWidth(); i++) {
 			final ArrayList<Node> verticalStrip = new ArrayList<Node>();
-			for (int j = 0; j < Level.getHeight(); j++) {
+			for (int j = 0; j < level.getHeight(); j++) {
 				if (tiles[i][j] == 0) {
 					verticalStrip.add(null);
 				} else {
@@ -59,13 +61,13 @@ public final class Pathfinder {
 			nodes.add(verticalStrip);
 		}
 	}
-	private static void checkAdjacentNodes(final Node parentNode) {
+	private void checkAdjacentNodes(final Node parentNode) {
 		rankAdjacentNode(parentNode, parentNode.x + 1, parentNode.y);
 		rankAdjacentNode(parentNode, parentNode.x - 1, parentNode.y);
 		rankAdjacentNode(parentNode, parentNode.x, parentNode.y + 1);
 		rankAdjacentNode(parentNode, parentNode.x, parentNode.y - 1);
 	}
-	private static void rankAdjacentNode(final Node parentNode, final int x, final int y) {
+	private void rankAdjacentNode(final Node parentNode, final int x, final int y) {
 		try {
 			final Node adjacentNode = nodes.get(x).get(y);
 			if (adjacentNode != null && !closedList.contains(adjacentNode)) {
@@ -83,7 +85,7 @@ public final class Pathfinder {
 		} catch (final IndexOutOfBoundsException ignore) {
 		}
 	}
-	private static double calculateCost(final int nodeOneX, final int nodeOneY, final int nodeTwoX, final int nodeTwoY) {
+	private double calculateCost(final int nodeOneX, final int nodeOneY, final int nodeTwoX, final int nodeTwoY) {
 		return Math.abs(nodeTwoX - nodeOneX) + 1.05 * Math.abs(nodeTwoY - nodeOneY);
 	}
 	private static final class Node {

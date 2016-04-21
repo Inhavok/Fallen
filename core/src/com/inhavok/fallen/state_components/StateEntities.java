@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public final class StateEntities extends StateComponent {
 	private final ArrayList<Entity> previousState = new ArrayList<Entity>();
 	private final ArrayList<Entity> currentState = new ArrayList<Entity>();
-	private static final OrthographicCamera camera = new OrthographicCamera();
+	private final OrthographicCamera camera = new OrthographicCamera();
 	public StateEntities(final State state) {
 		super(state);
 	}
@@ -99,12 +99,12 @@ public final class StateEntities extends StateComponent {
 		}
 		spriteBatch.end();
 	}
-	public static void lookAt(final float x, final float y) {
+	public void lookAt(final float x, final float y) {
 		camera.position.x = x;
 		camera.position.y = y;
 		camera.update();
 	}
-	public static void resize(final float width, final float height) {
+	public void resize(final float width, final float height) {
 		camera.viewportWidth = width;
 		camera.viewportHeight = height;
 		camera.update();
@@ -112,7 +112,7 @@ public final class StateEntities extends StateComponent {
 	public void add(final Entity entity) {
 		currentState.add(entity);
 	}
-	public static OrthographicCamera getCamera() {
+	public OrthographicCamera getCamera() {
 		return camera;
 	}
 }

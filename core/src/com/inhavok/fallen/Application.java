@@ -78,9 +78,9 @@ public final class Application extends ApplicationAdapter {
 			@Override
 			public void execute(StateEntities listener) {
 				listener.draw(spriteBatch);
+				EntityCanvas.draw(listener.getCamera().combined);
 			}
 		});
-		EntityCanvas.draw(StateEntities.getCamera().combined);
 		StateUI.draw();
 	}
 	public void stateCommand(final Command command) {
@@ -89,7 +89,12 @@ public final class Application extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		StateUI.resize(width, height);
-		StateEntities.resize(16, 10);
+		currentState.execute(new EntitiesCommand() {
+			@Override
+			public void execute(StateEntities listener) {
+				listener.resize(16, 10);
+			}
+		});
 	}
 	@Override
 	public void dispose() {

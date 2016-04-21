@@ -30,7 +30,7 @@ public final class EntityCanvas {
 		gl.glDisable(GL20.GL_BLEND);
 		vectors.clear();
 	}
-	public static void drawVector(final float x1, final float y1, final float x2, final float y2) {
+	public static void queueVector(final float x1, final float y1, final float x2, final float y2) {
 		vectors.add(new Pair<Vector2, Vector2>(new Vector2(x1, y1), new Vector2(x2, y2)));
 	}
 }
