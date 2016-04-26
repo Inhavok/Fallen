@@ -79,6 +79,13 @@ public abstract class EntityGraphics extends EntityComponent {
 	public final float getLayerRotation(final Enum layer) {
 		return GameMath.calEffectiveAngle(layers.get(layer).getRotation());
 	}
+	public final ArrayList<Float> getRotations() {
+		final ArrayList<Float> rotations = new ArrayList<Float>();
+		for (Layer layer : layers.values()) {
+			rotations.add(layer.getRotation());
+		}
+		return rotations;
+	}
 	public final void setX(final float x) {
 		this.x = x - width / 2;
 	}
@@ -92,6 +99,13 @@ public abstract class EntityGraphics extends EntityComponent {
 	}
 	public final void setLayerRotation(final Enum layer, final float rotation) {
 		layers.get(layer).setRotation(rotation);
+	}
+	public final void setRotations(final ArrayList<Float> rotations) {
+		int i = 0;
+		for (Layer layer : layers.values()) {
+			layer.setRotation(rotations.get(i));
+			i++;
+		}
 	}
 	public final void setAnimation(final Enum layer, final Enum animation) {
 		if (layers.get(layer) instanceof AnimatedLayer) {

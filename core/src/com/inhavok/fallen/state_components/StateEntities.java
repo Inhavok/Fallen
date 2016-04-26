@@ -61,13 +61,16 @@ public final class StateEntities extends StateComponent {
 					public void execute(EntityGraphics listener) {
 						final Data<Float> previousXData = new Data<Float>();
 						final Data<Float> previousYData = new Data<Float>();
+						final Data<ArrayList<Float>> previousGraphicsRotationsData = new Data<ArrayList<Float>>();
 						final Data<Float> nextXData = new Data<Float>();
 						final Data<Float> nextYData = new Data<Float>();
+						final Data<ArrayList<Float>> nextGraphicsRotationsData = new Data<ArrayList<Float>>();
 						interpolatedEntity.execute(new GraphicsCommand() {
 							@Override
 							public void execute(EntityGraphics listener) {
 								previousXData.a = listener.getX();
 								previousYData.a = listener.getY();
+								previousGraphicsRotationsData.a = listener.getRotations();
 							}
 						});
 						currentEntity.execute(new GraphicsCommand() {
@@ -75,10 +78,18 @@ public final class StateEntities extends StateComponent {
 							public void execute(EntityGraphics listener) {
 								nextXData.a = listener.getX();
 								nextYData.a = listener.getY();
+								nextGraphicsRotationsData.a = listener.getRotations();
 							}
 						});
 						listener.setX(previousXData.a + (nextXData.a - previousXData.a) * alpha);
 						listener.setY(previousYData.a + (nextYData.a - previousYData.a) * alpha);
+						final ArrayList<Float> interpolatedGraphicsRotations = new ArrayList<Float>();
+						int i = 0;
+						for (float angle : previousGraphicsRotationsData.a) {
+							interpolatedGraphicsRotations.add(angle + ((nextGraphicsRotationsData.a.get(i) - angle) * alpha));
+							i++;
+						}
+						listener.setRotations(interpolatedGraphicsRotations);
 					}
 				});
 			}
