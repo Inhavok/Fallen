@@ -76,14 +76,4 @@ public abstract class Entity {
 		});
 		return data.a;
 	}
-	public float getGraphicsRotation() {
-		final Data<Float> data = new Data<Float>();
-		execute(new GraphicsCommand() {
-			@Override
-			public void execute(EntityGraphics listener) {
-				data.a = listener.getRotation();
-			}
-		});
-		return data.a;
-	}
 }

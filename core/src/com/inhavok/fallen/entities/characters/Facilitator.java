@@ -29,6 +29,7 @@ public final class Facilitator extends BipedalEntity {
 	private Vector2 currentTarget;
 	private final Vector2 enemyPosition = new Vector2();
 	private static final float TOLERANCE = 0.05f;
+	private float currentRotation;
 	private float desiredRotation;
 	public Facilitator(final Pathfinder pathfinder, final ArrayList<PatrolPoint> patrolPoints) {
 		super(patrolPoints.get(0).getPoint().x, patrolPoints.get(0).getPoint().y, 0, 1);
@@ -49,6 +50,7 @@ public final class Facilitator extends BipedalEntity {
 	}
 	@Override
 	public void update() {
+		updateData();
 		if (foundEnemy()) {
 			walk(Vector2.Zero);
 			desiredRotation = enemyPosition.sub(getX(), getY()).angle() - 90;
@@ -71,12 +73,22 @@ public final class Facilitator extends BipedalEntity {
 			rotate();
 		}
 	}
+	private void updateData() {
+		final Data<Float> data = new Data<Float>();
+		execute(new GraphicsCommand() {
+			@Override
+			public void execute(EntityGraphics listener) {
+				data.a = listener.getRotation();
+			}
+		});
+		currentRotation = data.a;
+	}
 	private boolean foundEnemy() {
 		final double fov = 120 * MathUtils.degreesToRadians;
 		final double rayAngleIncrement = fov / 60;
 		final boolean[] foundEnemy = {false};
 		for (double i = -fov / 2; i <= fov / 2; i += rayAngleIncrement) {
-			EntityPhysics.addRay(new Ray(new Vector2(getX(), getY()), (float) ((MathUtils.degreesToRadians * getGraphicsRotation()) + i + Math.PI / 2)) {
+			EntityPhysics.addRay(new Ray(new Vector2(getX(), getY()), (float) ((currentRotation * MathUtils.degreesToRadians) + i + Math.PI / 2)) {
 				@Override
 				public void collision() {
 					if (getHitFixture().getBody().getUserData() != null) {
@@ -118,14 +130,6 @@ public final class Facilitator extends BipedalEntity {
 		waitStopwatch = 0;
 	}
 	private void rotate() {
-		final Data<Float> data = new Data<Float>();
-		execute(new GraphicsCommand() {
-			@Override
-			public void execute(EntityGraphics listener) {
-				data.a = listener.getRotation();
-			}
-		});
-		final float currentRotation = data.a;
 		final float tolerance = 5;
 		if (!GameMath.closeTo(currentRotation, desiredRotation, tolerance)) {
 			execute(new GraphicsCommand() {
