@@ -28,4 +28,12 @@ public class Bullet extends Entity {
 		final float rotationInRadians = rotation * MathUtils.degreesToRadians;
 		EntityCanvas.queueVector(x, y, (float) (distance * Math.cos(rotationInRadians)), (float) (distance * Math.sin(rotationInRadians)));
 	}
+	@Override
+	public float getX() {
+		return (float) (distance * Math.cos(rotation));
+	}
+	@Override
+	public float getY() {
+		return (float) (distance * Math.sin(rotation));
+	}
 }
