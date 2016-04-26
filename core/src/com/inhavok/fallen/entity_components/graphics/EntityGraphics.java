@@ -12,6 +12,7 @@ import com.inhavok.fallen.commands.Command;
 import com.inhavok.fallen.entity_components.EntityComponent;
 import com.inhavok.fallen.entity_components.graphics.layers.AnimatedLayer;
 import com.inhavok.fallen.entity_components.graphics.layers.Layer;
+import com.inhavok.fallen.utility.GameMath;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -73,10 +74,10 @@ public abstract class EntityGraphics extends EntityComponent {
 		return y + height / 2;
 	}
 	public final float getRotation() {
-		return ((Layer) layers.values().toArray()[0]).getRotation();
+		return GameMath.calEffectiveAngle(((Layer) layers.values().toArray()[0]).getRotation());
 	}
 	public final float getLayerRotation(final Enum layer) {
-		return layers.get(layer).getRotation();
+		return GameMath.calEffectiveAngle(layers.get(layer).getRotation());
 	}
 	public final void setX(final float x) {
 		this.x = x - width / 2;

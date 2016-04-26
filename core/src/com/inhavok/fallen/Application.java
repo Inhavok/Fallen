@@ -43,7 +43,7 @@ public final class Application extends ApplicationAdapter {
 		drawGraphics();
 	}
 	private void updateState() {
-		accumulatedTime += Gdx.graphics.getDeltaTime();
+		accumulatedTime += Gdx.graphics.getRawDeltaTime();
 		while (accumulatedTime >= SECONDS_PER_STEP) {
 			EntityPhysics.step(SECONDS_PER_STEP, 8, 3);
 			currentState.update();

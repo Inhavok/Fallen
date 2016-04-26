@@ -71,19 +71,10 @@ public final class EntityPhysics extends EntityComponent {
 	public float getY() {
 		return body.getPosition().y;
 	}
-	public float getRotation() {
-		return body.getAngle();
-	}
-	public Vector2 getLinearVelocity() {
-		return body.getLinearVelocity();
-	}
 	public void setX(final float x) {
 		body.setTransform(x, body.getPosition().y, body.getAngle());
 	}
 	public void setY(final float y) {
 		body.setTransform(body.getPosition().x, y, body.getAngle());
-	}
-	public void setRotation(final float angle) {
-		body.setTransform(body.getPosition().x, body.getPosition().y, angle);
 	}
 }
