@@ -11,11 +11,11 @@ public final class GameMath {
 		currentRotation = calEffectiveAngle(currentRotation);
 		desiredRotation = calEffectiveAngle(desiredRotation);
 		int direction = 1;
-		if (currentRotation >= 180) {
+		if (currentRotation > 180) {
 			currentRotation -= 180;
 			direction *= -1;
 		}
-		if (desiredRotation >= 180) {
+		if (desiredRotation > 180) {
 			desiredRotation -= 180;
 			direction *= -1;
 		}
