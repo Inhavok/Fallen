@@ -143,16 +143,16 @@ public final class Level {
 	}
 	public static final class PatrolPoint {
 		private final Vector2 point;
-		private final int angle;
-		PatrolPoint(final Vector2 point, final int angle) {
+		private final int rotation;
+		PatrolPoint(final Vector2 point, final int rotation) {
 			this.point = point;
-			this.angle = angle;
+			this.rotation = rotation;
 		}
 		public Vector2 getPoint() {
 			return point;
 		}
 		public int getRotation() {
-			return angle;
+			return rotation;
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.inhavok.fallen.entities;
 
-
 import com.inhavok.fallen.commands.*;
 import com.inhavok.fallen.commands.entity.GraphicsCommand;
 import com.inhavok.fallen.commands.entity.PhysicsCommand;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 
 public abstract class Entity {
 	private final ArrayList<EntityComponent> components = new ArrayList<EntityComponent>();
-	protected Entity(final float x, final float y, final float angle) {
+	protected Entity(final float x, final float y, final float graphicsRotation) {
 		if (addComponents() != null) {
 			components.addAll(addComponents());
 		}
@@ -22,7 +21,7 @@ public abstract class Entity {
 			public void execute(EntityGraphics listener) {
 				listener.setX(x);
 				listener.setY(y);
-				listener.setRotation(angle);
+				listener.setRotation(graphicsRotation);
 			}
 		});
 		execute(new PhysicsCommand() {

@@ -145,7 +145,7 @@ public final class Facilitator extends BipedalEntity {
 		}
 	}
 	@Override
-	void walkEvent(final float angle, final float greatestComponentLength) {
+	void walkEvent(final float angleInDegrees, final float greatestComponentLength) {
 		execute(new GraphicsCommand() {
 			@Override
 			public void execute(EntityGraphics listener) {
@@ -153,7 +153,7 @@ public final class Facilitator extends BipedalEntity {
 				listener.setAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, calculateFrameDuration(greatestComponentLength));
 			}
 		});
-		desiredRotation = angle - 90;
+		desiredRotation = angleInDegrees - 90;
 	}
 	@Override
 	void stopWalkEvent() {

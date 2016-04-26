@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.inhavok.fallen.commands.Command;
+import com.inhavok.fallen.commands.CommandListener;
 import com.inhavok.fallen.utility.EntityCanvas;
 import com.inhavok.fallen.utility.Ray;
 

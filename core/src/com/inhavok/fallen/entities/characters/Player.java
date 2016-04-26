@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 public final class Player extends BipedalEntity {
 	private float desiredLegsRotation;
-	public Player(float x, float y, float angle) {
-		super(x, y, angle, 4);
+	public Player(float x, float y, float rotation) {
+		super(x, y, rotation, 4);
 	}
 	@Override
 	protected ArrayList<EntityComponent> addComponents() {
@@ -63,7 +63,7 @@ public final class Player extends BipedalEntity {
 		}
 	}
 	@Override
-	void walkEvent(final float angle, final float greatestComponentLength) {
+	void walkEvent(final float angleInDegrees, final float greatestComponentLength) {
 		execute(new GraphicsCommand() {
 			@Override
 			public void execute(EntityGraphics listener) {
@@ -71,7 +71,7 @@ public final class Player extends BipedalEntity {
 				listener.setAnimationFrameDuration(PlayerGraphics.Layer.LEGS, PlayerLegsLayer.Animation.MOVING, calculateFrameDuration(greatestComponentLength));
 			}
 		});
-		desiredLegsRotation = angle - 90;
+		desiredLegsRotation = angleInDegrees - 90;
 	}
 	@Override
 	void stopWalkEvent() {

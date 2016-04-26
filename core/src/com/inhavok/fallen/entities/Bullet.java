@@ -8,15 +8,15 @@ import com.inhavok.fallen.utility.EntityCanvas;
 import java.util.ArrayList;
 
 public class Bullet extends Entity {
-	private final int x;
-	private final int y;
-	private final float angle;
+	private final float x;
+	private final float y;
+	private final float rotation;
 	private float distance;
-	public Bullet(float x, float y, float angle) {
-		super(x, y, angle);
-		this.x = (int) x;
-		this.y = (int) y;
-		this.angle = angle;
+	public Bullet(float x, float y, float rotation) {
+		super(x, y, rotation);
+		this.x = x;
+		this.y = y;
+		this.rotation = rotation;
 	}
 	@Override
 	protected ArrayList<EntityComponent> addComponents() {
@@ -25,7 +25,7 @@ public class Bullet extends Entity {
 	@Override
 	public void update() {
 		distance += Application.SECONDS_PER_STEP;
-		final float angleInRadians = angle * MathUtils.degreesToRadians;
-		EntityCanvas.queueVector(x, y, (float) (distance * Math.cos(angleInRadians)), (float) (distance * Math.sin(angleInRadians)));
+		final float rotationInRadians = rotation * MathUtils.degreesToRadians;
+		EntityCanvas.queueVector(x, y, (float) (distance * Math.cos(rotationInRadians)), (float) (distance * Math.sin(rotationInRadians)));
 	}
 }

@@ -9,8 +9,8 @@ import com.inhavok.fallen.utility.GameMath;
 public abstract class BipedalEntity extends Entity {
 	private final float baseSpeed;
 	private boolean walking;
-	BipedalEntity(final float x, final float y, final float angle, final float baseSpeed) {
-		super(x, y, angle);
+	BipedalEntity(final float x, final float y, final float rotation, final float baseSpeed) {
+		super(x, y, rotation);
 		this.baseSpeed = baseSpeed;
 	}
 	public final void walk(final Vector2 walkVelocity) {
@@ -29,7 +29,7 @@ public abstract class BipedalEntity extends Entity {
 			walking = false;
 		}
 	}
-	void walkEvent(final float angle, final float greatestComponentLength) {
+	void walkEvent(final float angleInDegrees, final float greatestComponentLength) {
 	}
 	void stopWalkEvent() {
 	}

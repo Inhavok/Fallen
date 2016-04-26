@@ -85,9 +85,9 @@ public abstract class EntityGraphics extends EntityComponent {
 	public final void setY(final float y) {
 		this.y = y - height / 2;
 	}
-	public final void setRotation(final float angle) {
+	public final void setRotation(final float angleInDegrees) {
 		for (Layer layer : layers.values()) {
-			layer.setRotation(angle);
+			layer.setRotation(angleInDegrees);
 		}
 	}
 	public final void setLayerRotation(final Enum layer, final float rotation) {

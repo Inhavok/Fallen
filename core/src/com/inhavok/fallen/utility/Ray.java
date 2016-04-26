@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.RayCastCallback;
 
 public abstract class Ray {
 	private final Vector2 startPoint;
-	private final float angle;
+	private final float angleInRadians;
 	private final RayCastCallback callback = new RayCastCallback() {
 		@Override
 		public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
@@ -19,16 +19,16 @@ public abstract class Ray {
 	};
 	private final Vector2 actualEndPoint = new Vector2(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	private Fixture hitFixture;
-	public Ray(final Vector2 startPoint, final float angle) {
+	public Ray(final Vector2 startPoint, final float angleInRadians) {
 		this.startPoint = startPoint;
-		this.angle = angle;
+		this.angleInRadians = angleInRadians;
 	}
 	public abstract void collision();
 	public Vector2 getStartPoint() {
 		return startPoint;
 	}
 	public Vector2 getEndPoint() {
-		return new Vector2(startPoint).add((float) (Integer.MAX_VALUE * Math.cos(angle)), (float) (Integer.MAX_VALUE * Math.sin(angle)));
+		return new Vector2(startPoint).add((float) (Integer.MAX_VALUE * Math.cos(angleInRadians)), (float) (Integer.MAX_VALUE * Math.sin(angleInRadians)));
 	}
 	public RayCastCallback getCallback() {
 		return callback;
