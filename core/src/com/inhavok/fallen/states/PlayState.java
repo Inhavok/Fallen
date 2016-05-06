@@ -1,7 +1,5 @@
 package com.inhavok.fallen.states;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.inhavok.fallen.commands.entity.ControllerCommand;
@@ -12,6 +10,8 @@ import com.inhavok.fallen.state_components.StateComponent;
 import com.inhavok.fallen.state_components.StateEntities;
 import com.inhavok.fallen.entities.characters.Player;
 import com.inhavok.fallen.utility.Level;
+
+import java.util.ArrayList;
 
 public final class PlayState extends State {
 	private final Level level = new Level(this);
