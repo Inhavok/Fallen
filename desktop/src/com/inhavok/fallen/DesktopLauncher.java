@@ -9,6 +9,7 @@ final class DesktopLauncher {
 	public static void main(final String[] args) {
 		final Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
 		configuration.setTitle("Fallen");
+		configuration.setResizable(false);
 		new Lwjgl3Application(new Application(), configuration);
 	}
 }

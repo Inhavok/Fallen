@@ -87,12 +87,13 @@ public final class Application extends ApplicationAdapter {
 		currentState.handleCommand(command);
 	}
 	@Override
-	public void resize(int width, int height) {
+	public void resize(final int width, final int height) {
 		StateUI.resize(width, height);
 		currentState.execute(new EntitiesCommand() {
 			@Override
 			public void execute(StateEntities listener) {
-				listener.resize(16, 10);
+				final float newWidth = 10 * (width / (float) height);
+				listener.resize(newWidth, (newWidth * height) / (float) width);
 			}
 		});
 	}
