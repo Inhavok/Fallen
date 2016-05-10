@@ -1,19 +1,19 @@
 
 environment.png
-size: 36,70
+size: 34,68
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 floor
   rotate: false
-  xy: 2, 36
+  xy: 1, 35
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 ice
   rotate: false
-  xy: 2, 2
+  xy: 1, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

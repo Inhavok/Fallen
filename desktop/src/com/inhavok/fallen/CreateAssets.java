@@ -8,6 +8,7 @@ final class CreateAssets {
 	public static void main(final String[] args) {
 		final TexturePacker.Settings settings = new TexturePacker.Settings();
 		settings.pot = false;
+		settings.duplicatePadding = true;
 		settings.maxWidth = Integer.MAX_VALUE;
 		settings.maxHeight = Integer.MAX_VALUE;
 		TexturePacker.process(settings, "C:\\Users\\Ben\\Desktop\\Developer\\Projects\\Fallen\\core\\assets\\graphics\\entities", "C:\\Users\\Ben\\Desktop\\Developer\\Projects\\Fallen\\core\\assets\\graphics\\entities", "entities");
