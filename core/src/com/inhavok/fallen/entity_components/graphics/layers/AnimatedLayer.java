@@ -2,6 +2,7 @@ package com.inhavok.fallen.entity_components.graphics.layers;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.HashMap;
 
@@ -16,7 +17,7 @@ public abstract class AnimatedLayer extends Layer {
 		stateTime += delta;
 	}
 	public final Sprite getSprite() {
-		return new Sprite(getAnimation().getKeyFrame(stateTime));
+		return new Sprite((TextureRegion) getAnimation().getKeyFrame(stateTime));
 	}
 	HashMap<Enum, Animation> getAnimations() {
 		return animations;
